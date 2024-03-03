@@ -7,8 +7,9 @@
 <h1>IndexMagazine</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="CreateMagazine">Create New</a>
 </p>
+
 <table class="table">
     <thead>
         <tr>
@@ -33,6 +34,7 @@
     <tbody>
         @foreach (var item in Model)
         {
+          
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.magazine_closure_date)
@@ -54,8 +56,46 @@
                     <a asp-action="UpdateMagazine" asp-route-id="@item.magazine_id">Edit</a> |
                     <a asp-action="DetailsMagazine" asp-route-id="@item.magazine_id">Details</a> |
                     <a asp-action="DeleteMagazine" asp-route-id="@item.magazine_id">Delete</a>
+
                 </td>
             </tr>
         }
     </tbody>
 </table>
+@section Scripts {
+        <script>
+            $(document).ready(function () {
+                $(".deleteButton").click(function () {
+                    var modalId = $(this).data("target");
+                    $(modalId).modal("show");
+                });
+
+                $(".confirmDelete").click(function () { 
+                    $(this).closest(".modal").modal("hide");
+                });
+
+                $(".cancelDelete").click(function () {
+                    var modalId = $(this).closest(".modal").attr("id");
+                    $("#" + modalId).modal("hide");
+                });
+                $(".confirmDelete").click(function () {
+                    var facultyId = $(this).data("id");
+
+                    $.ajax({
+                        type: "POST",
+                        url: "http://localhost:5154/Faculty/DeleteFaculty/" + facultyId,
+                        data: { facultyId: facultyId },
+                        success: function () {
+                            // Xử lý sau khi thành công (nếu cần)
+                            console.log("Delete successful");
+                        },
+                        error: function () {
+                            // Xử lý lỗi (nếu cần)
+                            console.log("Error deleting");
+                        }
+                    });
+                });
+            });
+        </script>
+
+}
