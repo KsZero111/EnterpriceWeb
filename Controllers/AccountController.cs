@@ -26,15 +26,18 @@ namespace EnterpriceWeb.Controllers
         //POST: Register
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Register(User _user)
+        public ActionResult Register([FromForm]User _user)
         {
-            if (ModelState.IsValid)
+            //if (ModelState.IsValid)
             {
-                if (_repoAccount.Register(_user).Equals(null))
+                var user =_repoAccount.Register(_user);
+                _user.us_role = "student";  
+                
+                if (user==null)
                 {
                     _dbContext.users.Add(_user);
                     _dbContext.SaveChanges();
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Login");
                 }
                 else
                 {
@@ -69,7 +72,7 @@ namespace EnterpriceWeb.Controllers
                     }
                     else if(HttpContext.Session.GetString("role").Equals("coordinator"))
                     {
-                        TempData["role"] = HttpContext.Session.GetInt32("User_id");
+                        
                         return RedirectToAction("Coordinator"+HttpContext.Session.GetInt32("User_id"));
                     }
                     else
