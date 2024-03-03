@@ -30,7 +30,7 @@ namespace EnterpriceWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (_repoAccount.register(_user)== null)
+                if (_repoAccount.Register(_user).Equals(null))
                 {
                     _dbContext.users.Add(_user);
                     _dbContext.SaveChanges();
@@ -60,15 +60,14 @@ namespace EnterpriceWeb.Controllers
                 var data = repoAccount.login(gmail,password);
                 if (data.Count()==0)
                 {
-                    HttpContext.Session.SetString("gmail", data.FirstOrDefault().us_gmail);
-                    HttpContext.Session.SetInt32("UserId", data.FirstOrDefault().us_id);
-
+                    HttpContext.Session.SetString("gmail", data.First().us_gmail);
+                    HttpContext.Session.SetInt32("UserId", data.First().us_id);
                     return RedirectToAction("~/Home/Private");
                 }
                 else
                 {
                     TempData["erorr"] = "Login failed";
-                    return RedirectToAction("Login");
+                    return View();
                 }
             }
             return View();
