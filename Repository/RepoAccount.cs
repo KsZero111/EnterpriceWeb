@@ -36,9 +36,9 @@ namespace EnterpriceWeb.Repository
             return user;
         }
 
-        public async Task<User> Register(User _user)
+        public User Register(User _user)
         {
-           User user=await appDBContext.users.Where(us=>us.us_gmail.Equals(_user.us_gmail)).FirstOrDefaultAsync();
+           User user= appDBContext.users.Where(us=>us.us_gmail.Equals(_user.us_gmail)).FirstOrDefault();
             return user;
         }
 

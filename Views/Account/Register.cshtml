@@ -1,0 +1,66 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Registration Form</title>
+    <link href='https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css' rel='stylesheet'>
+    <link href='https://use.fontawesome.com/releases/v5.7.2/css/all.css' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css2?family=Poppins&display=swap' rel='stylesheet'>
+    <link href="~/css/Register.css" rel="stylesheet" type="text/css"/>
+    <style>
+        .panel-body {
+            padding: 1rem;
+        }
+        .input-field {
+            margin-bottom: 1rem;
+        }
+    </style>
+    <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+    <script type='text/javascript' src='https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js'></script>
+    <script type='text/javascript' src='https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js'></script>
+</head>
+<body oncontextmenu='return false' class='snippet-body'>
+<div class="container">
+    <div class="row">
+        <div class="offset-md-2 col-lg-5 col-md-7 offset-lg-4 offset-md-3">
+            <div class="panel border bg-white">
+                <div class="panel-heading">
+                    <h3 class="pt-3 font-weight-bold">Register</h3>
+                </div>
+                <div class="panel-body">
+                    <form asp-controller="Account" asp-action="Register" method="POST">
+                        <div class="form-group">
+                            <div class="input-field"> <span class="far fa-user p-2"></span> <input type="text" placeholder="User Name" name="us_name" required> </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-field"> <span class="fas fa-key px-2"></span> <input type="password" placeholder="Password" name="us_password" required> </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-field"> <span class="far fa-building p-2"></span> <input type="text" placeholder="Faculty ID" name="f_id" required> </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-field"> <span class="fas fa-phone px-2"></span> <input type="text" placeholder="Phone" name="us_phone"> </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-field"> <span class="far fa-envelope p-2"></span> <input type="email" placeholder="Email" name="us_gmail" required> </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-field"> <span class="fas fa-venus-mars px-2"></span> <input type="text" placeholder="Gender" name="us_gender"> </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-field"> <span class="far fa-calendar-alt p-2"></span> <input type="text" placeholder="Start Year" name="us_start_year"> </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-field"> <span class="far fa-calendar-alt p-2"></span> <input type="text" placeholder="End Year" name="us_end_year"> </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block mt-3">Register</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type='text/javascript'></script>
+</body>
+</html>
