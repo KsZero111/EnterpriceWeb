@@ -13,9 +13,6 @@ namespace EnterpriceWeb.Controllers
             _dbContext = dbContext;
             _repoMagazine = new RepoMagazine(dbContext);
         }
-
-
-
         [HttpGet]
         public async Task<IActionResult> IndexMagazine()
         {
