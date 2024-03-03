@@ -53,15 +53,28 @@ namespace EnterpriceWeb.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(string gmail, string password, RepoAccount repoAccount)
+        public ActionResult Login(string gmail, string password)
         {
             if (ModelState.IsValid)
             {
-                var data = repoAccount.login(gmail,password);
+                var data = _repoAccount.login(gmail,password);
                 if (data.Count()==0)
                 {
                     HttpContext.Session.SetString("gmail", data.First().us_gmail);
-                    HttpContext.Session.SetInt32("UserId", data.First().us_id);
+                    HttpContext.Session.SetInt32("User_id", data.First().us_id);
+                    HttpContext.Session.SetString("role", data.First().us_role);
+                    if (HttpContext.Session.GetString("role").Equals("admin"))
+                    {
+                        return RedirectToAction("~/Admin");
+                    }
+                    else if(HttpContext.Session.GetString("role").Equals("coordinator"))
+                    {
+                        return View("~/Coordinator/" + HttpContext.Session.GetInt32("User_id"));
+                    }
+                    else
+                    {
+                        return View("~/Student/" + +HttpContext.Session.GetInt32("User_id"));
+                    }
                     return RedirectToAction("~/Home/Private");
                 }
                 else
@@ -70,6 +83,10 @@ namespace EnterpriceWeb.Controllers
                     return View();
                 }
             }
+            return View();
+        }
+        public ActionResult Admin()
+        {
             return View();
         }
 
@@ -82,6 +99,7 @@ namespace EnterpriceWeb.Controllers
 
 
         //Provide Permissions Account
+          
 
         //Delete Account
     }
