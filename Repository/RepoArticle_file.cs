@@ -1,6 +1,6 @@
 ﻿namespace EnterpriceWeb.Repository
 {
-    public class RepoArticle
+    public class RepoArticle_file
     {
 
     }

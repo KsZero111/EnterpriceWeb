@@ -1,0 +1,76 @@
+﻿@model EnterpriceWeb.Models.User
+
+@{
+    ViewData["Title"] = "UpdateProfile";
+}
+
+<h1>UpdateProfile</h1>
+
+<h4>User</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="UpdateProfile" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="us_id" />
+            <div class="form-group">
+                <label asp-for="f_id" class="control-label">Faculty</label>
+                <select asp-for="f_id" class="form-control">
+                    @foreach (var item in ViewBag.ListFaculty)
+                    {
+                        <option value="@item.f_id">@item.f_name</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="us_name" class="control-label">UserName</label>
+                <input asp-for="us_name" class="form-control" />
+                <span asp-validation-for="us_name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="us_phone" class="control-label">Phone</label>
+                <input asp-for="us_phone" class="form-control" />
+                <span asp-validation-for="us_phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="us_gender" class="control-label">Gender</label>
+                <input asp-for="us_gender" class="form-control" />
+                <span asp-validation-for="us_gender" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="us_image" class="control-label">Avatar</label>
+                <input type="file" class="form-control" name="avatar" />
+                <span asp-validation-for="us_image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="us_gmail" class="control-label">Gmail</label>
+                <input asp-for="us_gmail" class="form-control" />
+                <span asp-validation-for="us_gmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="us_start_year" class="control-label">Start year</label>
+                <input asp-for="us_start_year" class="form-control" />
+                <span asp-validation-for="us_start_year" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="us_end_year" class="control-label">End year</label>
+                <input asp-for="us_end_year" class="form-control" />
+                <span asp-validation-for="us_end_year" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

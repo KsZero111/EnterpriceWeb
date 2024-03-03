@@ -1,0 +1,49 @@
+﻿@model EnterpriceWeb.Models.Magazine
+
+@{
+    ViewData["Title"] = "CreateMagazine";
+}
+
+<h1>CreateMagazine</h1>
+
+<h3>Magazine</h3>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateMagazine">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="magazine_title" class="control-label">Title</label>
+                <input asp-for="magazine_title" class="form-control" />
+                <span asp-validation-for="magazine_title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="magazine_closure_date" class="control-label">Closure date</label>
+                <input type="date" asp-for="magazine_closure_date" class="form-control" />
+                <span asp-validation-for="magazine_closure_date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="magazine_final_closure_date" class="control-label">Final closure date</label>
+                <input type="date" asp-for="magazine_final_closure_date" class="form-control" />
+                <span asp-validation-for="magazine_final_closure_date" class="text-danger"></span>
+            </div>
+   
+            <div class="form-group">
+                <label asp-for="magazine_academic_year" class="control-label">Academic year</label>
+                <input asp-for="magazine_academic_year" class="form-control" />
+                <span asp-validation-for="magazine_academic_year" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="IndexMagazine">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,33 @@
+﻿@model EnterpriceWeb.Models.Faculty
+
+@{
+    ViewData["Title"] = "CreateFaculty";
+}
+
+<h3>CreateFaculty</h3>
+
+<h4>Faculty</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateFaculty">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="f_name" class="control-label">Faculty name</label>
+                <input asp-for="f_name" class="form-control" name="ip_name" />
+                <span asp-validation-for="f_name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="IndexFaculty">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

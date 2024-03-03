@@ -17,32 +17,25 @@ namespace EnterpriceWeb.Models
 
 
         [Required(ErrorMessage = "User name not empty")]
-        public  string us_name { get; set; }
+        public string us_name { get; set; }
 
 
         [Required(ErrorMessage = "Password not empty")]
         public string us_password { get; set; }
 
+        [Required(ErrorMessage = "Role not empty")]
+        public string us_role { get; set; }
 
-        [Required(ErrorMessage = "Phone not empty")]
-        public string us_phone { get; set; }
+        public string? us_phone { get; set; }
 
+        public string? us_gender { get; set; }
 
-        [Required(ErrorMessage = "Gender not empty")]
-        public string us_gender { get; set; }
+        public string? us_image { get; set; }
 
+        public string? us_gmail { get; set; }
+        public string? us_end_year { get; set; }
 
-        [Required(ErrorMessage = "Image not empty")]
-        public string us_image { get; set; }
+        public string? us_start_year { get; set; }
 
-
-        [Required(ErrorMessage = "Gmail not empty")]
-        public string us_gmail { get; set; }
-
-        [Required(ErrorMessage = "End year not empty")]
-        public string us_end_year { get; set; }
-
-        [Required(ErrorMessage = "Start year not empty")]
-        public string us_start_year { get; set; }
     }
 }

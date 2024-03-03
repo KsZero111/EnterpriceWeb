@@ -13,5 +13,11 @@ namespace EnterpriceWeb.Models
 
         [Required(ErrorMessage = "Faculty name not empty")]
         public string f_name { get; set; }
+
+        public string f_status { get; set; }
+        public Faculty()
+        {
+            f_status = "1";
+        }
     }
 }
