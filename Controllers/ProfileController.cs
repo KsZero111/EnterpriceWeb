@@ -20,12 +20,12 @@ namespace EnterpriceWeb.Controllers
         }
 
 
-
         [HttpGet]
         public async Task<IActionResult> IndexProfile(int id)
         {
+            if (TempData["UserId"]!=null) id = (int)TempData["UserId"];   
             User user = await _repoAccount.SearhUserById(id);
-            Faculty faculty = await _repoFaculty.SearhFacultyById(user.faculty.f_id);
+            Faculty faculty = await _repoFaculty.SearhFacultyById(user.f_id);
             ViewBag.faculty = faculty;
             return View(user);
         }
@@ -34,6 +34,7 @@ namespace EnterpriceWeb.Controllers
         [HttpGet]
         public async Task<IActionResult> UpdateProfile(int id)
         {
+            if (TempData["UserId"] != null) id = (int)TempData["UserId"];
             User user = await _repoAccount.SearhUserById(id);
             List<Faculty> list_Faculty = await _repoFaculty.SearhAllFaculty();
             ViewBag.ListFaculty = list_Faculty;
@@ -43,10 +44,11 @@ namespace EnterpriceWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateProfile([FromForm] User user, int id, IFormFile avatar)
         {
+            TempData["UserId"] = id;
             User oldUser = await _repoAccount.SearhUserById(id);
             if (oldUser != null)
             {
-                HandleUpdateProfile(oldUser, user, avatar);
+               await HandleUpdateProfile(oldUser, user, avatar);
             }
             else
             {
@@ -70,9 +72,11 @@ namespace EnterpriceWeb.Controllers
                 if (oldUser.us_image != null && avatar != null)
                 {
                     SupportFile.Instance.DeleteFileAsync(oldUser.us_image, "image/User");
+                    string filename = await SupportFile.Instance.SaveFileAsync(avatar, "image/User");
+                    oldUser.us_image = filename;
                 }
-                string filename = await SupportFile.Instance.SaveFileAsync(avatar, "image/User");
-                oldUser.us_image = filename;
+
+
                 _dbContext.Update(oldUser);
                 _dbContext.SaveChanges();
             }

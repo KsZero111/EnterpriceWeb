@@ -34,7 +34,7 @@
     <tbody>
         @foreach (var item in Model)
         {
-          
+
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.magazine_closure_date)
@@ -55,47 +55,68 @@
                     <a asp-action="ContributeMagazine" asp-route-id="@item.magazine_id">Contribute</a>|
                     <a asp-action="UpdateMagazine" asp-route-id="@item.magazine_id">Edit</a> |
                     <a asp-action="DetailsMagazine" asp-route-id="@item.magazine_id">Details</a> |
-                    <a asp-action="DeleteMagazine" asp-route-id="@item.magazine_id">Delete</a>
+                    <!-- Modal -->
+                    <button asp-route-id="@item.magazine_id" class="btn btn-danger deleteButton" data-toggle="modal" data-target="#deleteModal_@item.magazine_id">Xóa</button>
 
+                    <!-- Modal -->
+                    <div class="modal fade" id="deleteModal_@item.magazine_id" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="deleteModalLabel">Confirm deletion</h5>
+                                    @*   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button> *@
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary cancelDelete" data-dismiss="modal">Cancel</button>
+                                    <button data-id="@item.magazine_id" class="btn btn-danger confirmDelete">OK</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </td>
             </tr>
         }
     </tbody>
 </table>
 @section Scripts {
-        <script>
-            $(document).ready(function () {
-                $(".deleteButton").click(function () {
-                    var modalId = $(this).data("target");
-                    $(modalId).modal("show");
-                });
+    <script>
+        $(document).ready(function () {
+            $(".deleteButton").click(function () {
+                var modalId = $(this).data("target");
+                $(modalId).modal("show");
+            });
 
-                $(".confirmDelete").click(function () { 
-                    $(this).closest(".modal").modal("hide");
-                });
+            $(".confirmDelete").click(function () {
+                $(this).closest(".modal").modal("hide");
+            });
 
-                $(".cancelDelete").click(function () {
-                    var modalId = $(this).closest(".modal").attr("id");
-                    $("#" + modalId).modal("hide");
-                });
-                $(".confirmDelete").click(function () {
-                    var facultyId = $(this).data("id");
+            $(".cancelDelete").click(function () {
+                var modalId = $(this).closest(".modal").attr("id");
+                $("#" + modalId).modal("hide");
+            });
+            $(".confirmDelete").click(function () {
+                var facultyId = $(this).data("id");
 
-                    $.ajax({
-                        type: "POST",
-                        url: "http://localhost:5154/Faculty/DeleteFaculty/" + facultyId,
-                        data: { facultyId: facultyId },
-                        success: function () {
-                            // Xử lý sau khi thành công (nếu cần)
-                            console.log("Delete successful");
-                        },
-                        error: function () {
-                            // Xử lý lỗi (nếu cần)
-                            console.log("Error deleting");
-                        }
-                    });
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:5154/Faculty/DeleteFaculty/" + facultyId,
+                    data: { facultyId: facultyId },
+                    success: function () {
+                        // Xử lý sau khi thành công (nếu cần)
+                        console.log("Delete successful");
+                    },
+                    error: function () {
+                        // Xử lý lỗi (nếu cần)
+                        console.log("Error deleting");
+                    }
                 });
             });
-        </script>
+        });
+    </script>
 
 }

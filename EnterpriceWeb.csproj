@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\image\Articcle\" />
-    <Folder Include="wwwroot\image\User\" />
   </ItemGroup>
 
   <ItemGroup>
