@@ -58,22 +58,24 @@ namespace EnterpriceWeb.Controllers
             if (ModelState.IsValid)
             {
                 var data = _repoAccount.login(gmail,password);
-                if (data.Count()==0)
+                if (data.Count()!=0)
                 {
                     HttpContext.Session.SetString("gmail", data.First().us_gmail);
                     HttpContext.Session.SetInt32("User_id", data.First().us_id);
                     HttpContext.Session.SetString("role", data.First().us_role);
                     if (HttpContext.Session.GetString("role").Equals("admin"))
                     {
-                        return RedirectToAction("~/Admin");
+                        return RedirectToAction("Admin");
                     }
                     else if(HttpContext.Session.GetString("role").Equals("coordinator"))
                     {
-                        return View("~/Coordinator/" + HttpContext.Session.GetInt32("User_id"));
+                        TempData["role"] = HttpContext.Session.GetInt32("User_id");
+                        return RedirectToAction("Coordinator"+HttpContext.Session.GetInt32("User_id"));
                     }
                     else
                     {
-                        return View("~/Student/" + +HttpContext.Session.GetInt32("User_id"));
+                        return View("Student"+HttpContext.Session.GetInt32("User_id"));
+
                     }
                     return RedirectToAction("~/Home/Private");
                 }
@@ -86,6 +88,14 @@ namespace EnterpriceWeb.Controllers
             return View();
         }
         public ActionResult Admin()
+        {
+            return View();
+        }
+        public ActionResult Coordinator()
+        {
+            return View();
+        }
+        public ActionResult Student()
         {
             return View();
         }
