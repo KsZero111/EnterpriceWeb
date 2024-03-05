@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using EnterpriceWeb.Models;
 
 namespace EnterpriceWeb.Models
 {
@@ -47,5 +48,8 @@ namespace EnterpriceWeb.Models
             //   .HasPrincipalKey(f => f.f_id);
             //base.OnModelCreating(modelBuilder);
         }
+
+
+        public DbSet<EnterpriceWeb.Models.Feedback>? Feedback { get; set; }
     }
 }
