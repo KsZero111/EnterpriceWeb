@@ -12,7 +12,7 @@ namespace EnterpriceWeb.Controllers
         List<string> typeImage = new List<string>()
         {
             FileType.JPEG,
-            
+
 
         };
         public Article_FileController(AppDbConText dbContext)
@@ -24,7 +24,7 @@ namespace EnterpriceWeb.Controllers
         [HttpGet]
         public async Task<IActionResult> IndexArticle_File(int article_id)
         {
-            if (TempData["idArticle"] != null) article_id = (int)TempData["article_id"];
+           
             List<Article_file> list_Article_file = await _repoArticle_File.SearhAllArticleFileById(article_id);
             ViewBag.ArticleId = article_id;
             return View(list_Article_file);
@@ -33,10 +33,11 @@ namespace EnterpriceWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateArticle_File(IFormFile article_file, int idArticle)
         {
-            TempData["idArticle"] = idArticle;
-            await HandleCreateArticle_File(article_file, idArticle);
 
-            return RedirectToAction("IndexArticle_File");
+            await HandleCreateArticle_File(article_file, idArticle);
+            _dbContext.SaveChanges();
+
+            return RedirectToAction("IndexArticle_File","Article_FileController","ariticle_id="+idArticle);
         }
 
         private async Task HandleCreateArticle_File(IFormFile ip_article_File, int id)
@@ -51,9 +52,8 @@ namespace EnterpriceWeb.Controllers
             string filename = await SupportFile.Instance.SaveFileAsync(ip_article_File, "image/Article_File");
             art_file.article_file_name = filename;
             art_file.article_id = id;
+            art_file.article_file_type = ip_article_File.ContentType;
             _dbContext.Add(art_file);
-            _dbContext.SaveChanges();
-
         }
 
         [HttpPost]

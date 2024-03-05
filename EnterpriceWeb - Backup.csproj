@@ -8,14 +8,11 @@
 
   <ItemGroup>
     <Folder Include="Views\Feedback\" />
-    <Folder Include="wwwroot\image\Article_File\" />
-    <Folder Include="wwwroot\image\User\" />
+    <Folder Include="wwwroot\image\Articcle\" />
+	  <Folder Include="wwwroot\image\Article_File\" />
+	  <Folder Include="wwwroot\image\User\" />
   </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Views\Article\CreateFeedBack.cshtml" />
-    <None Include="Views\Article\UpdateFeedBack.cshtml" />
-  </ItemGroup>
+	
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.16" />
