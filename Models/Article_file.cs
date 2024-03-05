@@ -14,6 +14,6 @@ namespace EnterpriceWeb.Models
         public string article_file_name { get; set; }
 
         [Required(ErrorMessage = "Article file type not empty")]
-        public string article_file_type { get; set; } 
+        public string article_file_type { get; set; }
     }
 }
