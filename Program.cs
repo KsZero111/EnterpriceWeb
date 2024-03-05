@@ -25,14 +25,15 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
+    app.UseExceptionHandler("/Home/erorr");
 }
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseStatusCodePagesWithRedirects("~/Home/NotFound");
 app.UseAuthorization();
 app.UseSession();
+
 
 app.MapControllerRoute(
     name: "default",
