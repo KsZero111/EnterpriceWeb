@@ -4,12 +4,15 @@
     ViewData["Title"] = "IndexArticle";
 }
 
-<h3>IndexArticle</h3>
+<div class="position-relative">
+
+    <div class="position-absolute top-50 start-50 translate-middle"> <h1>Index Article</h1></div>
+</div>
 
 <p>
-    <a asp-action="CreateArticle" asp-route-id="@ViewBag.m_id">Add new Article</a>
+    <a asp-action="CreateArticle" class="btn btn-outline-info" asp-route-id="@ViewBag.m_id">Add new Article</a>
 </p>
-<table class="table">
+<table class="table table-success table-striped">
     <thead>
         <tr>
             <th>
