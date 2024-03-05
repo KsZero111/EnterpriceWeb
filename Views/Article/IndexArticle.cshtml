@@ -1,0 +1,67 @@
+﻿@model IEnumerable<EnterpriceWeb.Models.Article>
+
+@{
+    ViewData["Title"] = "IndexArticle";
+}
+
+<h3>IndexArticle</h3>
+
+<p>
+    <a asp-action="CreateArticle" asp-route-id="@ViewBag.m_id">Add new Article</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Article avatar
+            </th>
+            <th> 
+                Magazine title
+            </th>
+            <th>
+                Submit date
+            </th>
+            <th>
+                Accept date
+            </th>
+            <th>
+                Views
+            </th>
+            <th>
+                Status
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <img style="width:130px; height:130px" src="http://localhost:5154/image/Article/@Html.DisplayFor(modelItem => item.article_avatar)" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.magazine.magazine_title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.article_submit_date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.article_accept_date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.article_views)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.article_status)
+                </td>
+                <td>
+                    <a asp-controller="Article_File" asp-action="IndexArticle_File" asp-route-article_id="@item.article_id">Contribute</a> |
+                    <a asp-action="UpdateArticle" asp-route-id="@item.article_id">Update</a> |
+                    <a asp-action="Details" asp-route-id="@item.article_id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.article_id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>    
+</table>

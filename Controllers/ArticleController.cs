@@ -8,7 +8,13 @@ namespace EnterpriceWeb.Controllers
     {
         private AppDbConText _dbContext;
         private RepoArticle _repoArticle;
+<<<<<<< Updated upstream
         private RepoFeedBack _repoFeedBack;
+=======
+        private RepoArticle_file _repoArticle_File;
+
+        private RepoMagazine _repoMagazine; 
+>>>>>>> Stashed changes
         public ArticleController(AppDbConText dbContext)
         {
             _dbContext = dbContext;
