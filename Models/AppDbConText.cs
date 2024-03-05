@@ -24,7 +24,7 @@ namespace EnterpriceWeb.Models
                 );
             modelBuilder.Entity<User>().HasData
                 (
-                    new User { us_id = 1, f_id = 1, us_name = "thaihuynh", us_password = "huynhthai", us_role = "admin" }
+                    new User { us_id = 1, f_id = 1, us_name = "thaihuynh", us_password = "huynhthai", us_role = "admin" ,us_image= "07e16bf5-2afc-40c2-8b5d-a1246d96dc0ecart3.jpg",us_gmail="hpthkl@gmail.com" }
                 );
             modelBuilder.Entity<Magazine>().HasData
                (
@@ -39,7 +39,21 @@ namespace EnterpriceWeb.Models
                        magazine_deleted = "0"
                    }
                );
-
+            modelBuilder.Entity<Article>().HasData
+               (
+                   new Article
+                   {
+                       article_id = 1,
+                       magazine_id = 1,
+                       us_id = 1,
+                       article_title="Bủh",
+                       article_avatar= "07e16bf5-2afc-40c2-8b5d-a1246d96dc0ecart3.jpg",
+                       article_submit_date = "12/12/2024",
+                       article_accept_date = "23/12/2024",
+                       article_views = "111",
+                       article_status = "0"
+                   }
+               );
             base.OnModelCreating(modelBuilder);
             //modelBuilder.Entity<User>().HasOne(u => u.Faculties)
             //   .WithMany()

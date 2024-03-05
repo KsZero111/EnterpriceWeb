@@ -52,7 +52,7 @@
                     @Html.DisplayFor(modelItem => item.magazine_status)
                 </td>
                 <td>
-                    <a asp-action="ContributeMagazine" asp-route-id="@item.magazine_id">Contribute</a>|
+                    <a asp-controller="Article" asp-action="IndexArticle" asp-route-id="@item.magazine_id">Contribute</a>|
                     <a asp-action="UpdateMagazine" asp-route-id="@item.magazine_id">Edit</a> |
                     <a asp-action="DetailsMagazine" asp-route-id="@item.magazine_id">Details</a> |
                     <!-- Modal -->

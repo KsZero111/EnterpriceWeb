@@ -84,6 +84,7 @@ namespace EnterpriceWeb.Controllers
             _dbContext.SaveChanges();
         }
 
+
         [HttpPost]
         public async Task<IActionResult> DeleteFaculty(int facultyId)
         {

@@ -15,14 +15,14 @@ namespace EnterpriceWeb.Repository
             List<Article> article = await _appDBContext.articles.Where(art => art.article_status.Equals("1")).ToListAsync();
             return article;
         }
-        public async Task<List<Article>> SearhAllArticle()
+        public async Task<List<Article>> SearhAllArticle(int idUser, int idMagazine)
         {
-            List<Article> article = await _appDBContext.articles.ToListAsync();
+            List<Article> article = await _appDBContext.articles.Where(art => art.us_id.Equals(idUser) && art.magazine_id.Equals(idMagazine)).Include(m=>m.magazine).ToListAsync();
             return article;
         }
         public async Task<Article> SearhArticleById(int id)
         {
-            Article article = await _appDBContext.articles.Where(art => art.article_id.Equals(id) && art.article_status.Equals("1")).FirstOrDefaultAsync();
+            Article article = await _appDBContext.articles.Where(art => art.article_id.Equals(id) && art.article_status.Equals("0")).FirstOrDefaultAsync();
             return article;
         }
     }

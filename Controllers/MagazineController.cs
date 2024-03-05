@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EnterpriceWeb.Controllers
 {
-    public class MagazineController:Controller
+    public class MagazineController : Controller
     {
         private AppDbConText _dbContext;
         private RepoMagazine _repoMagazine;
@@ -59,19 +59,19 @@ namespace EnterpriceWeb.Controllers
         }
 
         [HttpGet]
-        public async Task <IActionResult> UpdateMagazine(int id)
+        public async Task<IActionResult> UpdateMagazine(int id)
         {
-            Magazine magazine= await _repoMagazine.SearchMagazineById(id);
+            Magazine magazine = await _repoMagazine.SearchMagazineById(id);
             return View(magazine);
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateMagazine(int id,[FromForm] Magazine magazine)
+        public async Task<IActionResult> UpdateMagazine(int id, [FromForm] Magazine magazine)
         {
             Magazine oldMezine = await _repoMagazine.SearchMagazineById(id);
             if (oldMezine != null)
             {
-                HandleUpdateMagazine(magazine,oldMezine);
+                HandleUpdateMagazine(magazine, oldMezine);
                 return RedirectToAction("IndexMagazine");
             }
             else

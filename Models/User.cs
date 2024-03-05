@@ -31,10 +31,8 @@ namespace EnterpriceWeb.Models
         public string? us_gender { get; set; }
 
         public string? us_image { get; set; }
-
         public string? us_gmail { get; set; }
         public string? us_end_year { get; set; }
-
         public string? us_start_year { get; set; }
 
     }
