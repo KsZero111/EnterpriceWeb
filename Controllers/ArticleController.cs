@@ -78,7 +78,7 @@ namespace EnterpriceWeb.Controllers
             Article oldArticle = await _repoArticle.SearhArticleById(article.article_id);
             if (oldArticle != null)
             {
-                await HandleUpdateProfile(oldArticle, article, avatar);
+                await HandleUpdateArticle(oldArticle, article, avatar);
             }
             else
             {
@@ -87,7 +87,7 @@ namespace EnterpriceWeb.Controllers
             return RedirectToAction("IndexProfile");
         }
 
-        private async Task HandleUpdateProfile(Article oldArticle, Article newArticle, IFormFile avatar)
+        private async Task HandleUpdateArticle(Article oldArticle, Article newArticle, IFormFile avatar)
         {
             try
             {
