@@ -12,12 +12,12 @@ namespace EnterpriceWeb.Repository
         }
         public async Task<List<Feedback>> SearhAllFeedBackOfArticle(int article_id)
         {
-            List<Feedback> feedbacks = await _appDBContext.Feedback.Where(fb=>fb.article_id.Equals(article_id)).ToListAsync();
+            List<Feedback> feedbacks = await _appDBContext.Feedback.Where(fb => fb.article_id.Equals(article_id)).ToListAsync();
             return feedbacks;
         }
         public async Task<Feedback> SearhFeedBackById(int id)
         {
-            Feedback feedback = await _appDBContext.Feedback.Where(fb=>fb.article_id.Equals(id)).FirstOrDefaultAsync();
+            Feedback feedback = await _appDBContext.Feedback.Where(fb => fb.article_id.Equals(id)).FirstOrDefaultAsync();
             return feedback;
         }
     }

@@ -24,19 +24,23 @@ namespace EnterpriceWeb.Models
 
 
 
+        [Required(ErrorMessage = "Article title date not empty")]
+        public string article_title { get; set; }
+
+
+        [Required(ErrorMessage = "Article avatar date not empty")]
+        public string article_avatar { get; set; }
+
+
         [Required(ErrorMessage = "Article submit date not empty")]
-
-        public string article_submit_date { get; set; }
-
-        [Required(ErrorMessage = "Article accept date not empty")]
-
-        public string article_accept_date { get; set; }
-
-        public string? article_views { get; set; }
-
+        public string? article_submit_date { get; set; }
 
         [Required(ErrorMessage = "Article status not empty")]
         public string article_status { get; set; }
+
+        public string? article_accept_date { get; set; }
+
+        public string? article_views { get; set; }
         public Article()
         {
             article_status = "0";

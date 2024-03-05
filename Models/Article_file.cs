@@ -10,6 +10,9 @@ namespace EnterpriceWeb.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int article_file_id { get; set; }
 
+        public int article_id { get; set; }
+        [ForeignKey("article_id")]
+
         [Required(ErrorMessage = "Article file name not empty")]
         public string article_file_name { get; set; }
 
