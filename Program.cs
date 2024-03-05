@@ -1,8 +1,9 @@
+using EnterpriceWeb.Mailutils;
 using EnterpriceWeb.Models;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 var connectionString = builder.Configuration.GetConnectionString("ApDbConnectionString");
