@@ -33,11 +33,11 @@ namespace EnterpriceWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateArticle_File(IFormFile article_file, int idArticle)
         {
-
+int a = idArticle;
             await HandleCreateArticle_File(article_file, idArticle);
             _dbContext.SaveChanges();
-
-            return RedirectToAction("IndexArticle_File","Article_FileController","ariticle_id="+idArticle);
+            
+            return RedirectToAction("IndexArticle_File", "Article_File", new {article_id=idArticle});
         }
 
         private async Task HandleCreateArticle_File(IFormFile ip_article_File, int id)
