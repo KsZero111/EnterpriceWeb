@@ -40,7 +40,7 @@ namespace EnterpriceWeb.Controllers
         public async Task<IActionResult> UpdateProfile(int id)
         {
             int user_id = (int)Session.GetInt32("User_id");
-            if (user_id!=null&& user_id==id)
+            if ((user_id!=null) && (user_id==id))
             {
                 User user = await _repoAccount.SearhUserById(0);
                 List<Faculty> list_Faculty = await _repoFaculty.SearhAllFaculty();
@@ -54,7 +54,6 @@ namespace EnterpriceWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateProfile([FromForm] User user, int id, IFormFile avatar)
         {
-            TempData["UserId"] = id;
             User oldUser = await _repoAccount.SearhUserById(id);
             if (oldUser != null)
             {

@@ -10,21 +10,22 @@ namespace EnterpriceWeb.Controllers
         private RepoArticle _repoArticle;
         private RepoFeedBack _repoFeedBack;
         private RepoArticle_file _repoArticle_File;
-
+        private ISession session;
         private RepoMagazine _repoMagazine;
-        public ArticleController(AppDbConText dbContext)
+        public ArticleController(AppDbConText dbContext,IHttpContextAccessor httpContextAccessor)
         {
             _dbContext = dbContext;
             _repoArticle = new RepoArticle(dbContext);
             _repoMagazine = new RepoMagazine(dbContext);
             _repoArticle_File = new RepoArticle_file(dbContext);
             _repoFeedBack= new RepoFeedBack(dbContext);
+            session = httpContextAccessor.HttpContext.Session;
         }
 
         [HttpGet]
         public async Task<IActionResult> IndexArticle(int id)
         {
-            //int id = (int)HttpContext.Session.GetInt32("User_id");
+            //int id = (int)session.GetInt32("User_id");
             //List<Article> list_Article = await _repoArticle.SearhAllArticle(User_id, id);
 
             List<Article> list_Article = await _repoArticle.SearhAllArticle(1, 1);
