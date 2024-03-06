@@ -55,7 +55,8 @@ namespace EnterpriceWeb.Controllers
         public async Task<IActionResult> UpdateProfile([FromForm] User user, int id, IFormFile avatar)
         {
             User oldUser = await _repoAccount.SearhUserById(id);
-            if (oldUser != null)
+            int user_id = (int)Session.GetInt32("User_id");
+            if (oldUser != null&& user_id!=null)
             {
                await HandleUpdateProfile(oldUser, user, avatar);
             }
