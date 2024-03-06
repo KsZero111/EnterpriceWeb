@@ -43,8 +43,7 @@ namespace EnterpriceWeb.Models
         public string? article_views { get; set; }
         public Article()
         {
-            article_status = "0";
+            article_status = "In processing";
         }
-
     }
 }

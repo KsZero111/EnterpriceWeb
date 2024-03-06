@@ -12,13 +12,13 @@ namespace EnterpriceWeb.Controllers
         private RepoArticle_file _repoArticle_File;
         private ISession session;
         private RepoMagazine _repoMagazine;
-        public ArticleController(AppDbConText dbContext,IHttpContextAccessor httpContextAccessor)
+        public ArticleController(AppDbConText dbContext, IHttpContextAccessor httpContextAccessor)
         {
             _dbContext = dbContext;
             _repoArticle = new RepoArticle(dbContext);
             _repoMagazine = new RepoMagazine(dbContext);
             _repoArticle_File = new RepoArticle_file(dbContext);
-            _repoFeedBack= new RepoFeedBack(dbContext);
+            _repoFeedBack = new RepoFeedBack(dbContext);
             session = httpContextAccessor.HttpContext.Session;
         }
 
@@ -81,7 +81,7 @@ namespace EnterpriceWeb.Controllers
             Article oldArticle = await _repoArticle.SearhArticleById(article.article_id);
             if (oldArticle != null)
             {
-                await HandleUpdateProfile(oldArticle, article, avatar);
+                await HandleUpdateArticle(oldArticle, article, avatar);
             }
             else
             {
@@ -90,7 +90,7 @@ namespace EnterpriceWeb.Controllers
             return RedirectToAction("IndexArticle", "Article", new { id = article.magazine_id });
         }
 
-        private async Task HandleUpdateProfile(Article oldArticle, Article newArticle, IFormFile avatar)
+        private async Task HandleUpdateArticle(Article oldArticle, Article newArticle, IFormFile avatar)
         {
             try
             {
@@ -110,6 +110,8 @@ namespace EnterpriceWeb.Controllers
                 throw;
             }
         }
+
+        [HttpPost]
         public async Task<IActionResult> DeleteArticle(int id)
         {
             Article article = await _repoArticle.SearhArticleById(id);
@@ -135,6 +137,84 @@ namespace EnterpriceWeb.Controllers
             SupportFile.Instance.DeleteFileAsync(article.article_avatar, "image/Article");
 
             _dbContext.Remove(article);
+            _dbContext.SaveChanges();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AcceptArticle(int id, int id_User)
+        {
+            //check user
+
+            //check null
+            Article article = await _repoArticle.SearhArticleById(id);
+            if (article != null)
+            {
+                await HandleAcceptArticle(article);
+            }
+            else
+            {
+                return BadRequest("Article not found");
+            }
+            return Ok();
+        }
+
+        private async Task HandleAcceptArticle(Article article)
+        {
+            article.article_status = "Accept";
+            article.article_accept_date = DateTime.Now.ToString("yyyy-MM-dd h:mm:ss tt");
+            _dbContext.Update(article);
+            _dbContext.SaveChanges();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RefuseArticle(int id, int id_User)
+        {
+            //check user
+
+            //check null
+            Article article = await _repoArticle.SearhArticleById(id);
+            if (article != null)
+            {
+                await HandleRefuseArticle(article);
+            }
+            else
+            {
+                return BadRequest("Article not found");
+            }
+            return Ok();
+        }
+
+        private async Task HandleRefuseArticle(Article article)
+        {
+            article.article_status = "Refuse";
+            article.article_accept_date = "";
+            _dbContext.Update(article);
+            _dbContext.SaveChanges();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ApproveArticle(int id, int id_User)
+        {
+            //check user
+
+            //check null
+            Article article = await _repoArticle.SearhArticleById(id);
+            if (article != null)
+            {
+                await HandleApproveArticle(article);
+            }
+            else
+            {
+                return BadRequest("Article not found");
+            }
+            return Ok();
+        }
+
+        private async Task HandleApproveArticle(Article article)
+        {
+            article.article_status = "Approve";
+            article.article_accept_date = "";
+            _dbContext.Update(article);
             _dbContext.SaveChanges();
         }
     }
