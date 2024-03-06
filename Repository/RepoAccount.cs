@@ -47,5 +47,11 @@ namespace EnterpriceWeb.Repository
            List<User> user= appDBContext.users.Where(us=>us.us_gmail.Equals(gmail)&& us.us_password.Equals(password)).ToList();
             return user;
         }
+        public async Task<User> SearchCoordinatorByUserIdOfStudent(int user_id)
+        {
+            User user= await this.SearhUserById(user_id);
+            User Coordinator= await appDBContext.users.Where(us => us.us_role.Equals("coordinator") && us.f_id.Equals(user.f_id)).FirstAsync();
+            return user;  
+        }
     }
 }

@@ -15,9 +15,10 @@ namespace EnterpriceWeb.Controllers
         private ISession session;
         private RepoAccount _repoAccount;
         private RepoMagazine _repoMagazine;
-        private IEmailSender _iemailSender;
+
         private SendMailSystem mailSystem;
-        public ArticleController(AppDbConText dbContext, IHttpContextAccessor httpContextAccessor)
+        public ArticleController(AppDbConText dbContext, IHttpContextAccessor httpContextAccessor,IEmailSender emailSender)
+
         {
             _dbContext = dbContext;
             _repoArticle = new RepoArticle(dbContext);
@@ -26,7 +27,7 @@ namespace EnterpriceWeb.Controllers
             _repoFeedBack = new RepoFeedBack(dbContext);
             _repoAccount=new RepoAccount(dbContext);
             session = httpContextAccessor.HttpContext.Session;
-            SendMailSystem sendMailSystem = new SendMailSystem(_iemailSender);
+            mailSystem = new SendMailSystem(emailSender);
         }
 
         [HttpGet]
@@ -54,6 +55,7 @@ namespace EnterpriceWeb.Controllers
             Magazine Magazine = await _repoMagazine.SearchMagazineById(id);
             if (user_id != null && role == "student" && Magazine != null)
             {
+               
                 ViewBag.Magazine = Magazine;
                 return View();
             }
@@ -71,7 +73,8 @@ namespace EnterpriceWeb.Controllers
             {
                 await HandleCreateArticle(inputArticle.magazine_id, inputArticle.article_title, avatarArticle);
                 User user = await _repoAccount.SearchCoordinatorByUserIdOfStudent(user_id);
-                //mailSystem.Sendgmail(user);
+                mailSystem.Sendgmail(user);
+
                 return RedirectToAction("IndexArticle", "Article", new { id = inputArticle.magazine_id });
             }
             else
