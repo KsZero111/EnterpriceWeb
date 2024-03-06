@@ -5,12 +5,11 @@
 }
 
 <div class="position-relative">
-
     <div class="position-absolute top-50 start-50 translate-middle"> <h1>Index Article</h1></div>
 </div>
-
+<br />
 <p>
-    <a asp-action="CreateArticle" class="btn btn-outline-info" asp-route-id="@ViewBag.m_id">Add new Article</a>
+    <a asp-action="CreateArticle" class="btn btn-outline-info btnCreateArticle" asp-route-id="@ViewBag.m_id">Add new Article</a>
 </p>
 <table class="table table-success table-striped">
     <thead>
@@ -65,10 +64,10 @@
                     @Html.DisplayFor(modelItem => item.article_status)
                 </td>
                 <td>
-                    <a type="hidden" asp-controller="Article_File" asp-action="IndexArticle_File" asp-route-article_id="@item.article_id" class="btn btn-outline-primary">Contribute</a> 
-                    <a asp-action="UpdateArticle" asp-route-id="@item.article_id" class="btn btn-outline-success">Update</a> 
-                    <button class="btn btn-danger DeleteArticleFile" data-toggle="modal" data-target="#deleteModal">Delete</button>
-                    <form enctype="multipart/form-data" id="form_Delete_ArticleFile">
+                    <a type="hidden" asp-controller="Article_File" asp-action="IndexArticle_File" asp-route-article_id="@item.article_id" class="btn btn-outline-primary btnContributeArticle">Contribute</a>
+                    <a asp-action="UpdateArticle" asp-route-id="@item.article_id" class="btn btn-outline-success btnUpdateArticle">Update</a>
+                    <button class="btn btn-danger DeleteArticle btnDeleteArticle" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                    <form enctype="multipart/form-data" id="form_Delete_Article">
                         <input type="hidden" value="@item.article_id" name="id" />
                         <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
@@ -86,20 +85,108 @@
                             </div>
                         </div>
                     </form>
-                    <button name="id" value="@item.article_id" >Accept</button> 
-                    <button name="id" value="@item.article_id">Refuse</button> 
+                    <button name="id" class="btn btn-outline-success btnAcceptArticle" value="@item.article_id">Accept</button>
+                    <button name="id" class="btn btn-outline-danger btnRefuseArticle" value="@item.article_id">Refuse</button>
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
+<style>
+    .hiddenbutton {
+        display: none;
+    }
+</style>
 @section Scripts {
 
     <script>
         $(document).ready(function () {
+            //get element
+
+            var btn_Create = $(".btnCreateArticle");
+            var btn_Update = $(".btnUpdateArticle");
+            var btn_Delete = $(".btnDeleteArticle");
+
+            var btn_Contribute = $(".btnContributeArticle");
+
+            var btn_Accept = $(".btnAcceptArticle");
+            var btn_Refuse = $(".btnRefuseArticle");
+
+            var role = "@ViewBag.role";
+
+            function addClassHidden(button) {
+                button.addClass("hiddenbutton");
+            }
+
+            if (role == "admin") {
+                addClassHidden(btn_Create);
+                addClassHidden(btn_Update);
+                addClassHidden(btn_Delete);
+                addClassHidden(btn_Accept);
+                addClassHidden(btn_Refuse);
+            }
+            else if (role == "coordinator") {
+                addClassHidden(btn_Create);
+                addClassHidden(btn_Update);
+                addClassHidden(btn_Delete);
+            }
+            else if (role == "marketingmanager") {
+                addClassHidden(btn_Create);
+                addClassHidden(btn_Update);
+                addClassHidden(btn_Delete);
+                addClassHidden(btn_Accept);
+                addClassHidden(btn_Refuse);
+            } else if (role == "student") {
+                addClassHidden(btn_Accept);
+                addClassHidden(btn_Refuse);
+            }
+
+
+            //AcceptArticle
+            $(".btnAcceptArticle").click(function (e) {
+                var id = $(this).val().
+                    $.ajax({
+                        type: "POST",
+                        url: "http://localhost:5154/Article/AcceptArticle",
+                        data: {
+                            id: id
+                        },
+                        contentType: false,
+                        processData: false,
+                        success: function () {
+                            location.reload()
+                            console.log("Accept successful");
+                        },
+                        error: function () {
+                            console.log("Error Accept article ");
+                        }
+                    });
+            });
+
+            //AcceptArticle
+            $(".btnRefuseArticle").click(function (e) {
+                var id = $(this).val().
+                    $.ajax({
+                        type: "POST",
+                        url: "http://localhost:5154/Article/RefuseArticle",
+                        data: {
+                            id: id
+                        },
+                        contentType: false,
+                        processData: false,
+                        success: function () {
+                            location.reload()
+                            console.log("Refuse successful");
+                        },
+                        error: function () {
+                            console.log("Error Refuse article ");
+                        }
+                    });
+            });
+
             //Delete article file
-            $(".DeleteArticleFile").click(function () {
+            $(".DeleteArticle").click(function () {
                 var modalId = $(this).data("target");
                 $(modalId).modal("show");
             });
@@ -112,7 +199,7 @@
                 $(".confirmDelete").closest(".modal").modal("hide");
             });
 
-            $("#form_Delete_ArticleFile").submit(function (e) {
+            $("#form_Delete_Article").submit(function (e) {
                 e.preventDefault()
                 var formData = new FormData(this);
 
@@ -131,8 +218,7 @@
                     }
                 });
             });
-
-
         });
     </script>
+
 }

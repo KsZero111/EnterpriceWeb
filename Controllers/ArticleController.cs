@@ -36,9 +36,10 @@ namespace EnterpriceWeb.Controllers
             int user_id = (int)session.GetInt32("User_id");
             string role = session.GetString("role");
             List<Article> list_Article = await _repoArticle.SearhAllArticle(user_id, id);
-            if (user_id != null && role != "admin" && list_Article.Count() >= 0)
+            if (user_id != null  && list_Article.Count() >= 0)
             {
                 ViewBag.m_id = id;
+                ViewBag.role = role;
                 return View(list_Article);
             }
             else
@@ -157,20 +158,34 @@ namespace EnterpriceWeb.Controllers
             Article article = await _repoArticle.SearhArticleById(id);
             if (article != null && user_id != null && role == "student")
             {
-                HandleDeleteFactulty(article);
+                HandleDeleteArticleFile(article.article_id);
+                HandleDeleteArticle(article);
             }
             return RedirectToAction("IndexProfile");
         }
 
-        private void HandleDeleteFactulty(Article article)
+        private void HandleDeleteArticle(Article article)
         {
-            article.article_status = "999";
-            _dbContext.Update(article);
+            SupportFile.Instance.DeleteFileAsync(article.article_avatar, "image/Article");
+            _dbContext.Remove(article);
+            _dbContext.SaveChanges();
+
+        }
+
+        private async void HandleDeleteArticleFile(int id)
+        {
+            List<Article_file> list = await _repoArticle_File.SearhAllArticleFileById(id);
+            foreach (Article_file file in list)
+            {
+                _dbContext.Remove(file);
+                _dbContext.Add(file);
+                SupportFile.Instance.DeleteFileAsync(file.article_file_name, "image/Article_File");
+            }
             _dbContext.SaveChanges();
         }
 
         [HttpPost]
-        public async Task<IActionResult> AcceptArticle(int id, int id_User)
+        public async Task<IActionResult> AcceptArticle(int id)
         {
             int user_id = (int)session.GetInt32("User_id");
             string role = session.GetString("role");
@@ -196,7 +211,7 @@ namespace EnterpriceWeb.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> RefuseArticle(int id, int id_User)
+        public async Task<IActionResult> RefuseArticle(int id)
         {
             int user_id = (int)session.GetInt32("User_id");
             string role = session.GetString("role");

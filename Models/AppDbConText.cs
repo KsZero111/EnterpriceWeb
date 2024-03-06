@@ -25,8 +25,49 @@ namespace EnterpriceWeb.Models
                 );
             modelBuilder.Entity<User>().HasData
                 (
-                    new User { us_id = 1, f_id = 1, us_name = "nhancho", us_password = "nhanlol", us_role = "admin",us_gmail="nhanlol",
-                    us_phone="07788880524",us_image= "fad8651c-32cc-4620-ba7d-c74efa72e006pngwing.com (2).jpg"
+                    new User
+                    {
+                        us_id = 1,
+                        f_id = 1,
+                        us_name = "nhancho",
+                        us_password = "admin",
+                        us_role = "admin",
+                        us_gmail = "admin",
+                        us_phone = "07788880524",
+                        us_image = "fad8651c-32cc-4620-ba7d-c74efa72e006pngwing.com (2).jpg"
+                    },
+                    new User
+                    {
+                        us_id = 1,
+                        f_id = 1,
+                        us_name = "nhancho",
+                        us_password = "coordinator",
+                        us_role = "coordinator",
+                        us_gmail = "coordinator",
+                        us_phone = "07788880524",
+                        us_image = "fad8651c-32cc-4620-ba7d-c74efa72e006pngwing.com (2).jpg"
+                    },
+                    new User
+                    {
+                        us_id = 1,
+                        f_id = 1,
+                        us_name = "marketingmanager",
+                        us_password = "admin",
+                        us_role = "marketingmanager",
+                        us_gmail = "marketingmanager",
+                        us_phone = "07788880524",
+                        us_image = "fad8651c-32cc-4620-ba7d-c74efa72e006pngwing.com (2).jpg"
+                    },
+                    new User
+                    {
+                        us_id = 1,
+                        f_id = 1,
+                        us_name = "nhancho",
+                        us_password = "student",
+                        us_role = "student",
+                        us_gmail = "student",
+                        us_phone = "07788880524",
+                        us_image = "fad8651c-32cc-4620-ba7d-c74efa72e006pngwing.com (2).jpg"
                     }
                 );
             modelBuilder.Entity<Magazine>().HasData

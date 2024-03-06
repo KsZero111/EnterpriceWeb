@@ -12,7 +12,7 @@ namespace EnterpriceWeb.Repository
         }
         public async Task<List<Faculty>> SearhAllFaculty()
         {
-            List<Faculty> faculties = await _appDBContext.faculties.Where(f=>f.f_status.Equals("0")).ToListAsync();
+            List<Faculty> faculties = await _appDBContext.faculties.Where(f=>f.f_status.Equals("1")).ToListAsync();
             return faculties;
         }
         public async Task<Faculty> SearhFacultyByName(string name)
