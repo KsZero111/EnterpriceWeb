@@ -89,6 +89,8 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
+            if (ViewBag.Eror != null) alert("@ViewBag.Eror")
+
             $(".deleteButton").click(function () {
                 var modalId = $(this).data("target");
                 $(modalId).modal("show");
