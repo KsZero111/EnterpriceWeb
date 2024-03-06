@@ -1,4 +1,5 @@
-﻿using EnterpriceWeb.Models;
+﻿using EnterpriceWeb.Mailutils;
+using EnterpriceWeb.Models;
 using EnterpriceWeb.Repository;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -12,15 +13,20 @@ namespace EnterpriceWeb.Controllers
         private RepoFeedBack _repoFeedBack;
         private RepoArticle_file _repoArticle_File;
         private ISession session;
+        private RepoAccount _repoAccount;
         private RepoMagazine _repoMagazine;
-        public ArticleController(AppDbConText dbContext, IHttpContextAccessor httpContextAccessor)
+
+        private SendMailSystem mailSystem;
+        public ArticleController(AppDbConText dbContext, IHttpContextAccessor httpContextAccessor,IEmailSender emailSender)
         {
             _dbContext = dbContext;
             _repoArticle = new RepoArticle(dbContext);
             _repoMagazine = new RepoMagazine(dbContext);
             _repoArticle_File = new RepoArticle_file(dbContext);
             _repoFeedBack = new RepoFeedBack(dbContext);
+            _repoAccount=new RepoAccount(dbContext);
             session = httpContextAccessor.HttpContext.Session;
+            mailSystem = new SendMailSystem(emailSender);
         }
 
         [HttpGet]
@@ -29,14 +35,14 @@ namespace EnterpriceWeb.Controllers
             int user_id = (int)session.GetInt32("User_id");
             string role = session.GetString("role");
             List<Article> list_Article = await _repoArticle.SearhAllArticle(user_id, id);
-            if (user_id != null && role != "admin" && list_Article.Count() > 0)
+            if (user_id != null && role != "admin" && list_Article.Count() >= 0)
             {
                 ViewBag.m_id = id;
                 return View(list_Article);
             }
             else
             {
-                return View("error");
+                return View("Error");
             }
         }
 
@@ -46,8 +52,9 @@ namespace EnterpriceWeb.Controllers
             int user_id = (int)session.GetInt32("User_id");
             string role = session.GetString("role");
             Magazine Magazine = await _repoMagazine.SearchMagazineById(id);
-            if (user_id != null && role == "student" && Magazine == null)
+            if (user_id != null && role == "student" && Magazine != null)
             {
+               
                 ViewBag.Magazine = Magazine;
                 return View();
             }
@@ -56,7 +63,6 @@ namespace EnterpriceWeb.Controllers
                 return View("error");
             }
         }
-
         [HttpPost]
         public async Task<IActionResult> CreateArticle([FromForm] Article inputArticle, IFormFile avatarArticle)
         {
@@ -65,6 +71,8 @@ namespace EnterpriceWeb.Controllers
             if (user_id != null && role == "student")
             {
                 await HandleCreateArticle(inputArticle.magazine_id, inputArticle.article_title, avatarArticle);
+                User user = await _repoAccount.SearchCoordinatorByUserIdOfStudent(user_id);
+                mailSystem.Sendgmail(user);
                 return RedirectToAction("IndexArticle", "Article", new { id = inputArticle.magazine_id });
             }
             else
@@ -76,8 +84,7 @@ namespace EnterpriceWeb.Controllers
         private async Task HandleCreateArticle(int magazine_id, string article_title, IFormFile avatarArticle)
         {
             Article article = new Article();
-
-            article.us_id = 1;
+            article.us_id =(int)session.GetInt32("User_id"); ;
             article.magazine_id = magazine_id;
             article.article_title = article_title;
             string filename = await SupportFile.Instance.SaveFileAsync(avatarArticle, "image/Article");
