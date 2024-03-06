@@ -24,7 +24,7 @@ namespace EnterpriceWeb.Controllers
         [HttpGet]
         public async Task<IActionResult> IndexArticle_File(int article_id)
         {
-           
+
             List<Article_file> list_Article_file = await _repoArticle_File.SearhAllArticleFileById(article_id);
             ViewBag.ArticleId = article_id;
             return View(list_Article_file);
@@ -33,11 +33,11 @@ namespace EnterpriceWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateArticle_File(IFormFile article_file, int idArticle)
         {
-int a = idArticle;
+            int a = idArticle;
             await HandleCreateArticle_File(article_file, idArticle);
             _dbContext.SaveChanges();
-            
-            return RedirectToAction("IndexArticle_File", "Article_File", new {article_id=idArticle});
+
+            return Ok(new {idArticle });
         }
 
         private async Task HandleCreateArticle_File(IFormFile ip_article_File, int id)
@@ -63,7 +63,7 @@ int a = idArticle;
             SupportFile.Instance.DeleteFileAsync(article_file.article_file_name, "image/Article_File");
             _dbContext.Remove(article_file);
             _dbContext.SaveChanges();
-            return RedirectToAction("IndexArticle_File");
+            return Ok();
         }
     }
 }
