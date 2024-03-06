@@ -65,12 +65,11 @@
                     @Html.DisplayFor(modelItem => item.article_status)
                 </td>
                 <td>
-                    <a asp-controller="Article_File" asp-action="IndexArticle_File" asp-route-article_id="@item.article_id">Contribute</a> |
-                    <a asp-action="UpdateArticle" asp-route-id="@item.article_id">Update</a> |
-                    <a asp-action="Details" asp-route-id="@item.article_id">Details</a> |
+                    <a asp-controller="Article_File" asp-action="IndexArticle_File" asp-route-article_id="@item.article_id" class="btn btn-outline-primary">Contribute</a> |
+                    <a asp-action="UpdateArticle" asp-route-id="@item.article_id" class="btn btn-outline-success">Update</a> |
 
 
-                    <button class="btn btn-danger DeleteArticleFile" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                    <button class="btn  btn-outline-danger  DeleteArticleFile" data-toggle="modal" data-target="#deleteModal">Delete</button>
                     <form enctype="multipart/form-data" id="form_Delete_ArticleFile">
                         <input type="hidden" value="@item.article_id" name="id" />
                         <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">

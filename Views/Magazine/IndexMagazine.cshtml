@@ -59,7 +59,7 @@
                     <a asp-controller="Article" asp-action="IndexArticle" asp-route-id="@item.magazine_id" class="btn btn-outline-primary">Contribute</a>|
                     <a asp-action="UpdateMagazine" asp-route-id="@item.magazine_id" class="btn btn-outline-success">Edit</a> |
                     <!-- Modal -->
-                    <button asp-route-id="@item.magazine_id" class="btn  btn-outline-danger deleteButton" data-toggle="modal" data-target="#deleteModal_@item.magazine_id">Xóa</button>
+                    <button asp-route-id="@item.magazine_id" class="btn  btn-outline-danger deleteButton" data-toggle="modal" data-target="#deleteModal_@item.magazine_id">Delete</button>
 
                     <!-- Modal -->
                     <div class="modal fade" id="deleteModal_@item.magazine_id" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -67,9 +67,6 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="deleteModalLabel">Confirm deletion</h5>
-                                    @*   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                                </button> *@
                                 </div>
                                 <div class="modal-body">
                                     Are you sure you want to delete?
