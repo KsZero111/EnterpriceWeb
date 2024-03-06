@@ -18,8 +18,6 @@ namespace EnterpriceWeb.Controllers
             _repoAccount = new RepoAccount(dbContext);
             _repoFaculty = new RepoFaculty(dbContext);
         }
-
-
         [HttpGet]
         public async Task<IActionResult> IndexProfile(int id)
         {
@@ -57,7 +55,6 @@ namespace EnterpriceWeb.Controllers
 
             return RedirectToAction("IndexProfile");
         }
-
         private async Task HandleUpdateProfile(User oldUser, User newUser, IFormFile avatar)
         {
             try
