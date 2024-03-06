@@ -25,37 +25,56 @@ namespace EnterpriceWeb.Controllers
         [HttpGet]
         public async Task<IActionResult> IndexArticle(int id)
         {
-            //int id = (int)session.GetInt32("User_id");
-            //List<Article> list_Article = await _repoArticle.SearhAllArticle(User_id, id);
-
-            List<Article> list_Article = await _repoArticle.SearhAllArticle(1, 1);
-            ViewBag.m_id = id;
-            return View(list_Article);
+            int user_id = (int)session.GetInt32("User_id");
+            string role = session.GetString("role");
+            List<Article> list_Article = await _repoArticle.SearhAllArticle(user_id, id);
+            if (user_id != null && role != "admin" && list_Article.Count() > 0)
+            {
+                ViewBag.m_id = id;
+                return View(list_Article);
+            }
+            else
+            {
+                return View("error");
+            }
         }
-
 
         [HttpGet]
         public async Task<IActionResult> CreateArticle(int id)
         {
-            //int id = (int)HttpContext.Session.GetInt32("User_id");
+            int user_id = (int)session.GetInt32("User_id");
+            string role = session.GetString("role");
             Magazine Magazine = await _repoMagazine.SearchMagazineById(id);
-            ViewBag.Magazine = Magazine;
-            return View();
+            if (user_id != null && role == "student" && Magazine == null)
+            {
+                ViewBag.Magazine = Magazine;
+                return View();
+            }
+            else
+            {
+                return View("error");
+            }
         }
-
 
         [HttpPost]
         public async Task<IActionResult> CreateArticle([FromForm] Article inputArticle, IFormFile avatarArticle)
         {
-            await HandleCreateArticle(inputArticle.magazine_id, inputArticle.article_title, avatarArticle);
-            return RedirectToAction("IndexArticle", "Article", new { id = inputArticle.magazine_id });
+            int user_id = (int)session.GetInt32("User_id");
+            string role = session.GetString("role");
+            if (user_id != null && role == "student")
+            {
+                await HandleCreateArticle(inputArticle.magazine_id, inputArticle.article_title, avatarArticle);
+                return RedirectToAction("IndexArticle", "Article", new { id = inputArticle.magazine_id });
+            }
+            else
+            {
+                return View("error");
+            }
         }
 
         private async Task HandleCreateArticle(int magazine_id, string article_title, IFormFile avatarArticle)
         {
             Article article = new Article();
-            //int id = (int)HttpContext.Session.GetInt32("User_id");
-            //article.us_id = id;
 
             article.us_id = 1;
             article.magazine_id = magazine_id;
@@ -70,26 +89,36 @@ namespace EnterpriceWeb.Controllers
         [HttpGet]
         public async Task<IActionResult> UpdateArticle(int id)
         {
-            if (TempData["UserId"] != null) id = (int)TempData["UserId"];
+            int user_id = (int)session.GetInt32("User_id");
+            string role = session.GetString("role");
             Article article = await _repoArticle.SearhArticleById(id);
-            return View(article);
+            if (user_id != null && role == "student" && article.us_id == user_id)
+            {
+                return View(article);
+            }
+            else
+            {
+                return View("error");
+            }
+
         }
 
         [HttpPost]
         public async Task<IActionResult> UpdateArticle([FromForm] Article article, IFormFile avatar)
         {
+            int user_id = (int)session.GetInt32("User_id");
+            string role = session.GetString("role");
             Article oldArticle = await _repoArticle.SearhArticleById(article.article_id);
-            if (oldArticle != null)
+            if (user_id != null && role == "student" && oldArticle != null)
             {
                 await HandleUpdateArticle(oldArticle, article, avatar);
             }
             else
             {
-                return RedirectToAction("UpdateProfile", "Article", new { id = article.article_id });
+                return RedirectToAction("error");
             }
-            return RedirectToAction("IndexArticle", "Article", new { id = article.magazine_id });
+            return RedirectToAction("IndexArticle", "Article");
         }
-
         private async Task HandleUpdateArticle(Article oldArticle, Article newArticle, IFormFile avatar)
         {
             try
@@ -111,43 +140,32 @@ namespace EnterpriceWeb.Controllers
             }
         }
 
-        [HttpPost]
         public async Task<IActionResult> DeleteArticle(int id)
         {
+            int user_id = (int)session.GetInt32("User_id");
+            string role = session.GetString("role");
             Article article = await _repoArticle.SearhArticleById(id);
-            if (article != null)
+            if (article != null && user_id != null && role == "student")
             {
-                await HandleDeleteArticle(article);
+                HandleDeleteFactulty(article);
             }
-            else
-            {
-                return BadRequest("Article not found");
-            }
-            return Ok();
+            return RedirectToAction("IndexProfile");
         }
 
-        private async Task HandleDeleteArticle(Article article)
+        private void HandleDeleteFactulty(Article article)
         {
-            List<Article_file> list = await _repoArticle_File.SearhAllArticleFileById(article.article_id);
-
-            foreach (Article_file file in list)
-            {
-                _dbContext.Remove(file);
-            }
-            SupportFile.Instance.DeleteFileAsync(article.article_avatar, "image/Article");
-
-            _dbContext.Remove(article);
+            article.article_status = "999";
+            _dbContext.Update(article);
             _dbContext.SaveChanges();
         }
 
         [HttpPost]
         public async Task<IActionResult> AcceptArticle(int id, int id_User)
         {
-            //check user
-
-            //check null
+            int user_id = (int)session.GetInt32("User_id");
+            string role = session.GetString("role");
             Article article = await _repoArticle.SearhArticleById(id);
-            if (article != null)
+            if (article != null && user_id != null && role == "coordinator")
             {
                 await HandleAcceptArticle(article);
             }
@@ -166,16 +184,16 @@ namespace EnterpriceWeb.Controllers
             _dbContext.SaveChanges();
         }
 
+
         [HttpPost]
         public async Task<IActionResult> RefuseArticle(int id, int id_User)
         {
-            //check user
-
-            //check null
+            int user_id = (int)session.GetInt32("User_id");
+            string role = session.GetString("role");
             Article article = await _repoArticle.SearhArticleById(id);
-            if (article != null)
+            if (article != null && user_id != null && role == "coordinator")
             {
-                await HandleRefuseArticle(article);
+                await HandleAcceptArticle(article);
             }
             else
             {
@@ -192,30 +210,5 @@ namespace EnterpriceWeb.Controllers
             _dbContext.SaveChanges();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> ApproveArticle(int id, int id_User)
-        {
-            //check user
-
-            //check null
-            Article article = await _repoArticle.SearhArticleById(id);
-            if (article != null)
-            {
-                await HandleApproveArticle(article);
-            }
-            else
-            {
-                return BadRequest("Article not found");
-            }
-            return Ok();
-        }
-
-        private async Task HandleApproveArticle(Article article)
-        {
-            article.article_status = "Approve";
-            article.article_accept_date = "";
-            _dbContext.Update(article);
-            _dbContext.SaveChanges();
-        }
     }
 }
