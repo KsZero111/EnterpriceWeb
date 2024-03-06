@@ -68,16 +68,16 @@ namespace EnterpriceWeb.Controllers
                     HttpContext.Session.SetString("role", data.First().us_role);
                     if (HttpContext.Session.GetString("role").Equals("admin"))
                     {
-                        return RedirectToAction("Admin");
+                        return RedirectToAction("Index","Admin");
                     }
                     else if(HttpContext.Session.GetString("role").Equals("coordinator"))
                     {
                         
-                        return RedirectToAction("Coordinator"+HttpContext.Session.GetInt32("User_id"));
+                        return RedirectToAction("Index","Coordinator");
                     }
                     else
                     {
-                        return View("Student"+HttpContext.Session.GetInt32("User_id"));
+                        return View("Index","Student");
 
                     }
                     return RedirectToAction("~/Home/Private");
@@ -90,18 +90,6 @@ namespace EnterpriceWeb.Controllers
             }
             return View();
         }
-        public ActionResult Admin()
-        {
-            return View();
-        }
-        public ActionResult Coordinator()
-        {
-            return View();
-        }
-        public ActionResult Student()
-        {
-            return View();
-        }
 
         //Logout Account
         public ActionResult Logout()
@@ -109,11 +97,37 @@ namespace EnterpriceWeb.Controllers
             HttpContext.Session.Clear();
             return RedirectToAction("Index", "Home");
         }
-
+        public async Task<IActionResult> Index()
+        {
+            List<User> user = await _repoAccount.SearhAllUser();
+            return View(user);
+        }
 
         //Provide Permissions Account
           
 
         //Delete Account
+        public async Task<IActionResult> DeleteAccount(int id)
+        {
+            User user = await _repoAccount.SearhUserById(id);
+            if (user != null)
+            {
+                HandlderDeleteAccount(user);
+                return RedirectToAction("Index", "Admin");
+            }
+            else
+            {
+                return View();
+            }
+        }
+        
+        private void HandlderDeleteAccount(User user)
+        {
+            user.us_role = "0";
+            _dbContext.Update(user);
+            _dbContext.SaveChanges();
+        }
+        
+        
     }
 }
