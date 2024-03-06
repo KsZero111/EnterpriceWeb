@@ -20,14 +20,14 @@ namespace EnterpriceWeb.Controllers
         {
             int id =(int)session.GetInt32("User_id");
             string role = session.GetString("role");
-            if(id!=null && role == "Student")
+            if(id!=null)
             {
                 List<Magazine> list_magazine = await _repoMagazine.SearchAllMagazine();
                 return View(list_magazine);
             }
             else
             {
-                return View("45655");
+                return View("error");
             }
            
         }
@@ -36,24 +36,35 @@ namespace EnterpriceWeb.Controllers
         [HttpGet]
         public IActionResult CreateMagazine()
         {
-            return View();
+            int id = (int)session.GetInt32("User_id");
+            string role = session.GetString("role");
+            if (id!=null && role=="admin")
+            {
+                return View();
+            }
+            else
+            {
+                return View("error");
+            }
+           
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateMagazine([FromForm] Magazine magazine)
         {
+            int id = (int)session.GetInt32("User_id");
+            string role = session.GetString("role");
             Magazine searchTitle = await _repoMagazine.SearchMagazineByTitle(magazine.magazine_title);
-            if (searchTitle == null)
+            if (id != null && role == "admin"&& searchTitle==null)
             {
                 HandleCreateMagazine(magazine);
                 RedirectToAction("IndexMagazine", "Magazine");
             }
             else
             {
-                TempData["erorr"] = "Magazine title is exists";
                 return RedirectToAction("CreateMagazine");
             }
-            return RedirectToAction("IndexMagazine");
+            return RedirectToAction("error");
         }
 
         private void HandleCreateMagazine(Magazine ip_magazine)
@@ -70,15 +81,27 @@ namespace EnterpriceWeb.Controllers
         [HttpGet]
         public async Task <IActionResult> UpdateMagazine(int id)
         {
+            int user_id = (int)session.GetInt32("User_id");
+            string role = session.GetString("role");
             Magazine magazine= await _repoMagazine.SearchMagazineById(id);
-            return View(magazine);
+            if (id != null && role == "admin" && magazine != null)
+            {
+                return View(magazine);
+            }
+            else
+            {
+                return View("error");
+            }
+            return View("error");
         }
 
         [HttpPost]
         public async Task<IActionResult> UpdateMagazine(int id,[FromForm] Magazine magazine)
         {
+            int user_id = (int)session.GetInt32("User_id");
+            string role = session.GetString("role");
             Magazine oldMezine = await _repoMagazine.SearchMagazineById(id);
-            if (oldMezine != null)
+            if (user_id!=null && role=="admin" && oldMezine != null)
             {
                 HandleUpdateMagazine(magazine,oldMezine);
                 return RedirectToAction("IndexMagazine");
@@ -100,10 +123,12 @@ namespace EnterpriceWeb.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeleteMagazine(int facultyId)
+        public async Task<IActionResult> DeleteMagazine(int id)
         {
-            Magazine magazine = await _repoMagazine.SearchMagazineById(facultyId);
-            if (magazine != null)
+            int user_id = (int)session.GetInt32("User_id");
+            string role = session.GetString("role");
+            Magazine magazine = await _repoMagazine.SearchMagazineById(id);
+            if (user_id!=null && role=="admin" && magazine!=null)
             {
                 HandleDeleteMagazine(magazine);
             }
@@ -111,7 +136,7 @@ namespace EnterpriceWeb.Controllers
             {
                 return RedirectToAction("IndexMagazine");
             }
-            return RedirectToAction("IndexMagazine");
+            return RedirectToAction("erorr");
         }
 
         private void HandleDeleteMagazine(Magazine magazine)
