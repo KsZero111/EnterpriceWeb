@@ -75,6 +75,10 @@ namespace EnterpriceWeb.Controllers
                         
                         return RedirectToAction("Index","Coordinator");
                     }
+                    else if (HttpContext.Session.GetString("role").Equals("marketingManager"))
+                    {
+                        return RedirectToAction("Index", "marketingManager");
+                    }
                     else
                     {
                         return View("Index","Student");

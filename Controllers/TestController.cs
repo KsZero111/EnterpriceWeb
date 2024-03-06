@@ -18,5 +18,9 @@ namespace EnterpriceWeb.Controllers
              await _emailSender.SenderEmailAsync(receiver, subject, message);
             return View();
         }
+        public async Task<IActionResult> Download()
+        {
+            return View();
+        }
     }
 }
