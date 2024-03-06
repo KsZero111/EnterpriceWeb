@@ -18,7 +18,7 @@ namespace EnterpriceWeb.Repository
         }
         public async Task<Article_file> SearhArticle_FileById(int id)
         {
-            Article_file article_file = await _appDBContext.article_Files.Where(art_file => art_file.article_id.Equals(id)).FirstOrDefaultAsync();
+            Article_file article_file = await _appDBContext.article_Files.Where(art_file => art_file.article_file_id.Equals(id)).FirstOrDefaultAsync();
             return article_file;
         }
     }

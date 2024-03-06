@@ -5,26 +5,24 @@
 }
 
 <h1>IndexArticle_File</h1>
-<button class="btn btn-danger CreateArticleFile" data-toggle="modal" data-target="#deleteModal_@ViewBag.ArticleId">Create Article</button>
+<button class="btn btn-danger CreateArticleFile" data-toggle="modal" data-target="#CreateModal">Create Article</button>
 
 <!-- Modal -->
-<form enctype="multipart/form-data">
+<form enctype="multipart/form-data" id="form_Add_ArticleFile">
 
-    <div class="modal fade" id="deleteModal_@ViewBag.ArticleId" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal fade" id="CreateModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="deleteModalLabel">Click on the box below to add an article file</h5>
-                    @*   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button> *@
                 </div>
                 <div class="modal-body">
-                    <input type="file" class="article_file" />
+                    <input type="file" class="article_file" name="article_file" />
                 </div>
                 <div class="modal-footer">
+                    <input type="hidden" name="idArticle" value="@ViewBag.ArticleId" />
                     <button type="button" class="btn btn-secondary cancelDelete" data-dismiss="modal">Cancel</button>
-                    <button data-id="@ViewBag.ArticleId"  class="btn btn-danger confirmDelete">OK</button>
+                    <button class="btn btn-danger confirmDelete">OK</button>
                 </div>
             </div>
         </div>
@@ -44,7 +42,7 @@
             <th></th>
         </tr>
     </thead>
-    <tbody> 
+    <tbody>
         @foreach (var item in Model)
         {
             <tr>
@@ -56,9 +54,24 @@
                 </td>
 
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.article_file_id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.article_file_id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.article_file_id">Delete</a>
+                    <button class="DeleteArticleFile" data-toggle="modal" data-target="#deleteModal" >Delete</button>
+                    <form enctype="multipart/form-data" id="form_Delete_ArticleFile">
+                        <input type="hidden" value="@item.article_file_id" name="id" />
+                        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="deleteModalLabel">Click on the box below to delete an article file</h5>
+                                    </div>
+                                    <div class="modal-footer">
+
+                                        <button type="button" class="btn btn-secondary cancelDelete" data-dismiss="modal">Cancel</button>
+                                        <button class="btn btn-danger confirmDelete">OK</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </td>
             </tr>
         }
@@ -69,6 +82,42 @@
 
     <script>
         $(document).ready(function () {
+            //Delete article file
+            $(".DeleteArticleFile").click(function () {
+                var modalId = $(this).data("target");
+                $(modalId).modal("show");
+            });
+
+            $(".confirmDelete").click(function () {
+                $(this).closest(".modal").modal("hide");
+            });
+
+            $(".cancelDelete").click(function () {
+                $(".confirmDelete").closest(".modal").modal("hide");
+            });
+
+            $("#form_Delete_ArticleFile").submit(function (e) {
+                e.preventDefault()
+                var formData = new FormData(this);
+
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:5154/Article_File/DeleteArticle_File",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function () {
+                        location.reload()
+                        console.log("Create successful");
+                    },
+                    error: function () {
+                        console.log("Error creating article file");
+                    }
+                });
+            });
+
+
+            //Add article
             $(".CreateArticleFile").click(function () {
                 var modalId = $(this).data("target");
                 $(modalId).modal("show");
@@ -79,15 +128,12 @@
             });
 
             $(".cancelDelete").click(function () {
-                var modalId = $(this).closest(".modal").attr("id");
-                $("#" + modalId).modal("hide");
+                $(".confirmDelete").closest(".modal").modal("hide");
             });
 
-            $(".confirmDelete").click(function () {
-                var id = $(this).data("id");
-                var formData = new FormData();
-                formData.append('idArticle', id);
-                formData.append('article_file', $('.article_file')[0].files[0]);
+            $("#form_Add_ArticleFile").submit(function (e) {
+                e.preventDefault()
+                var formData = new FormData(this);
 
                 $.ajax({
                     type: "POST",
@@ -96,6 +142,7 @@
                     contentType: false,
                     processData: false,
                     success: function () {
+                        location.reload()
                         console.log("Create successful");
                     },
                     error: function () {
@@ -103,7 +150,12 @@
                     }
                 });
             });
+
         });
+
+
+
+
     </script>
 
 }

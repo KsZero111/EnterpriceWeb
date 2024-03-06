@@ -45,7 +45,7 @@ namespace EnterpriceWeb.Controllers
         public async Task<IActionResult> CreateArticle([FromForm] Article inputArticle, IFormFile avatarArticle)
         {
             await HandleCreateArticle(inputArticle.magazine_id, inputArticle.article_title, avatarArticle);
-            return RedirectToAction("IndexArticle", "Article", new {id=inputArticle.magazine_id});
+            return RedirectToAction("IndexArticle", "Article", new { id = inputArticle.magazine_id });
         }
 
         private async Task HandleCreateArticle(int magazine_id, string article_title, IFormFile avatarArticle)
@@ -82,9 +82,9 @@ namespace EnterpriceWeb.Controllers
             }
             else
             {
-                return RedirectToAction("UpdateProfile");
+                return RedirectToAction("UpdateProfile", "Article", new { id = article.article_id });
             }
-            return RedirectToAction("IndexProfile");
+            return RedirectToAction("IndexArticle", "Article", new { id = article.magazine_id });
         }
 
         private async Task HandleUpdateProfile(Article oldArticle, Article newArticle, IFormFile avatar)
