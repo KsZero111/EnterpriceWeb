@@ -8,7 +8,7 @@ builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.AddControllersWithViews();
 var connectionString = builder.Configuration.GetConnectionString("ApDbConnectionString");
 builder.Services.AddDbContext<AppDbConText>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
-
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>
@@ -37,6 +37,6 @@ app.UseSession();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Account}/{action=Login}/{id?}");
 
 app.Run();

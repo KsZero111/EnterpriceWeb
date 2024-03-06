@@ -12,39 +12,48 @@ namespace EnterpriceWeb.Controllers
         private AppDbConText _dbContext;
         private RepoAccount _repoAccount;
         private RepoFaculty _repoFaculty;
-        public ProfileController(AppDbConText dbContext)
+        private ISession Session;
+        public ProfileController(AppDbConText dbContext, IHttpContextAccessor httpContextAccessor)
         {
             _dbContext = dbContext;
             _repoAccount = new RepoAccount(dbContext);
             _repoFaculty = new RepoFaculty(dbContext);
+            Session = httpContextAccessor.HttpContext.Session;
         }
-
-
         [HttpGet]
-        public async Task<IActionResult> IndexProfile(int id)
+        public async Task<IActionResult> IndexProfile()
         {
-            if (TempData["UserId"]!=null) id = (int)TempData["UserId"];   
-            User user = await _repoAccount.SearhUserById(id);
-            Faculty faculty = await _repoFaculty.SearhFacultyById(user.f_id);
-            ViewBag.faculty = faculty;
-            return View(user);
+            //if (TempData["UserId"]!=null) id = (int)TempData["UserId"];
+            int user_id = (int)Session.GetInt32("User_id");
+            if (user_id != null)
+            {
+                User user = await _repoAccount.SearhUserById(user_id);
+                Faculty faculty = await _repoFaculty.SearhFacultyById(user.f_id);
+                ViewBag.faculty = faculty;
+                return View(user);
+            }
+            return View("Error");
         }
 
 
         [HttpGet]
         public async Task<IActionResult> UpdateProfile(int id)
         {
-            if (TempData["UserId"] != null) id = (int)TempData["UserId"];
-            User user = await _repoAccount.SearhUserById(id);
-            List<Faculty> list_Faculty = await _repoFaculty.SearhAllFaculty();
-            ViewBag.ListFaculty = list_Faculty;
-            return View(user);
+            int user_id = (int)Session.GetInt32("User_id");
+            if ((user_id!=null) && (user_id==id))
+            {
+                User user = await _repoAccount.SearhUserById(0);
+                List<Faculty> list_Faculty = await _repoFaculty.SearhAllFaculty();
+                ViewBag.ListFaculty = list_Faculty;
+                return View(user);
+            }
+            return View("Erorr");
+            
         }
 
         [HttpPost]
         public async Task<IActionResult> UpdateProfile([FromForm] User user, int id, IFormFile avatar)
         {
-            TempData["UserId"] = id;
             User oldUser = await _repoAccount.SearhUserById(id);
             if (oldUser != null)
             {
@@ -57,7 +66,6 @@ namespace EnterpriceWeb.Controllers
 
             return RedirectToAction("IndexProfile");
         }
-
         private async Task HandleUpdateProfile(User oldUser, User newUser, IFormFile avatar)
         {
             try
