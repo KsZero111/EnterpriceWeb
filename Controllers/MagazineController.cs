@@ -8,16 +8,28 @@ namespace EnterpriceWeb.Controllers
     {
         private AppDbConText _dbContext;
         private RepoMagazine _repoMagazine;
-        public MagazineController(AppDbConText dbContext)
+        private ISession session;
+        public MagazineController(AppDbConText dbContext, IHttpContextAccessor httpContextAccessor)
         {
             _dbContext = dbContext;
             _repoMagazine = new RepoMagazine(dbContext);
+            session = httpContextAccessor.HttpContext.Session;
         }
         [HttpGet]
         public async Task<IActionResult> IndexMagazine()
         {
-            List<Magazine> list_magazine = await _repoMagazine.SearchAllMagazine();
-            return View(list_magazine);
+            int id =(int)session.GetInt32("User_id");
+            string role = session.GetString("role");
+            if(id!=null && role == "Student")
+            {
+                List<Magazine> list_magazine = await _repoMagazine.SearchAllMagazine();
+                return View(list_magazine);
+            }
+            else
+            {
+                return View("45655");
+            }
+           
         }
 
 
