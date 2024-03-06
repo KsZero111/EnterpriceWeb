@@ -248,8 +248,10 @@ namespace EnterpriceWeb.Migrations
                         {
                             us_id = 1,
                             f_id = 1,
-                            us_name = "thaihuynh",
-                            us_password = "huynhthai",
+                            us_gmail = "nhanlol",
+                            us_name = "nhancho",
+                            us_password = "nhanlol",
+                            us_phone = "07788880524",
                             us_role = "admin"
                         });
                 });

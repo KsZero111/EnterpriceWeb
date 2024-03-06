@@ -22,7 +22,7 @@ namespace EnterpriceWeb.Repository
         }
         public async Task<Article> SearhArticleById(int id)
         {
-            Article article = await _appDBContext.articles.Where(art => art.article_id.Equals(id) && art.article_status.Equals("0")).FirstOrDefaultAsync();
+            Article article = await _appDBContext.articles.Where(art => art.article_id.Equals(id)).FirstOrDefaultAsync();
             return article;
         }
     }

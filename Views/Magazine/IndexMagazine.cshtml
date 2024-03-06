@@ -59,39 +59,38 @@
                     <a asp-controller="Article" asp-action="IndexArticle" asp-route-id="@item.magazine_id" class="btn btn-outline-primary">Contribute</a>|
                     <a asp-action="UpdateMagazine" asp-route-id="@item.magazine_id" class="btn btn-outline-success">Edit</a> |
                     <!-- Modal -->
-                    <button asp-route-id="@item.magazine_id" class="btn  btn-outline-danger deleteButton" data-toggle="modal" data-target="#deleteModal_@item.magazine_id">Xóa</button>
+                    <button class="btn btn-danger DeleteArticleFile" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                    <form enctype="multipart/form-data" id="form_Delete_ArticleFile">
+                        <input type="hidden" value="@item.magazine_id" name="id" />
+                        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header d-block">
+                                        <h4 class="modal-title" id="deleteModalLabel">Click on the box below to delete an article</h4>
+                                        <h7 class="modal-title text-danger">* This action will delete all file contribution in the article</h7>
+                                    </div>
+                                    <div class="modal-footer">
 
-                    <!-- Modal -->
-                    <div class="modal fade" id="deleteModal_@item.magazine_id" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="deleteModalLabel">Confirm deletion</h5>
-                                    @*   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                                </button> *@
-                                </div>
-                                <div class="modal-body">
-                                    Are you sure you want to delete?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary cancelDelete" data-dismiss="modal">Cancel</button>
-                                    <button data-id="@item.magazine_id" class="btn confirmDelete">OK</button>
+                                        <button type="button" class="btn btn-secondary cancelDelete" data-dismiss="modal">Cancel</button>
+                                        <button class="btn btn-danger confirmDelete">OK</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </form>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+
 @section Scripts {
+
     <script>
         $(document).ready(function () {
-            if (ViewBag.Eror != null) alert("@ViewBag.Eror")
-
-            $(".deleteButton").click(function () {
+            //Delete magazine
+            $(".DeleteArticleFile").click(function () {
                 var modalId = $(this).data("target");
                 $(modalId).modal("show");
             });
@@ -101,27 +100,30 @@
             });
 
             $(".cancelDelete").click(function () {
-                var modalId = $(this).closest(".modal").attr("id");
-                $("#" + modalId).modal("hide");
+                $(".confirmDelete").closest(".modal").modal("hide");
             });
-            $(".confirmDelete").click(function () {
-                var facultyId = $(this).data("id");
+
+            $("#form_Delete_ArticleFile").submit(function (e) {
+                e.preventDefault()
+                var formData = new FormData(this);
 
                 $.ajax({
                     type: "POST",
-                    url: "http://localhost:5154/Faculty/DeleteFaculty/" + facultyId,
-                    data: { facultyId: facultyId },
+                    url: "http://localhost:5154/Magazine/DeleteMagazine",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
                     success: function () {
-                        // Xử lý sau khi thành công (nếu cần)
-                        console.log("Delete successful");
+                        location.reload()
+                        console.log("Create successful");
                     },
                     error: function () {
-                        // Xử lý lỗi (nếu cần)
-                        console.log("Error deleting");
+                        console.log("Error creating article file");
                     }
                 });
             });
+
+
         });
     </script>
-
 }

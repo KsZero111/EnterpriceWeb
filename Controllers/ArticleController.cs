@@ -29,14 +29,14 @@ namespace EnterpriceWeb.Controllers
             int user_id = (int)session.GetInt32("User_id");
             string role = session.GetString("role");
             List<Article> list_Article = await _repoArticle.SearhAllArticle(user_id, id);
-            if (user_id != null && role != "admin" && list_Article.Count() > 0)
+            if (user_id != null && role != "admin" && list_Article.Count() >= 0)
             {
                 ViewBag.m_id = id;
                 return View(list_Article);
             }
             else
             {
-                return View("error");
+                return View("Error");
             }
         }
 
