@@ -12,7 +12,7 @@ namespace EnterpriceWeb.Repository
         }
         public async Task<List<Article>> SearhAllArticleAccept()
         {
-            List<Article> article = await _appDBContext.articles.Where(art => art.article_status.Equals("Accept")).ToListAsync();
+            List<Article> article = await _appDBContext.articles.Where(art => art.article_status.Equals("1")).ToListAsync();
             return article;
         }
         public async Task<List<Article>> SearhAllArticle(int idUser, int idMagazine)
@@ -22,7 +22,7 @@ namespace EnterpriceWeb.Repository
         }
         public async Task<Article> SearhArticleById(int id)
         {
-            Article article = await _appDBContext.articles.Where(art => art.article_id.Equals(id)).FirstOrDefaultAsync();
+            Article article = await _appDBContext.articles.Where(art => art.article_id.Equals(id) && art.article_status.Equals("0")).FirstOrDefaultAsync();
             return article;
         }
     }
