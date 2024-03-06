@@ -5,7 +5,7 @@
 }
 
 <h1>IndexArticle_File</h1>
-<button class="btn btn-danger CreateArticleFile" data-toggle="modal" data-target="#CreateModal">Create Article</button>
+<button class="btn btn-success CreateArticleFile" data-toggle="modal" data-target="#CreateModal">Create Article</button>
 
 <!-- Modal -->
 <form enctype="multipart/form-data" id="form_Add_ArticleFile">
@@ -54,7 +54,7 @@
                 </td>
 
                 <td>
-                    <button class="DeleteArticleFile" data-toggle="modal" data-target="#deleteModal" >Delete</button>
+                    <button class="btn btn-danger DeleteArticleFile" data-toggle="modal" data-target="#deleteModal" >Delete</button>
                     <form enctype="multipart/form-data" id="form_Delete_ArticleFile">
                         <input type="hidden" value="@item.article_file_id" name="id" />
                         <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -80,7 +80,7 @@
 
 @section Scripts {
 
-    <script>
+    <script>    
         $(document).ready(function () {
             //Delete article file
             $(".DeleteArticleFile").click(function () {
@@ -152,10 +152,5 @@
             });
 
         });
-
-
-
-
     </script>
-
 }

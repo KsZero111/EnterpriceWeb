@@ -115,84 +115,27 @@ namespace EnterpriceWeb.Controllers
             Article article = await _repoArticle.SearhArticleById(id);
             if (article != null)
             {
-                HandleDeleteFactulty(article);
+                await HandleDeleteArticle(article);
             }
             else
             {
-                return RedirectToAction("IndexFaculty");
+                return BadRequest("Article not found");
             }
-            return RedirectToAction("IndexFaculty");
+            return Ok();
         }
 
-        private void HandleDeleteFactulty(Article article)
+        private async Task HandleDeleteArticle(Article article)
         {
-            article.article_status = "999";
-            _dbContext.Update(article);
+            List<Article_file> list = await _repoArticle_File.SearhAllArticleFileById(article.article_id);
+
+            foreach (Article_file file in list)
+            {
+                _dbContext.Remove(file);
+            }
+            SupportFile.Instance.DeleteFileAsync(article.article_avatar, "image/Article");
+
+            _dbContext.Remove(article);
             _dbContext.SaveChanges();
-        }
-        //CreateFeedback
-        public IActionResult CreateFeedBack() { return View(); }
-        [HttpPost]
-        public IActionResult CreateFeedBack([FromForm] Feedback feedback, int article_id)
-        {
-            if (!feedback.content.Equals(null))
-            {
-                HandleCreateFeedBack(article_id, feedback.content);
-                return View("~/");
-            }
-            else
-            {
-                return View("~/404");
-            }
-            return View();
-        }
-
-        private void HandleCreateFeedBack(int article_id, string content)
-        {
-            Feedback feedback = new Feedback();
-            feedback.article_id = article_id;
-            feedback.us_id = (int)HttpContext.Session.GetInt32("us_id");
-            feedback.date = DateTime.Now.ToString();
-            feedback.content = content;
-            _dbContext.Add(feedback);
-            _dbContext.SaveChanges();
-        }
-
-        //UpdateFeedback
-        public IActionResult UpdateFeedBack()
-        {
-            return View();
-        }
-        [HttpPost]
-        public async Task<IActionResult> UpdateFeedBack(int id, string newcontent)
-        {
-            Feedback feedback = await _repoFeedBack.SearhFeedBackById(id);
-            if (!feedback.Equals(null))
-            {
-                HandleUpdateFeedBack(feedback, newcontent);
-                return View();
-
-            }
-            else
-            {
-                return View();
-            }
-            return View();
-        }
-
-        private void HandleUpdateFeedBack(Feedback feedback, string newcontent)
-        {
-            feedback.content = newcontent;
-            _dbContext.Update(feedback);
-            _dbContext.SaveChanges();
-        }
-
-        //DeleteFeedback
-        [HttpDelete]
-        public IActionResult DeleteFeedback()
-        {
-
-            return View();
         }
     }
 }
