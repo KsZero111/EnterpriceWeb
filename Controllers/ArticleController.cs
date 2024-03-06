@@ -112,21 +112,27 @@ namespace EnterpriceWeb.Controllers
             Article article = await _repoArticle.SearhArticleById(id);
             if (article != null)
             {
-                HandleDeleteFactulty(article);
+                await HandleDeleteArticle(article);
             }
             else
             {
-                return RedirectToAction("IndexFaculty");
+                return BadRequest("Article not found");
             }
-            return RedirectToAction("IndexFaculty");
+            return Ok();
         }
 
-        private void HandleDeleteFactulty(Article article)
+        private async Task HandleDeleteArticle(Article article)
         {
-            article.article_status = "999";
-            _dbContext.Update(article);
+            List<Article_file> list = await _repoArticle_File.SearhAllArticleFileById(article.article_id);
+
+            foreach (Article_file file in list)
+            {
+                _dbContext.Remove(file);
+            }
+            SupportFile.Instance.DeleteFileAsync(article.article_avatar, "image/Article");
+
+            _dbContext.Remove(article);
             _dbContext.SaveChanges();
         }
-
     }
 }

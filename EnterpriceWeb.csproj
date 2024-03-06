@@ -8,8 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Views\Feedback\" />
-    <Folder Include="wwwroot\image\Article_File\" />
-    <Folder Include="wwwroot\image\User\" />
   </ItemGroup>
 
   <ItemGroup>

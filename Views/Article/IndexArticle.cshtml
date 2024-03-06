@@ -68,9 +68,72 @@
                     <a asp-controller="Article_File" asp-action="IndexArticle_File" asp-route-article_id="@item.article_id">Contribute</a> |
                     <a asp-action="UpdateArticle" asp-route-id="@item.article_id">Update</a> |
                     <a asp-action="Details" asp-route-id="@item.article_id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.article_id">Delete</a>
+
+
+                    <button class="btn btn-danger DeleteArticleFile" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                    <form enctype="multipart/form-data" id="form_Delete_ArticleFile">
+                        <input type="hidden" value="@item.article_id" name="id" />
+                        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header d-block">
+                                        <h4 class="modal-title" id="deleteModalLabel">Click on the box below to delete an article</h4>
+                                        <h7 class="modal-title text-danger">* This action will delete all file contribution in the article</h7>
+                                    </div>
+                                    <div class="modal-footer">
+
+                                        <button type="button" class="btn btn-secondary cancelDelete" data-dismiss="modal">Cancel</button>
+                                        <button class="btn btn-danger confirmDelete">OK</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+@section Scripts {
+
+    <script>
+        $(document).ready(function () {
+            //Delete article file
+            $(".DeleteArticleFile").click(function () {
+                var modalId = $(this).data("target");
+                $(modalId).modal("show");
+            });
+
+            $(".confirmDelete").click(function () {
+                $(this).closest(".modal").modal("hide");
+            });
+
+            $(".cancelDelete").click(function () {
+                $(".confirmDelete").closest(".modal").modal("hide");
+            });
+
+            $("#form_Delete_ArticleFile").submit(function (e) {
+                e.preventDefault()
+                var formData = new FormData(this);
+
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:5154/Article/DeleteArticle",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function () {
+                        location.reload()
+                        console.log("Create successful");
+                    },
+                    error: function () {
+                        console.log("Error creating article file");
+                    }
+                });
+            });
+            
+
+        });
+    </script>
+}
