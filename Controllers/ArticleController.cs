@@ -46,7 +46,7 @@ namespace EnterpriceWeb.Controllers
             int user_id = (int)session.GetInt32("User_id");
             string role = session.GetString("role");
             Magazine Magazine = await _repoMagazine.SearchMagazineById(id);
-            if (user_id != null && role == "student" && Magazine == null)
+            if (user_id != null && role == "student" && Magazine != null)
             {
                 ViewBag.Magazine = Magazine;
                 return View();

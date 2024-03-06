@@ -81,7 +81,7 @@ namespace EnterpriceWeb.Controllers
                     }
                     else
                     {
-                        return View("Index","Student");
+                        return RedirectToAction("Index","Student");
 
                     }
                     return RedirectToAction("~/Home/Private");
