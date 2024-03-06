@@ -18,6 +18,7 @@ namespace EnterpriceWeb.Controllers
 
         private SendMailSystem mailSystem;
         public ArticleController(AppDbConText dbContext, IHttpContextAccessor httpContextAccessor,IEmailSender emailSender)
+
         {
             _dbContext = dbContext;
             _repoArticle = new RepoArticle(dbContext);
@@ -73,6 +74,7 @@ namespace EnterpriceWeb.Controllers
                 await HandleCreateArticle(inputArticle.magazine_id, inputArticle.article_title, avatarArticle);
                 User user = await _repoAccount.SearchCoordinatorByUserIdOfStudent(user_id);
                 mailSystem.Sendgmail(user);
+
                 return RedirectToAction("IndexArticle", "Article", new { id = inputArticle.magazine_id });
             }
             else

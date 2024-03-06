@@ -14,7 +14,7 @@ namespace EnterpriceWeb.Repository
         {
             List<Magazine> ListMagazine = await _appContext.magazines.Where(m=>m.magazine_deleted.Equals("0")).ToListAsync();
             return ListMagazine;
-        }
+        } 
 
         public async Task<Magazine> SearchMagazineById(int idMagazine)
         {

@@ -2,6 +2,7 @@
 using EnterpriceWeb.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MySqlX.XDevAPI;
 using System.Text.Json;
 
 namespace EnterpriceWeb.Controllers
@@ -10,33 +11,55 @@ namespace EnterpriceWeb.Controllers
     {
         private AppDbConText _dbContext;
         private RepoFaculty _repoFaculty;
-        public FacultyController(AppDbConText dbContext)
+        private ISession session;
+        public FacultyController(AppDbConText dbContext, IHttpContextAccessor httpContextAccessor)
         {
             _dbContext = dbContext;
             _repoFaculty = new RepoFaculty(dbContext);
+            session = httpContextAccessor.HttpContext.Session;
         }
-
-
 
         [HttpGet]
         public async Task<IActionResult> IndexFaculty()
         {
-            List<Faculty> list_faculty = await _repoFaculty.SearhAllFaculty();
-            return View(list_faculty);
+            int user_id = (int)session.GetInt32("User_id");
+            string role = session.GetString("role");
+
+            List<Faculty> faculties = await _repoFaculty.SearhAllFaculty();
+            if (user_id != null && role == "admin" && faculties.Count() > 0)
+            {
+                List<Faculty> list_faculty = await _repoFaculty.SearhAllFaculty();
+                return View(list_faculty);
+            }
+            else
+            {
+                return View("error");
+            }
         }
 
 
         [HttpGet]
         public IActionResult CreateFaculty()
         {
-            return View();
+            int user_id = (int)session.GetInt32("User_id");
+            string role = session.GetString("role");
+            if (user_id != null && role == "admin")
+            {
+                return View();
+            }
+            else
+            {
+                return View("erorr");
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateFaculty(string ip_name)
         {
+            int user_id = (int)session.GetInt32("User_id");
+            string role = session.GetString("role");
             Faculty searchName = await _repoFaculty.SearhFacultyByName(ip_name);
-            if (searchName == null)
+            if (searchName == null && user_id != null && role == "admin")
             {
                 HandleCreateFactulty(ip_name);
             }
@@ -56,16 +79,28 @@ namespace EnterpriceWeb.Controllers
         }
 
         [HttpGet]
-        public IActionResult UpdateFaculty()
+        public async Task<IActionResult> UpdateFaculty(int id)
         {
-            return View();
+            int user_id = (int)session.GetInt32("User_id");
+            string role = session.GetString("role");
+            Faculty faculty= await _repoFaculty.SearhFacultyById(id);
+            if (faculty != null && user_id != null && role == "admin")
+            {
+                return View(faculty);
+            }
+            else
+            {
+                return View("error");
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> UpdateFaculty(string ip_name, int id)
         {
+            int user_id = (int)session.GetInt32("User_id");
+            string role = session.GetString("role");
             Faculty oldFaculty = await _repoFaculty.SearhFacultyById(id);
-            if (oldFaculty != null)
+            if (oldFaculty != null && user_id != null && role == "admin")
             {
                 HandleUpdateFactulty(oldFaculty, ip_name);
             }
@@ -87,8 +122,10 @@ namespace EnterpriceWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteFaculty(int facultyId)
         {
+            int user_id = (int)session.GetInt32("User_id");
+            string role = session.GetString("role");
             Faculty faculty = await _repoFaculty.SearhFacultyById(facultyId);
-            if (faculty != null)
+            if (faculty != null && user_id != null && role == "admin")
             {
                 HandleDeleteFactulty(faculty);
             }
@@ -101,7 +138,7 @@ namespace EnterpriceWeb.Controllers
 
         private void HandleDeleteFactulty(Faculty faculty)
         {
-            faculty.f_status = "0";
+            faculty.f_status = "1";
             _dbContext.Update(faculty);
             _dbContext.SaveChanges();
         }

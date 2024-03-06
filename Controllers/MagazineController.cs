@@ -36,6 +36,7 @@ namespace EnterpriceWeb.Controllers
         [HttpGet]
         public IActionResult CreateMagazine()
         {
+            if (TempData["Error"] != null)  ViewBag.Eror= TempData["Error"].ToString();
             int id = (int)session.GetInt32("User_id");
             string role = session.GetString("role");
             if (id!=null && role=="admin")
@@ -62,6 +63,7 @@ namespace EnterpriceWeb.Controllers
             }
             else
             {
+                TempData["Error"] = "The title is already used, please put another one";
                 return RedirectToAction("CreateMagazine");
             }
             return RedirectToAction("error");

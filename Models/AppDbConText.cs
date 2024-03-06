@@ -25,7 +25,9 @@ namespace EnterpriceWeb.Models
                 );
             modelBuilder.Entity<User>().HasData
                 (
-                    new User { us_id = 1, f_id = 1, us_name = "thaihuynh", us_password = "huynhthai", us_role = "admin" }
+                    new User { us_id = 1, f_id = 1, us_name = "nhancho", us_password = "nhanlol", us_role = "admin",us_gmail="nhanlol",
+                    us_phone="07788880524",us_image= "fad8651c-32cc-4620-ba7d-c74efa72e006pngwing.com (2).jpg"
+                    }
                 );
             modelBuilder.Entity<Magazine>().HasData
                (
