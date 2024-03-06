@@ -249,6 +249,7 @@ namespace EnterpriceWeb.Migrations
                             us_id = 1,
                             f_id = 1,
                             us_gmail = "nhanlol",
+                            us_image = "fad8651c-32cc-4620-ba7d-c74efa72e006pngwing.com (2).jpg",
                             us_name = "nhancho",
                             us_password = "nhanlol",
                             us_phone = "07788880524",
