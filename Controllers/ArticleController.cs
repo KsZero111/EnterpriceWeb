@@ -127,6 +127,67 @@ namespace EnterpriceWeb.Controllers
             _dbContext.Update(article);
             _dbContext.SaveChanges();
         }
+        //CreateFeedback
+        //public IActionResult CreateFeedBack() { return View(); }
+        //[HttpPost]
+        //public IActionResult CreateFeedBack([FromForm] Feedback feedback, int article_id)
+        //{
+        //    if (!feedback.content.Equals(null))
+        //    {
+        //        HandleCreateFeedBack(article_id, feedback.content);
+        //        return View("~/");
+        //    }
+        //    else
+        //    {
+        //        return View("~/404");
+        //    }
+        //    return View();
+        //}
 
+        //private void HandleCreateFeedBack(int article_id, string content)
+        //{
+        //    Feedback feedback = new Feedback();
+        //    feedback.article_id = article_id;
+        //    feedback.us_id = (int)HttpContext.Session.GetInt32("us_id");
+        //    feedback.date = DateTime.Now.ToString();
+        //    feedback.content = content;
+        //    _dbContext.Add(feedback);
+        //    _dbContext.SaveChanges();
+        //}
+
+        //UpdateFeedback
+        //public IActionResult UpdateFeedBack()
+        //{
+        //    return View();
+        //}
+        //[HttpPost]
+        //public async Task<IActionResult> UpdateFeedBack(int id, string newcontent)
+        //{
+        //    Feedback feedback = await _repoFeedBack.SearhFeedBackById(id);
+        //    if (!feedback.Equals(null))
+        //    {
+        //        HandleUpdateFeedBack(feedback, newcontent);
+        //        return View();
+
+        //    }
+        //    else
+        //    {
+        //        return View();
+        //    }
+        //    return View();
+        //}
+
+        //private void HandleUpdateFeedBack(Feedback feedback, string newcontent)
+        //{
+        //    feedback.content = newcontent;
+        //    _dbContext.Update(feedback);
+        //    _dbContext.SaveChanges();
+        //}
+
+        //DeleteFeedback
+        public IActionResult DeleteFeedback()
+        {
+            return View();
+        }
     }
 }
