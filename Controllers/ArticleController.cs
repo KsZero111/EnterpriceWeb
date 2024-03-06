@@ -1,6 +1,7 @@
 ﻿using EnterpriceWeb.Models;
 using EnterpriceWeb.Repository;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace EnterpriceWeb.Controllers
 {
@@ -210,5 +211,65 @@ namespace EnterpriceWeb.Controllers
             _dbContext.SaveChanges();
         }
 
+        //CreateFeedback
+        [HttpPost]
+        public IActionResult CreateFeedBack([FromForm] Feedback feedback, int article_id)
+        {
+            if (!feedback.content.Equals(null))
+            {
+                HandleCreateFeedBack(article_id, feedback.content);
+                return View();
+            }
+            else
+            {
+                return View("~/404");
+            }
+        }
+
+        private void HandleCreateFeedBack(int article_id, string content)
+        {
+            Feedback feedback = new Feedback();
+            feedback.article_id = article_id;
+            feedback.us_id = (int)HttpContext.Session.GetInt32("us_id");
+            feedback.date = DateTime.Now.ToString();
+            feedback.content = content;
+            _dbContext.Add(feedback);
+            _dbContext.SaveChanges();
+        }
+
+        //UpdateFeedback
+        [HttpPut]
+        public async Task<IActionResult> UpdateFeedBack(int id, string newcontent)
+        {
+            Feedback feedback = await _repoFeedBack.SearhFeedBackById(id);
+            if (!feedback.Equals(null))
+            {
+                HandleUpdateFeedBack(feedback, newcontent);
+                return View();
+            }
+            return Ok();
+        }
+
+        private void HandleUpdateFeedBack(Feedback feedback, string newcontent)
+        {
+            feedback.content = newcontent;
+            _dbContext.Update(feedback);
+            _dbContext.SaveChanges();
+        }
+
+        //DeleteFeedback
+        [HttpDelete]
+        public async Task<IActionResult> DeleteFeedback(int id)
+        {
+            Feedback feedback =await _repoFeedBack.SearhFeedBackById(id);
+            if (feedback != null)
+            {
+                _dbContext.Remove(feedback);
+                _dbContext.SaveChanges();
+                return Ok();
+            }
+            return BadRequest();
+           
+        }
     }
 }
