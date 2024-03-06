@@ -12,23 +12,23 @@ namespace EnterpriceWeb.Controllers
         private RepoArticle_file _repoArticle_File;
         private ISession session;
         private RepoMagazine _repoMagazine;
-        public ArticleController(AppDbConText dbContext,IHttpContextAccessor httpContextAccessor)
+        public ArticleController(AppDbConText dbContext, IHttpContextAccessor httpContextAccessor)
         {
             _dbContext = dbContext;
             _repoArticle = new RepoArticle(dbContext);
             _repoMagazine = new RepoMagazine(dbContext);
             _repoArticle_File = new RepoArticle_file(dbContext);
-            _repoFeedBack= new RepoFeedBack(dbContext);
+            _repoFeedBack = new RepoFeedBack(dbContext);
             session = httpContextAccessor.HttpContext.Session;
         }
 
-        [HttpGet]
+          [HttpGet]
         public async Task<IActionResult> IndexArticle(int id)
         {
             int user_id = (int)session.GetInt32("User_id");
             string role = session.GetString("role");
             List<Article> list_Article = await _repoArticle.SearhAllArticle(user_id, id);
-            if (user_id!=null && role!="admin" && list_Article.Count()>0)
+            if (user_id != null && role != "admin" && list_Article.Count() > 0)
             {
                 ViewBag.m_id = id;
                 return View(list_Article);
@@ -37,9 +37,7 @@ namespace EnterpriceWeb.Controllers
             {
                 return View("error");
             }
-            
         }
-
 
         [HttpGet]
         public async Task<IActionResult> CreateArticle(int id)
@@ -47,7 +45,7 @@ namespace EnterpriceWeb.Controllers
             int user_id = (int)session.GetInt32("User_id");
             string role = session.GetString("role");
             Magazine Magazine = await _repoMagazine.SearchMagazineById(id);
-            if(user_id!=null&& role=="student"&& Magazine == null)
+            if (user_id != null && role == "student" && Magazine == null)
             {
                 ViewBag.Magazine = Magazine;
                 return View();
@@ -56,20 +54,13 @@ namespace EnterpriceWeb.Controllers
             {
                 return View("error");
             }
-           
         }
-
 
         [HttpPost]
         public async Task<IActionResult> CreateArticle([FromForm] Article inputArticle, IFormFile avatarArticle)
         {
-<<<<<<< Updated upstream
-            await HandleCreateArticle(inputArticle.magazine_id, inputArticle.article_title, avatarArticle);
-            return RedirectToAction("IndexArticle", "Article", new {id=inputArticle.magazine_id});
-=======
             int user_id = (int)session.GetInt32("User_id");
             string role = session.GetString("role");
-            
             if (user_id != null && role == "student")
             {
                 await HandleCreateArticle(inputArticle.magazine_id, inputArticle.article_title, avatarArticle);
@@ -79,15 +70,11 @@ namespace EnterpriceWeb.Controllers
             {
                 return View("error");
             }
-            
->>>>>>> Stashed changes
         }
 
         private async Task HandleCreateArticle(int magazine_id, string article_title, IFormFile avatarArticle)
         {
             Article article = new Article();
-            //int id = (int)HttpContext.Session.GetInt32("User_id");
-            //article.us_id = id;
 
             article.us_id = 1;
             article.magazine_id = magazine_id;
@@ -105,7 +92,7 @@ namespace EnterpriceWeb.Controllers
             int user_id = (int)session.GetInt32("User_id");
             string role = session.GetString("role");
             Article article = await _repoArticle.SearhArticleById(id);
-            if (user_id != null && role =="student"&&article.us_id==user_id)
+            if (user_id != null && role == "student" && article.us_id == user_id)
             {
                 return View(article);
             }
@@ -113,7 +100,7 @@ namespace EnterpriceWeb.Controllers
             {
                 return View("error");
             }
-            
+           
         }
 
         [HttpPost]
@@ -122,29 +109,17 @@ namespace EnterpriceWeb.Controllers
             int user_id = (int)session.GetInt32("User_id");
             string role = session.GetString("role");
             Article oldArticle = await _repoArticle.SearhArticleById(article.article_id);
-            if (user_id!=null&&role=="student"&&oldArticle != null)
+            if (user_id != null && role == "student" && oldArticle != null)
             {
-<<<<<<< Updated upstream
-                await HandleUpdateProfile(oldArticle, article, avatar);
-            }
-            else
-            {
-                return RedirectToAction("UpdateProfile");
-            }
-            return RedirectToAction("IndexProfile");
-=======
                 await HandleUpdateArticle(oldArticle, article, avatar);
-                return RedirectToAction("UpdateProfile", "Article", new { id = article.article_id });
             }
             else
             {
                 return RedirectToAction("error");
             }
-            
->>>>>>> Stashed changes
+            return RedirectToAction("IndexArticle", "Article");
         }
-
-        private async Task HandleUpdateProfile(Article oldArticle, Article newArticle, IFormFile avatar)
+        private async Task HandleUpdateArticle(Article oldArticle, Article newArticle, IFormFile avatar)
         {
             try
             {
@@ -164,36 +139,23 @@ namespace EnterpriceWeb.Controllers
                 throw;
             }
         }
+
         public async Task<IActionResult> DeleteArticle(int id)
         {
             int user_id = (int)session.GetInt32("User_id");
             string role = session.GetString("role");
             Article article = await _repoArticle.SearhArticleById(id);
-            if (article != null&&user_id!=null&&role=="student")
+            if (article != null && user_id != null && role == "student")
             {
                 HandleDeleteFactulty(article);
             }
-            else
-            {
-                return RedirectToAction("IndexFaculty");
-            }
-            return RedirectToAction("IndexFaculty");
+            return RedirectToAction("IndexProfile");
         }
 
         private void HandleDeleteFactulty(Article article)
         {
-<<<<<<< Updated upstream
             article.article_status = "999";
-=======
-            List<Article_file> list = await _repoArticle_File.SearhAllArticleFileById(article.article_id);
-
-            foreach (Article_file file in list)
-            {
-                _dbContext.Remove(file);
-            }
-            SupportFile.Instance.DeleteFileAsync(article.article_avatar, "image/Article");
-
-            _dbContext.Remove(article);
+            _dbContext.Update(article);
             _dbContext.SaveChanges();
         }
 
@@ -202,11 +164,8 @@ namespace EnterpriceWeb.Controllers
         {
             int user_id = (int)session.GetInt32("User_id");
             string role = session.GetString("role");
-            //check user
-
-            //check null
             Article article = await _repoArticle.SearhArticleById(id);
-            if (article != null&&user_id!=null&&role=="coordinator")
+            if (article != null && user_id != null && role == "coordinator")
             {
                 await HandleAcceptArticle(article);
             }
@@ -221,89 +180,35 @@ namespace EnterpriceWeb.Controllers
         {
             article.article_status = "Accept";
             article.article_accept_date = DateTime.Now.ToString("yyyy-MM-dd h:mm:ss tt");
->>>>>>> Stashed changes
             _dbContext.Update(article);
             _dbContext.SaveChanges();
         }
-        //CreateFeedback
-        public IActionResult CreateFeedBack() { return View(); }
+
+
         [HttpPost]
-        public IActionResult CreateFeedBack([FromForm] Feedback feedback, int article_id)
+        public async Task<IActionResult> RefuseArticle(int id, int id_User)
         {
-<<<<<<< Updated upstream
-            if (!feedback.content.Equals(null))
-            {
-                HandleCreateFeedBack(article_id, feedback.content);
-                return View("~/");
-=======
             int user_id = (int)session.GetInt32("User_id");
             string role = session.GetString("role");
-            //check user
-
-            //check null
             Article article = await _repoArticle.SearhArticleById(id);
             if (article != null && user_id != null && role == "coordinator")
             {
-                await HandleRefuseArticle(article);
-
->>>>>>> Stashed changes
+                await HandleAcceptArticle(article);
             }
             else
             {
-                return View("~/404");
+                return BadRequest("Article not found");
             }
-            return View();
+            return Ok();
         }
 
-        private void HandleCreateFeedBack(int article_id, string content)
+        private async Task HandleRefuseArticle(Article article)
         {
-            Feedback feedback = new Feedback();
-            feedback.article_id = article_id;
-            feedback.us_id = (int)HttpContext.Session.GetInt32("us_id");
-            feedback.date = DateTime.Now.ToString();
-            feedback.content = content;
-            _dbContext.Add(feedback);
-            _dbContext.SaveChanges();
-        }
-<<<<<<< Updated upstream
-
-        //UpdateFeedback
-        public IActionResult UpdateFeedBack()
-        {
-            return View();
-        }
-        [HttpPost]
-        public async Task<IActionResult> UpdateFeedBack(int id, string newcontent)
-        {
-            Feedback feedback = await _repoFeedBack.SearhFeedBackById(id);
-            if (!feedback.Equals(null))
-            {
-                HandleUpdateFeedBack(feedback, newcontent);
-                return View();
-
-            }
-            else
-            {
-                return View();
-            }
-            return View();
-        }
-
-        private void HandleUpdateFeedBack(Feedback feedback, string newcontent)
-        {
-            feedback.content = newcontent;
-            _dbContext.Update(feedback);
+            article.article_status = "Refuse";
+            article.article_accept_date = "";
+            _dbContext.Update(article);
             _dbContext.SaveChanges();
         }
 
-        //DeleteFeedback
-        [HttpDelete]
-        public IActionResult DeleteFeedback()
-        {
-
-            return View();
-        }
-=======
->>>>>>> Stashed changes
     }
 }
