@@ -33,7 +33,7 @@ namespace EnterpriceWeb.Models
 
 
         [Required(ErrorMessage = "Article submit date not empty")]
-        public string? article_submit_date { get; set; }
+        public DateTime article_submit_date { get; set; }
 
         [Required(ErrorMessage = "Article status not empty")]
         public string article_status { get; set; }

@@ -23,6 +23,7 @@ namespace EnterpriceWeb.Controllers
             if(id!=null)
             {
                 List<Magazine> list_magazine = await _repoMagazine.SearchAllMagazine();
+                ViewBag.role = role;
                 return View(list_magazine);
             }
             else

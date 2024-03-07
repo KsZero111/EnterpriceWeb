@@ -6,17 +6,17 @@
 
 
 <div class="position-relative">
-    
-    <div class="position-absolute top-50 start-50 translate-middle"> <h1 >IndexMagazine</h1></div>
+
+    <div class="position-absolute top-50 start-50 translate-middle"> <h1>IndexMagazine</h1></div>
 </div>
 
 <p class="my-5">
-    <a asp-action="CreateMagazine" class="btn btn-outline-info">Create New</a>
+    <a asp-action="CreateMagazine" class="btn btn-outline-info btnCreateMagazine">Create New</a>
 </p>
 
 <table class="table  table-success table-striped ">
     <thead>
-        <tr> 
+        <tr>
             <th>
                 Magazine
             </th>
@@ -50,10 +50,10 @@
                     @Html.DisplayFor(modelItem => item.magazine_academic_year)
                 </td>
                 <td>
-                    <a asp-controller="Article" asp-action="IndexArticle" asp-route-id="@item.magazine_id" class="btn btn-outline-primary">Contribute</a>|
-                    <a asp-action="UpdateMagazine" asp-route-id="@item.magazine_id" class="btn btn-outline-success">Edit</a> |
+                    <a asp-controller="Article" asp-action="IndexArticle" asp-route-id="@item.magazine_id" class="btn btn-outline-primary btnContributeMagazine">Contribute</a>
+                    <a asp-action="UpdateMagazine" asp-route-id="@item.magazine_id" class="btn btn-outline-success btnUpdateMagazine">Edit</a> 
                     <!-- Modal -->
-                    <button class="btn btn-danger DeleteArticleFile" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                    <button class="btn btn-outline-danger DeleteArticleFile btnDeleteMagazine" data-toggle="modal" data-target="#deleteModal">Delete</button>
                     <form enctype="multipart/form-data" id="form_Delete_ArticleFile">
                         <input type="hidden" value="@item.magazine_id" name="id" />
                         <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -78,11 +78,72 @@
     </tbody>
 </table>
 
+<style>
+    .hiddenbutton {
+        display: none;
+    }
+</style>
 
 @section Scripts {
 
     <script>
         $(document).ready(function () {
+            //function hidden
+            function addClassHidden(button) {
+                button.addClass("hiddenbutton");
+            }
+            //get element
+
+            var btn_Create = $(".btnCreateMagazine");
+            var btn_Update = $(".btnUpdateMagazine");
+            var btn_Delete = $(".btnDeleteMagazine");
+
+            var btn_Contribute = $(".btnContributeMagazine");
+
+            //get role
+            var role = "@ViewBag.role";
+
+            //check role
+            if (role == "admin") {
+                addClassHidden(btn_Create);
+                addClassHidden(btn_Update);
+                addClassHidden(btn_Delete);
+                addClassHidden(btn_Contribute);
+            }
+            else if (role == "coordinator") {
+                addClassHidden(btn_Create);
+                addClassHidden(btn_Update);
+                addClassHidden(btn_Delete);
+                addClassHidden(btn_Contribute);
+            }
+            else if (role == "marketingmanager") {
+                addClassHidden(btn_Create);
+                addClassHidden(btn_Update);
+                addClassHidden(btn_Delete);
+                addClassHidden(btn_Contribute);
+            } else if (role == "student") {
+                addClassHidden(btn_Create);
+                addClassHidden(btn_Update);
+                addClassHidden(btn_Delete);
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             //Delete magazine
             $(".DeleteArticleFile").click(function () {
                 var modalId = $(this).data("target");

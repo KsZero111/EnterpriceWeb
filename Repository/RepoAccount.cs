@@ -51,7 +51,7 @@ namespace EnterpriceWeb.Repository
         {
             User user= await this.SearhUserById(user_id);
             User Coordinator= await appDBContext.users.Where(us => us.us_role.Equals("coordinator") && us.f_id.Equals(user.f_id)).FirstAsync();
-            return user;  
+            return Coordinator;  
         }
     }
 }

@@ -38,21 +38,21 @@ namespace EnterpriceWeb.Models
                     },
                     new User
                     {
-                        us_id = 1,
+                        us_id = 2,
                         f_id = 1,
-                        us_name = "nhancho",
-                        us_password = "coordinator",
+                        us_name = "coordinator",
+                        us_password = "123",
                         us_role = "coordinator",
-                        us_gmail = "coordinator",
+                        us_gmail = "hpthkl@gmail.com",
                         us_phone = "07788880524",
                         us_image = "fad8651c-32cc-4620-ba7d-c74efa72e006pngwing.com (2).jpg"
                     },
                     new User
                     {
-                        us_id = 1,
+                        us_id = 3,
                         f_id = 1,
                         us_name = "marketingmanager",
-                        us_password = "admin",
+                        us_password = "123",
                         us_role = "marketingmanager",
                         us_gmail = "marketingmanager",
                         us_phone = "07788880524",
@@ -60,10 +60,10 @@ namespace EnterpriceWeb.Models
                     },
                     new User
                     {
-                        us_id = 1,
+                        us_id = 4,
                         f_id = 1,
-                        us_name = "nhancho",
-                        us_password = "student",
+                        us_name = "student",
+                        us_password = "123",
                         us_role = "student",
                         us_gmail = "student",
                         us_phone = "07788880524",
@@ -75,8 +75,8 @@ namespace EnterpriceWeb.Models
                    new Magazine
                    {
                        magazine_id = 1,
-                       magazine_closure_date = "03/02/2024",
-                       magazine_final_closure_date = "27/03/2024",
+                       magazine_closure_date = new DateTime(2024, 4, 3),
+                       magazine_final_closure_date = new DateTime(2024, 5, 3),
                        magazine_academic_year = "2019-2024",
                        magazine_title = "Tabloid",
                        magazine_status = "0",

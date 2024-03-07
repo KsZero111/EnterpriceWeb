@@ -17,7 +17,7 @@ namespace EnterpriceWeb.Controllers
         private RepoMagazine _repoMagazine;
 
         private SendMailSystem mailSystem;
-        public ArticleController(AppDbConText dbContext, IHttpContextAccessor httpContextAccessor,IEmailSender emailSender)
+        public ArticleController(AppDbConText dbContext, IHttpContextAccessor httpContextAccessor, IEmailSender emailSender)
 
         {
             _dbContext = dbContext;
@@ -25,7 +25,7 @@ namespace EnterpriceWeb.Controllers
             _repoMagazine = new RepoMagazine(dbContext);
             _repoArticle_File = new RepoArticle_file(dbContext);
             _repoFeedBack = new RepoFeedBack(dbContext);
-            _repoAccount=new RepoAccount(dbContext);
+            _repoAccount = new RepoAccount(dbContext);
             session = httpContextAccessor.HttpContext.Session;
             mailSystem = new SendMailSystem(emailSender);
         }
@@ -36,7 +36,7 @@ namespace EnterpriceWeb.Controllers
             int user_id = (int)session.GetInt32("User_id");
             string role = session.GetString("role");
             List<Article> list_Article = await _repoArticle.SearhAllArticle(user_id, id);
-            if (user_id != null  && list_Article.Count() >= 0)
+            if (user_id != null && list_Article.Count() >= 0)
             {
                 ViewBag.m_id = id;
                 ViewBag.role = role;
@@ -56,7 +56,7 @@ namespace EnterpriceWeb.Controllers
             Magazine Magazine = await _repoMagazine.SearchMagazineById(id);
             if (user_id != null && role == "student" && Magazine != null)
             {
-               
+
                 ViewBag.Magazine = Magazine;
                 return View();
             }
@@ -87,12 +87,12 @@ namespace EnterpriceWeb.Controllers
         private async Task HandleCreateArticle(int magazine_id, string article_title, IFormFile avatarArticle)
         {
             Article article = new Article();
-            article.us_id =(int)session.GetInt32("User_id"); ;
+            article.us_id = (int)session.GetInt32("User_id"); ;
             article.magazine_id = magazine_id;
             article.article_title = article_title;
             string filename = await SupportFile.Instance.SaveFileAsync(avatarArticle, "image/Article");
             article.article_avatar = filename;
-            article.article_submit_date = DateTime.Now.ToString("yyyy-MM-dd h:mm:ss tt");
+            article.article_submit_date = DateTime.Now;
             _dbContext.Add(article);
             _dbContext.SaveChanges();
         }
@@ -128,7 +128,7 @@ namespace EnterpriceWeb.Controllers
             {
                 return RedirectToAction("error");
             }
-            return RedirectToAction("IndexArticle", "Article");
+            return RedirectToAction("IndexArticle", "Article", new { id = oldArticle.magazine_id });
         }
         private async Task HandleUpdateArticle(Article oldArticle, Article newArticle, IFormFile avatar)
         {
@@ -156,32 +156,35 @@ namespace EnterpriceWeb.Controllers
             int user_id = (int)session.GetInt32("User_id");
             string role = session.GetString("role");
             Article article = await _repoArticle.SearhArticleById(id);
+
             if (article != null && user_id != null && role == "student")
             {
-                HandleDeleteArticleFile(article.article_id);
-                HandleDeleteArticle(article);
+                await HandleDeleteArticleFile(id);
+                await HandleDeleteArticle(article);
+
             }
+
             return RedirectToAction("IndexProfile");
         }
 
-        private void HandleDeleteArticle(Article article)
+        private async Task HandleDeleteArticle(Article article)
         {
             SupportFile.Instance.DeleteFileAsync(article.article_avatar, "image/Article");
             _dbContext.Remove(article);
-            _dbContext.SaveChanges();
-
+            await _dbContext.SaveChangesAsync();
         }
 
-        private async void HandleDeleteArticleFile(int id)
+        private async Task HandleDeleteArticleFile(int id)
         {
             List<Article_file> list = await _repoArticle_File.SearhAllArticleFileById(id);
+
             foreach (Article_file file in list)
             {
                 _dbContext.Remove(file);
-                _dbContext.Add(file);
                 SupportFile.Instance.DeleteFileAsync(file.article_file_name, "image/Article_File");
             }
-            _dbContext.SaveChanges();
+
+            await _dbContext.SaveChangesAsync();
         }
 
         [HttpPost]
@@ -285,7 +288,7 @@ namespace EnterpriceWeb.Controllers
         [HttpDelete]
         public async Task<IActionResult> DeleteFeedback(int id)
         {
-            Feedback feedback =await _repoFeedBack.SearhFeedBackById(id);
+            Feedback feedback = await _repoFeedBack.SearhFeedBackById(id);
             if (feedback != null)
             {
                 _dbContext.Remove(feedback);
@@ -293,7 +296,7 @@ namespace EnterpriceWeb.Controllers
                 return Ok();
             }
             return BadRequest();
-           
+
         }
     }
 }

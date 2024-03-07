@@ -11,10 +11,10 @@ namespace EnterpriceWeb.Models
         public int magazine_id { get; set; }
 
         [Required(ErrorMessage = "Magazine closure date not empty")]
-        public string magazine_closure_date { get; set; }
+        public DateTime magazine_closure_date { get; set; }
 
         [Required(ErrorMessage = "Magazine final closure date not empty")]
-        public string magazine_final_closure_date { get; set; }
+        public DateTime magazine_final_closure_date { get; set; }
 
         [Required(ErrorMessage = "Magazine title not empty")]
         public string magazine_title { get; set; }
