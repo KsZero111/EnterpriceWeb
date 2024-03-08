@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EnterpriceWeb.Controllers
 {
-    public class MagazineController:Controller
+    public class MagazineController : Controller
     {
         private AppDbConText _dbContext;
         private RepoMagazine _repoMagazine;
@@ -18,29 +18,30 @@ namespace EnterpriceWeb.Controllers
         [HttpGet]
         public async Task<IActionResult> IndexMagazine()
         {
-            int id =(int)session.GetInt32("User_id");
-            string role = session.GetString("role");
-            if(id!=null)
+            int user_id;
+            string role;
+            try
             {
-                List<Magazine> list_magazine = await _repoMagazine.SearchAllMagazine();
-                ViewBag.role = role;
-                return View(list_magazine);
+                user_id = (int)session.GetInt32("User_id");
+                role = session.GetString("role");
             }
-            else
+            catch (Exception)
             {
-                return View("error");
+                return View("Error");
             }
-           
+            List<Magazine> list_magazine = await _repoMagazine.SearchAllMagazine();
+            ViewBag.role = role;
+            return View(list_magazine);
         }
 
 
         [HttpGet]
         public IActionResult CreateMagazine()
         {
-            if (TempData["Error"] != null)  ViewBag.Eror= TempData["Error"].ToString();
+            if (TempData["Error"] != null) ViewBag.Eror = TempData["Error"].ToString();
             int id = (int)session.GetInt32("User_id");
             string role = session.GetString("role");
-            if (id!=null && role=="admin")
+            if (id != null && role == "admin")
             {
                 return View();
             }
@@ -48,7 +49,7 @@ namespace EnterpriceWeb.Controllers
             {
                 return View("error");
             }
-           
+
         }
 
         [HttpPost]
@@ -57,17 +58,16 @@ namespace EnterpriceWeb.Controllers
             int id = (int)session.GetInt32("User_id");
             string role = session.GetString("role");
             Magazine searchTitle = await _repoMagazine.SearchMagazineByTitle(magazine.magazine_title);
-            if (id != null && role == "admin"&& searchTitle==null)
+            if (id != null && role == "admin" && searchTitle == null)
             {
                 HandleCreateMagazine(magazine);
-                RedirectToAction("IndexMagazine", "Magazine");
             }
             else
             {
                 TempData["Error"] = "The title is already used, please put another one";
                 return RedirectToAction("CreateMagazine");
             }
-            return RedirectToAction("error");
+            return RedirectToAction("IndexMagazine", "Magazine");
         }
 
         private void HandleCreateMagazine(Magazine ip_magazine)
@@ -82,11 +82,11 @@ namespace EnterpriceWeb.Controllers
         }
 
         [HttpGet]
-        public async Task <IActionResult> UpdateMagazine(int id)
+        public async Task<IActionResult> UpdateMagazine(int id)
         {
             int user_id = (int)session.GetInt32("User_id");
             string role = session.GetString("role");
-            Magazine magazine= await _repoMagazine.SearchMagazineById(id);
+            Magazine magazine = await _repoMagazine.SearchMagazineById(id);
             if (id != null && role == "admin" && magazine != null)
             {
                 return View(magazine);
@@ -99,14 +99,14 @@ namespace EnterpriceWeb.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateMagazine(int id,[FromForm] Magazine magazine)
+        public async Task<IActionResult> UpdateMagazine(int id, [FromForm] Magazine magazine)
         {
             int user_id = (int)session.GetInt32("User_id");
             string role = session.GetString("role");
             Magazine oldMezine = await _repoMagazine.SearchMagazineById(id);
-            if (user_id!=null && role=="admin" && oldMezine != null)
+            if (user_id != null && role == "admin" && oldMezine != null)
             {
-                HandleUpdateMagazine(magazine,oldMezine);
+                HandleUpdateMagazine(magazine, oldMezine);
                 return RedirectToAction("IndexMagazine");
             }
             else
@@ -131,15 +131,15 @@ namespace EnterpriceWeb.Controllers
             int user_id = (int)session.GetInt32("User_id");
             string role = session.GetString("role");
             Magazine magazine = await _repoMagazine.SearchMagazineById(id);
-            if (user_id!=null && role=="admin" && magazine!=null)
+            if (user_id != null && role == "admin" && magazine != null)
             {
                 HandleDeleteMagazine(magazine);
             }
             else
             {
-                return RedirectToAction("IndexMagazine");
+                return RedirectToAction("erorr");
             }
-            return RedirectToAction("erorr");
+            return Ok();
         }
 
         private void HandleDeleteMagazine(Magazine magazine)
