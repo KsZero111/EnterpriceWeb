@@ -202,8 +202,8 @@
             $("#form_Delete_Article").submit(function (e) {
                 e.preventDefault()
                 var formData = new FormData(this);
-
-                $.ajax({
+               
+                    $.ajax({
                     type: "POST",
                     url: "http://localhost:5154/Article/DeleteArticle",
                     data: formData,
@@ -211,10 +211,10 @@
                     processData: false,
                     success: function () {
                         location.reload()
-                        console.log("Create successful");
+                        console.log("Delete successful");
                     },
                     error: function () {
-                        console.log("Error creating article file");
+                        console.log("Error delete article");
                     }
                 });
             });

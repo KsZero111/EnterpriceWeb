@@ -12,6 +12,9 @@ namespace EnterpriceWeb.Controllers
         private RepoArticle _repoArticle;
         private RepoFeedBack _repoFeedBack;
         private RepoArticle_file _repoArticle_File;
+        private RepoFaculty _repoFuculty;
+
+
         private ISession session;
         private RepoAccount _repoAccount;
         private RepoMagazine _repoMagazine;
@@ -26,6 +29,9 @@ namespace EnterpriceWeb.Controllers
             _repoArticle_File = new RepoArticle_file(dbContext);
             _repoFeedBack = new RepoFeedBack(dbContext);
             _repoAccount = new RepoAccount(dbContext);
+            _repoFuculty = new RepoFaculty(dbContext);
+
+
             session = httpContextAccessor.HttpContext.Session;
             mailSystem = new SendMailSystem(emailSender);
         }
@@ -33,19 +39,56 @@ namespace EnterpriceWeb.Controllers
         [HttpGet]
         public async Task<IActionResult> IndexArticle(int id)
         {
-            int user_id = (int)session.GetInt32("User_id");
-            string role = session.GetString("role");
-            List<Article> list_Article = await _repoArticle.SearhAllArticle(user_id, id);
-            if (user_id != null && list_Article.Count() >= 0)
+            int user_id;
+            string role;
+
+            List<Article> list_Article = new List<Article>();
+            //check null
+            try
             {
-                ViewBag.m_id = id;
-                ViewBag.role = role;
-                return View(list_Article);
+                user_id = (int)session.GetInt32("User_id");
+                role = session.GetString("role");
+            }
+            catch (Exception)
+            {
+                return View("Error");
+            }
+
+            //put data to view
+            ViewBag.m_id = id;
+            ViewBag.role = role;
+
+            //get list article by role
+
+            // Same  magazine, faculty
+            if (role.Equals("coordinator"))
+            {
+                list_Article = await _repoArticle.SearhAllArticleCoordinator(id, user_id);
+            }
+            // Same magazine, faculty
+            else if (role.Equals("student"))
+            {
+                list_Article = await _repoArticle.SearhAllArticleStudent(user_id, id);
+            }
+            // Same magazine, accept
+            else if (role.Equals("marketingmanager"))
+            {
+                list_Article = await _repoArticle.SearhAllArticleMaketingManager();
             }
             else
             {
                 return View("Error");
             }
+
+            if (list_Article.Count() < 0) return View("Error");
+            return View(list_Article);
+
+
+        }
+
+        private List<Article> HandleGetListArticle(int id, int user_id)
+        {
+            throw new NotImplementedException();
         }
 
         [HttpGet]
@@ -111,7 +154,6 @@ namespace EnterpriceWeb.Controllers
             {
                 return View("error");
             }
-
         }
 
         [HttpPost]
