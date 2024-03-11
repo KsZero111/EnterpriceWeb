@@ -70,7 +70,7 @@ namespace EnterpriceWeb.Controllers
                     memoryStreams[i].Position = 0;
 
                     // Create a zip entry for each memory stream
-                    var entry = finalArchive.CreateEntry($"file_{i}.zip");
+                    var entry = finalArchive.CreateEntry($"article_{i}.zip");
 
                     // Copy the content of the memory stream into the zip entry
                     using (var entryStream = entry.Open())
