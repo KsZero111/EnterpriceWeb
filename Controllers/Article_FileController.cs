@@ -37,10 +37,7 @@ namespace EnterpriceWeb.Controllers
                 ViewBag.role = role;
                 return View(list_Article_file);
             }
-
-          
-
-            return View("error");
+            return RedirectToAction("NotFound", "Home");
         }
 
         [HttpPost]

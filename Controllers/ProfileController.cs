@@ -32,7 +32,7 @@ namespace EnterpriceWeb.Controllers
                 ViewBag.faculty = faculty;
                 return View(user);
             }
-            return View("error");
+            return RedirectToAction("NotFound", "Home");
         }
 
 
@@ -41,14 +41,14 @@ namespace EnterpriceWeb.Controllers
         {
             int user_id = (int)Session.GetInt32("User_id");
             string role = Session.GetString("role");
-            if ((user_id!=null) && (user_id==id))
+            if (((user_id!=null) && (user_id==id))||role=="admin")
             {
                 User user = await _repoAccount.SearhUserById(0);
                 List<Faculty> list_Faculty = await _repoFaculty.SearhAllFaculty();
                 ViewBag.ListFaculty = list_Faculty;
                 return View(user);
             }
-            return View("");
+            return RedirectToAction("NotFound","Home");
             
         }
 

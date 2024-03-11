@@ -54,7 +54,7 @@ namespace EnterpriceWeb.Controllers
             }
             catch (Exception)
             {
-                return View("Error");
+               return RedirectToAction("NotFound","Home");
             }
 
             //put data to view
@@ -79,10 +79,10 @@ namespace EnterpriceWeb.Controllers
             }
             else
             {
-                return View("Error");
+               return RedirectToAction("NotFound","Home");
             }
 
-            if (list_Article.Count() < 0) return View("Error");
+            if (list_Article.Count() < 0)return RedirectToAction("NotFound","Home");
             return View(list_Article);
 
 
