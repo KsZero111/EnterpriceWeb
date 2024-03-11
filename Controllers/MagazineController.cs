@@ -27,7 +27,7 @@ namespace EnterpriceWeb.Controllers
             }
             catch (Exception)
             {
-                return View("Error");
+               return RedirectToAction("NotFound","Home");
             }
             List<Magazine> list_magazine = await _repoMagazine.SearchAllMagazine();
             ViewBag.role = role;
@@ -47,7 +47,7 @@ namespace EnterpriceWeb.Controllers
             }
             else
             {
-                return View("error");
+               return RedirectToAction("NotFound","Home");
             }
 
         }
@@ -93,7 +93,7 @@ namespace EnterpriceWeb.Controllers
             }
             else
             {
-                return View("error");
+                return RedirectToAction("NotFound", "Home");
             }
             return View("error");
         }
@@ -111,7 +111,7 @@ namespace EnterpriceWeb.Controllers
             }
             else
             {
-                return RedirectToAction("~/404");
+                return RedirectToAction("NotFound", "Home");
             }
         }
 
@@ -137,7 +137,7 @@ namespace EnterpriceWeb.Controllers
             }
             else
             {
-                return RedirectToAction("erorr");
+                return RedirectToAction("NotFound", "Home");
             }
             return Ok();
         }
