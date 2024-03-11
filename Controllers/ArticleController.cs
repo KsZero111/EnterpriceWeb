@@ -3,6 +3,7 @@ using EnterpriceWeb.Models;
 using EnterpriceWeb.Repository;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.IO;
 
 namespace EnterpriceWeb.Controllers
 {
@@ -20,7 +21,7 @@ namespace EnterpriceWeb.Controllers
         private RepoMagazine _repoMagazine;
 
         private SendMailSystem mailSystem;
-        public ArticleController(AppDbConText dbContext, IHttpContextAccessor httpContextAccessor, IEmailSender emailSender)
+        public ArticleController(AppDbConText dbContext, IHttpContextAccessor httpContextAccessor, IEmailSender emailSender, IWebHostEnvironment hostEnvironment)
 
         {
             _dbContext = dbContext;
@@ -33,7 +34,7 @@ namespace EnterpriceWeb.Controllers
 
 
             session = httpContextAccessor.HttpContext.Session;
-            mailSystem = new SendMailSystem(emailSender);
+            mailSystem = new SendMailSystem(emailSender, hostEnvironment);
         }
 
         [HttpGet]
@@ -337,6 +338,29 @@ namespace EnterpriceWeb.Controllers
             }
             return BadRequest();
 
+        }
+        public async Task<IActionResult> Download()//List<Article> lst_selected_article)
+        {
+            List<Article> lst_selected_article= new List<Article>();
+            lst_selected_article.Add(new Article(1));
+            lst_selected_article.Add(new Article(2));
+            List<MemoryStream> memories=new List<MemoryStream>();
+            foreach (Article article in lst_selected_article)
+            {
+                
+                List<Article_file> list_files = await _repoArticle_File.SearhAllArticleFileById(article.article_id);
+                memories.Add(mailSystem.DownloadSingleFile(list_files));
+                
+            }
+            foreach (MemoryStream memory in memories)
+            {
+                download_Process(memory);
+            }
+            return RedirectToAction("index");
+        }
+        public IActionResult download_Process(MemoryStream memoryStream)
+        {
+            return File(memoryStream.ToArray(), "application/zip", "abc.zip");
         }
     }
 }

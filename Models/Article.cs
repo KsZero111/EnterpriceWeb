@@ -5,6 +5,10 @@ namespace EnterpriceWeb.Models
 {
     public class Article
     {
+        public Article(int id)
+        {
+            article_id = id;
+        }
         [Key]
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
