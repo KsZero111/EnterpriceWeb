@@ -19,7 +19,7 @@ namespace EnterpriceWeb.Repository
         //Maketingmanager
         public async Task<List<Article>> SearhAllArticleMaketingManager()
         {
-            List<Article> article = await _appDBContext.articles.Where(art => art.article_status.Equals("Accept")).ToListAsync();
+            List<Article> article = await _appDBContext.articles.Where(art => art.article_status.Equals("Accept")).Include(m => m.magazine).ToListAsync();
             return article;
         }
 

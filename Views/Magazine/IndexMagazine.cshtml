@@ -10,7 +10,7 @@
     <div class="position-absolute top-50 start-50 translate-middle"> <h1>Magazine</h1></div>
 </div>
 
-<p class="my-5">
+<p style="">
     <a asp-action="CreateMagazine" class="btn btn-outline-info btnCreateMagazine">Create New</a>
 </p>
 <br />
@@ -53,8 +53,8 @@
                     <a asp-controller="Article" asp-action="IndexArticle" asp-route-id="@item.magazine_id" class="btn btn-outline-primary btnContributeMagazine">Contribute</a>
                     <a asp-action="UpdateMagazine" asp-route-id="@item.magazine_id" class="btn btn-outline-success btnUpdateMagazine">Edit</a>
                     <!-- Modal -->
-                    <button class="btn btn-outline-danger  btnDeleteMagazine DeleteArticleFile" data-toggle="modal" data-target="#deleteModal">Delete</button>
-                    <form  class="form_Delete_ArticleFile">
+                    <button class="btn btn-outline-danger  btnDeleteMagazine DeleteArticleFile" value="@item.magazine_id" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                    <form class="form_Delete_ArticleFile">
                         <div class="modal fade " tabindex="-1" id="deleteModal" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
@@ -65,7 +65,7 @@
                                     <div class="modal-footer">
 
                                         <button type="button" class="btn btn-secondary cancelDelete" data-dismiss="modal">Cancel</button>
-                                        <button value="@item.magazine_id" class="btn btn-danger confirmDelete">OK</button>
+                                        <button class="btn btn-danger confirmDelete">OK </button>
                                     </div>
                                 </div>
                             </div>
@@ -105,7 +105,7 @@
 
             //check role
             if (role == "admin") {
-
+                addClassHidden(btn_Contribute);
             }
             else if (role == "coordinator") {
                 addClassHidden(btn_Create);
@@ -121,12 +121,13 @@
                 addClassHidden(btn_Update);
                 addClassHidden(btn_Delete);
             }
+
+            var idMagazine;
             // Popup Delete magazine
             $(".DeleteArticleFile").click(function () {
                 var modalId = $(this).data("target");
                 $(modalId).modal("show");
                 idMagazine = $(this).val();
-                console.log(idMagazine)
             });
             // Cancel
             $(".cancelDelete").click(function () {
@@ -134,13 +135,13 @@
             });
             // Ok
             $(".confirmDelete").click(function (e) {
-                var id=$(this).val()
                 $(this).closest(".modal").modal("hide");
                 e.preventDefault()
                 $.ajax({
                     type: "POST",
                     url: "http://localhost:5154/Magazine/DeleteMagazine",
-                    data: "id=" + id,
+                    data: "id=" + idMagazine,
+
                     success: function () {
                         location.reload()
                         console.log("Delete successful");

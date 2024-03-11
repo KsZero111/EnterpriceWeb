@@ -5,7 +5,7 @@
 }
 
 <h1>IndexArticle_File</h1>
-<button class="btn btn-success CreateArticleFile" data-toggle="modal" data-target="#CreateModal">Create Article</button>
+<button class="btn btn-success CreateArticleFile btnCreateArticleFile" data-toggle="modal" data-target="#CreateModal">Create Article</button>
 
 <!-- Modal -->
 <form enctype="multipart/form-data" id="form_Add_ArticleFile">
@@ -21,15 +21,15 @@
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" name="idArticle" value="@ViewBag.ArticleId" />
-                    <button type="button" class="btn btn-secondary cancelDelete" data-dismiss="modal">Cancel</button>
-                    <button class="btn btn-danger confirmDelete">OK</button>
+                    <button type="button" class="btn btn-secondary cancelCreate" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-danger conformCreate btnDeleteArticleFile">OK</button>
                 </div>
             </div>
         </div>
     </div>
 </form>
 
-<table class="table">
+<table class="table  table-success table-striped">
     <thead>
         <tr>
             <th>
@@ -54,9 +54,9 @@
                 </td>
 
                 <td>
-                    <button class="btn btn-danger DeleteArticleFile" data-toggle="modal" data-target="#deleteModal" >Delete</button>
+                    <button class="btn btn-danger DeleteArticleFile btnDeleteArticleFile" value="@item.article_file_id" data-toggle="modal" data-target="#deleteModal">Delete</button>
                     <form enctype="multipart/form-data" id="form_Delete_ArticleFile">
-                        <input type="hidden" value="@item.article_file_id" name="id" />
+                        <input type="hidden" />
                         <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
@@ -77,15 +77,37 @@
         }
     </tbody>
 </table>
+<style>
+    .hiddenbutton {
+        display: none;
+    }
+</style>
 
 @section Scripts {
 
-    <script>    
+    <script>
         $(document).ready(function () {
+            var btn_Create = $(".btnCreateArticleFile");
+
+            var btn_Delete = $(".btnDeleteArticleFile");
+
+            var role = "@ViewBag.role";
+            console.log(role)
+            function addClassHidden(button) {
+                button.addClass("hiddenbutton");
+            }
+
+            if (role == "admin" || role == "coordinator" || role == "marketingmanager") {
+                addClassHidden(btn_Create);
+                addClassHidden(btn_Delete);
+            }
+
+            var id;
             //Delete article file
             $(".DeleteArticleFile").click(function () {
                 var modalId = $(this).data("target");
                 $(modalId).modal("show");
+                id = $(this).val();
             });
 
             $(".confirmDelete").click(function () {
@@ -96,16 +118,14 @@
                 $(".confirmDelete").closest(".modal").modal("hide");
             });
 
-            $("#form_Delete_ArticleFile").submit(function (e) {
+            $(".confirmDelete").click(function (e) {
                 e.preventDefault()
-                var formData = new FormData(this);
-
+                console.log(id)
                 $.ajax({
                     type: "POST",
                     url: "http://localhost:5154/Article_File/DeleteArticle_File",
-                    data: formData,
-                    contentType: false,
-                    processData: false,
+                    data: "id=" + id,
+
                     success: function () {
                         location.reload()
                         console.log("Create successful");
@@ -123,12 +143,12 @@
                 $(modalId).modal("show");
             });
 
-            $(".confirmDelete").click(function () {
+            $(".confirmCreate").click(function () {
                 $(this).closest(".modal").modal("hide");
             });
 
-            $(".cancelDelete").click(function () {
-                $(".confirmDelete").closest(".modal").modal("hide");
+            $(".cancelCreate").click(function () {
+                $(".confirmCreate").closest(".modal").modal("hide");
             });
 
             $("#form_Add_ArticleFile").submit(function (e) {

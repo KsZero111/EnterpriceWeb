@@ -35,5 +35,7 @@ namespace EnterpriceWeb.Models
             magazine_status = "0";
             magazine_deleted = "0";
         }
+
+
     }
 }

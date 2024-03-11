@@ -1,4 +1,4 @@
-﻿@model IEnumerable<EnterpriceWeb.Models.Article>
+﻿    @model IEnumerable<EnterpriceWeb.Models.Article>
 
 @{
     ViewData["Title"] = "IndexArticle";
@@ -8,9 +8,15 @@
     <div class="position-absolute top-50 start-50 translate-middle"> <h1>Article</h1></div>
 </div>
 <br />
-<p>
-    <a asp-action="CreateArticle" class="btn btn-outline-info btnCreateArticle" asp-route-id="@ViewBag.m_id">Add new Article</a>
-</p>
+<div class="d-flex justify-content-between m-2">
+    <p>
+        <a asp-action="CreateArticle" class="btn btn-outline-info btnCreateArticle fw-bold" asp-route-id="@ViewBag.m_id">Add new Article</a>
+    </p>
+    <p class="btn btn-outline-primary fw-bold">
+        Download
+    </p>
+</div>
+
 <table class="table table-success table-striped">
     <thead>
         <tr>
@@ -68,9 +74,9 @@
                     <a asp-action="UpdateArticle" asp-route-id="@item.article_id" class="btn btn-outline-success btnUpdateArticle">Update</a>
                     <button name="id" class="btn btn-outline-success btnAcceptArticle" value="@item.article_id">Accept</button>
                     <button name="id" class="btn btn-outline-danger btnRefuseArticle" value="@item.article_id">Refuse</button>
-                    <button class="btn btn-outline-danger DeleteArticle btnDeleteArticle" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                    <button class="btn btn-outline-danger DeleteArticle btnDeleteArticle" value="@item.article_id" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                    <input class="inputCheck" value="@item.article_id" type="checkbox" />
                     <form enctype="multipart/form-data" id="form_Delete_Article">
-                        <input type="hidden" value="@item.article_id" name="id" />
                         <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
@@ -145,7 +151,6 @@
 
             //AcceptArticle
             btn_Accept.click(function (e) {
-                console.log("a")
                 var id = $(this).val()
                 $.ajax({
                     type: "POST",
@@ -163,7 +168,6 @@
 
             // RefuseArticle
             $(".btnRefuseArticle").click(function (e) {
-                console.log("b");
                 var id = $(this).val();
                 $.ajax({
                     type: "POST",
@@ -180,11 +184,16 @@
             });
 
 
-
-            //Delete article file
+            var id;
+            //Delete article
             $(".DeleteArticle").click(function () {
+                id = $(this).val()
                 var modalId = $(this).data("target");
                 $(modalId).modal("show");
+
+                console.log(id)
+
+
             });
 
             $(".confirmDelete").click(function () {
@@ -195,16 +204,12 @@
                 $(".confirmDelete").closest(".modal").modal("hide");
             });
 
-            $("#form_Delete_Article").submit(function (e) {
+            $(".confirmDelete").click(function (e) {
                 e.preventDefault()
-                var formData = new FormData(this);
-
                 $.ajax({
                     type: "POST",
-                    url: "http://localhost:5154/Article/DeleteArticle",
-                    data: formData,
-                    contentType: false,
-                    processData: false,
+                    url: "http://localhost:5154/Article/DeleteArticle" + id,
+                    data: "?id=" + id,
                     success: function () {
                         location.reload()
                         console.log("Delete successful");

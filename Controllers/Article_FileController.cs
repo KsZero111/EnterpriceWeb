@@ -28,13 +28,18 @@ namespace EnterpriceWeb.Controllers
         {
             int user_id = (int)session.GetInt32("User_id");
             string role = session.GetString("role");
+      
             Article article = await _repoArticle.SearhArticleById(article_id);
             if (user_id != null && (user_id==article.us_id || role=="coordinator"|| role == "marketingmanager"))
             {
                 List<Article_file> list_Article_file = await _repoArticle_File.SearhAllArticleFileById(article_id);
                 ViewBag.ArticleId = article_id;
+                ViewBag.role = role;
                 return View(list_Article_file);
             }
+
+          
+
             return View("error");
         }
 

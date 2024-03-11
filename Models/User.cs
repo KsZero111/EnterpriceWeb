@@ -37,5 +37,7 @@ namespace EnterpriceWeb.Models
 
         public string? us_start_year { get; set; }
 
+
+
     }
 }
