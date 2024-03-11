@@ -23,6 +23,15 @@
                 </select>
             </div>
             <div class="form-group">
+                <label asp-for="us_role" class="control-label">Role</label>
+                <select asp-for="us_role" class="form-control">
+                    <option value="managemaketing" >Manager maketing</option>
+                    <option value="coordinator">Coordinator</option>
+                    <option value="student">Student</option>
+                  
+                </select>
+            </div>
+            <div class="form-group">
                 <label asp-for="us_name" class="control-label">UserName</label>
                 <input asp-for="us_name" class="form-control" />
                 <span asp-validation-for="us_name" class="text-danger"></span>

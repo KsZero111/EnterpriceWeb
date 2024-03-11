@@ -5,7 +5,7 @@
 }
 
 <div class="position-relative">
-    <div class="position-absolute top-50 start-50 translate-middle"> <h1>Index Article</h1></div>
+    <div class="position-absolute top-50 start-50 translate-middle"> <h1>Article</h1></div>
 </div>
 <br />
 <p>
@@ -66,7 +66,9 @@
                 <td>
                     <a type="hidden" asp-controller="Article_File" asp-action="IndexArticle_File" asp-route-article_id="@item.article_id" class="btn btn-outline-primary btnContributeArticle">Contribute</a>
                     <a asp-action="UpdateArticle" asp-route-id="@item.article_id" class="btn btn-outline-success btnUpdateArticle">Update</a>
-                    <button class="btn btn-danger DeleteArticle btnDeleteArticle" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                    <button name="id" class="btn btn-outline-success btnAcceptArticle" value="@item.article_id">Accept</button>
+                    <button name="id" class="btn btn-outline-danger btnRefuseArticle" value="@item.article_id">Refuse</button>
+                    <button class="btn btn-outline-danger DeleteArticle btnDeleteArticle" data-toggle="modal" data-target="#deleteModal">Delete</button>
                     <form enctype="multipart/form-data" id="form_Delete_Article">
                         <input type="hidden" value="@item.article_id" name="id" />
                         <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -77,7 +79,6 @@
                                         <h7 class="modal-title text-danger">* This action will delete all file contribution in the article</h7>
                                     </div>
                                     <div class="modal-footer">
-
                                         <button type="button" class="btn btn-secondary cancelDelete" data-dismiss="modal">Cancel</button>
                                         <button class="btn btn-danger confirmDelete">OK</button>
                                     </div>
@@ -85,8 +86,7 @@
                             </div>
                         </div>
                     </form>
-                    <button name="id" class="btn btn-outline-success btnAcceptArticle" value="@item.article_id">Accept</button>
-                    <button name="id" class="btn btn-outline-danger btnRefuseArticle" value="@item.article_id">Refuse</button>
+
                 </td>
             </tr>
         }
@@ -144,46 +144,42 @@
 
 
             //AcceptArticle
-            $(".btnAcceptArticle").click(function (e) {
-                var id = $(this).val().
-                    $.ajax({
-                        type: "POST",
-                        url: "http://localhost:5154/Article/AcceptArticle",
-                        data: {
-                            id: id
-                        },
-                        contentType: false,
-                        processData: false,
-                        success: function () {
-                            location.reload()
-                            console.log("Accept successful");
-                        },
-                        error: function () {
-                            console.log("Error Accept article ");
-                        }
-                    });
+            btn_Accept.click(function (e) {
+                console.log("a")
+                var id = $(this).val()
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:5154/Article/AcceptArticle",
+                    data: { id: id },
+                    success: function () {
+                        location.reload()
+                        console.log("Accept successful");
+                    },
+                    error: function () {
+                        console.log("Error Accept article ");
+                    }
+                });
             });
 
-            //AcceptArticle
+            // RefuseArticle
             $(".btnRefuseArticle").click(function (e) {
-                var id = $(this).val().
-                    $.ajax({
-                        type: "POST",
-                        url: "http://localhost:5154/Article/RefuseArticle",
-                        data: {
-                            id: id
-                        },
-                        contentType: false,
-                        processData: false,
-                        success: function () {
-                            location.reload()
-                            console.log("Refuse successful");
-                        },
-                        error: function () {
-                            console.log("Error Refuse article ");
-                        }
-                    });
+                console.log("b");
+                var id = $(this).val();
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:5154/Article/RefuseArticle",
+                    data: { id: id }, // Corrected format for sending data as form data
+                    success: function () {
+                        location.reload();
+                        console.log("Refuse successful");
+                    },
+                    error: function () {
+                        console.log("Error Refuse article ");
+                    }
+                });
             });
+
+
 
             //Delete article file
             $(".DeleteArticle").click(function () {
@@ -202,8 +198,8 @@
             $("#form_Delete_Article").submit(function (e) {
                 e.preventDefault()
                 var formData = new FormData(this);
-               
-                    $.ajax({
+
+                $.ajax({
                     type: "POST",
                     url: "http://localhost:5154/Article/DeleteArticle",
                     data: formData,

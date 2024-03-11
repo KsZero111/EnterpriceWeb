@@ -21,14 +21,15 @@ namespace EnterpriceWeb.Models
                 (
                     new Faculty { f_id = 1, f_name = "faculty1", f_status = "1" },
                     new Faculty { f_id = 2, f_name = "faculty2", f_status = "1" },
-                    new Faculty { f_id = 3, f_name = "faculty3", f_status = "1" }
+                    new Faculty { f_id = 3, f_name = "faculty3", f_status = "1" },
+                    new Faculty { f_id = 999, f_name = "All", f_status = "1" }
                 );
             modelBuilder.Entity<User>().HasData
                 (
                     new User
                     {
                         us_id = 1,
-                        f_id = 1,
+                        f_id = 999,
                         us_name = "nhancho",
                         us_password = "admin",
                         us_role = "admin",
@@ -50,7 +51,7 @@ namespace EnterpriceWeb.Models
                     new User
                     {
                         us_id = 3,
-                        f_id = 1,
+                        f_id = 999,
                         us_name = "marketingmanager",
                         us_password = "123",
                         us_role = "marketingmanager",

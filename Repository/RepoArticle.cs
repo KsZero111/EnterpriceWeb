@@ -26,15 +26,20 @@ namespace EnterpriceWeb.Repository
         //Coordinator
         public async Task<List<Article>> SearhAllArticleCoordinator(int idMagazine, int userId)
         {
-            List<Article> article = new List<Article>();
+            List<Article> listArticle = new List<Article>();
             //get f_id
             User userCoodinator = await _appDBContext.users.Where(us => us.us_id.Equals(userId)).FirstOrDefaultAsync();
             // get list user same f_id coordinator
-            List<User> users = await _appDBContext.users.Where(us => us.f_id.Equals(userCoodinator.f_id)).ToListAsync();
-            //get 
-            //
-            article = await _appDBContext.articles.Where(art => art.magazine_id.Equals(idMagazine)).Include(m => m.magazine).ToListAsync();
-            return article;
+            List<User> users = await _appDBContext.users.Where(us => us.f_id.Equals(userCoodinator.f_id) && !us.us_id.Equals(userCoodinator.us_id)).ToListAsync();
+            //get list article and addrange
+            foreach (User user in users)
+            {
+                //same magazine
+                List<Article> temp = new List<Article>();
+                temp = await _appDBContext.articles.Where(art => art.us_id.Equals(user.us_id) && art.magazine_id.Equals(idMagazine)).Include(m => m.magazine).ToListAsync();
+                if (temp != null) listArticle.AddRange(temp);
+            }
+            return listArticle;
         }
 
         // student
