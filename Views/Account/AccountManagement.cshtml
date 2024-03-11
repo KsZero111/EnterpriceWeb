@@ -1,0 +1,94 @@
+﻿@model IEnumerable<EnterpriceWeb.Models.User>
+
+@{
+    ViewData["Title"] = "AccountManagement";
+    Layout = "_LayoutAdmin";
+}
+
+<h1>Account Management</h1>
+
+<p>
+    <a asp-action="Register">Create Account</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Image
+            </th>
+            <th>
+                Faculty
+            </th>
+            <th>
+                User name
+            </th>
+            <th>
+                Password
+            </th>
+            <th>
+                Role
+            </th>
+            <th>
+                Phone
+            </th>
+            <th>
+                Gender
+            </th>
+
+            <th>
+                Gmail
+            </th>
+            <th>
+                Start yar
+            </th>
+            <th>
+                End year
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <img style="width:200px;height:200px  " src="http://localhost:5154/image/User/@Html.DisplayFor(modelItem => item.us_image)" class="img-radius">
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.faculty.f_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.us_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.us_password)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.us_role)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.us_phone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.us_gender)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.us_gmail)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.us_start_year)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.us_end_year)
+                </td>
+
+                <td>
+                    <a asp-controller="Profile" asp-action="UpdateProfile" asp-route-id="@item.us_id">Update</a> |
+                    <a asp-action="DeleteAccount" asp-route-id="@item.us_id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

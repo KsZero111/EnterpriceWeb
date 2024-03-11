@@ -7,13 +7,13 @@
 
 <div class="position-relative">
 
-    <div class="position-absolute top-50 start-50 translate-middle"> <h1>IndexMagazine</h1></div>
+    <div class="position-absolute top-50 start-50 translate-middle"> <h1>Magazine</h1></div>
 </div>
 
 <p class="my-5">
     <a asp-action="CreateMagazine" class="btn btn-outline-info btnCreateMagazine">Create New</a>
 </p>
-
+<br />
 <table class="table  table-success table-striped ">
     <thead>
         <tr>
@@ -51,12 +51,11 @@
                 </td>
                 <td>
                     <a asp-controller="Article" asp-action="IndexArticle" asp-route-id="@item.magazine_id" class="btn btn-outline-primary btnContributeMagazine">Contribute</a>
-                    <a asp-action="UpdateMagazine" asp-route-id="@item.magazine_id" class="btn btn-outline-success btnUpdateMagazine">Edit</a> 
+                    <a asp-action="UpdateMagazine" asp-route-id="@item.magazine_id" class="btn btn-outline-success btnUpdateMagazine">Edit</a>
                     <!-- Modal -->
-                    <button class="btn btn-outline-danger DeleteArticleFile btnDeleteMagazine" data-toggle="modal" data-target="#deleteModal">Delete</button>
-                    <form enctype="multipart/form-data" id="form_Delete_ArticleFile">
-                        <input type="hidden" value="@item.magazine_id" name="id" />
-                        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                    <button class="btn btn-outline-danger  btnDeleteMagazine DeleteArticleFile" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                    <form  class="form_Delete_ArticleFile">
+                        <div class="modal fade " tabindex="-1" id="deleteModal" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header d-block">
@@ -66,7 +65,7 @@
                                     <div class="modal-footer">
 
                                         <button type="button" class="btn btn-secondary cancelDelete" data-dismiss="modal">Cancel</button>
-                                        <button class="btn btn-danger confirmDelete">OK</button>
+                                        <button value="@item.magazine_id" class="btn btn-danger confirmDelete">OK</button>
                                     </div>
                                 </div>
                             </div>
@@ -88,6 +87,7 @@
 
     <script>
         $(document).ready(function () {
+
             //function hidden
             function addClassHidden(button) {
                 button.addClass("hiddenbutton");
@@ -105,80 +105,51 @@
 
             //check role
             if (role == "admin") {
-                addClassHidden(btn_Create);
-                addClassHidden(btn_Update);
-                addClassHidden(btn_Delete);
-                addClassHidden(btn_Contribute);
+
             }
             else if (role == "coordinator") {
                 addClassHidden(btn_Create);
                 addClassHidden(btn_Update);
                 addClassHidden(btn_Delete);
-                addClassHidden(btn_Contribute);
             }
             else if (role == "marketingmanager") {
                 addClassHidden(btn_Create);
                 addClassHidden(btn_Update);
                 addClassHidden(btn_Delete);
-                addClassHidden(btn_Contribute);
             } else if (role == "student") {
                 addClassHidden(btn_Create);
                 addClassHidden(btn_Update);
                 addClassHidden(btn_Delete);
             }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            //Delete magazine
+            // Popup Delete magazine
             $(".DeleteArticleFile").click(function () {
                 var modalId = $(this).data("target");
                 $(modalId).modal("show");
+                idMagazine = $(this).val();
+                console.log(idMagazine)
             });
-
-            $(".confirmDelete").click(function () {
-                $(this).closest(".modal").modal("hide");
-            });
-
+            // Cancel
             $(".cancelDelete").click(function () {
                 $(".confirmDelete").closest(".modal").modal("hide");
             });
-
-            $("#form_Delete_ArticleFile").submit(function (e) {
+            // Ok
+            $(".confirmDelete").click(function (e) {
+                var id=$(this).val()
+                $(this).closest(".modal").modal("hide");
                 e.preventDefault()
-                var formData = new FormData(this);
-
                 $.ajax({
                     type: "POST",
                     url: "http://localhost:5154/Magazine/DeleteMagazine",
-                    data: formData,
-                    contentType: false,
-                    processData: false,
+                    data: "id=" + id,
                     success: function () {
                         location.reload()
-                        console.log("Create successful");
+                        console.log("Delete successful");
                     },
-                    error: function () {
-                        console.log("Error creating article file");
+                    error: function (e) {
+                        console.log(e);
                     }
-                });
+                })
             });
-
-
         });
     </script>
 }

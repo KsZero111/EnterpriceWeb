@@ -14,7 +14,7 @@ namespace EnterpriceWeb.Repository
 
         public async Task<List<User>> SearhAllUser()
         {
-            List<User> users = await appDBContext.users.ToListAsync();
+            List<User> users = await appDBContext.users.Include(user=>user.faculty).ToListAsync();
             return users;
         }
 
@@ -32,7 +32,7 @@ namespace EnterpriceWeb.Repository
         }
         public async Task<User> SearhUserById(int id)
         {
-            User user = await appDBContext.users.Where(us => us.us_id.Equals(id)).FirstOrDefaultAsync();
+            User user = await appDBContext.users.Where(us => us.us_id.Equals(id)).Include(us=>us.faculty).FirstOrDefaultAsync();
             return user;
         }
 
