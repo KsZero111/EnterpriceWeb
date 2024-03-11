@@ -32,7 +32,7 @@ namespace EnterpriceWeb.Controllers
                 ViewBag.faculty = faculty;
                 return View(user);
             }
-            return View("Error");
+            return View("error");
         }
 
 
@@ -40,6 +40,7 @@ namespace EnterpriceWeb.Controllers
         public async Task<IActionResult> UpdateProfile(int id)
         {
             int user_id = (int)Session.GetInt32("User_id");
+            string role = Session.GetString("role");
             if ((user_id!=null) && (user_id==id))
             {
                 User user = await _repoAccount.SearhUserById(0);
@@ -47,7 +48,7 @@ namespace EnterpriceWeb.Controllers
                 ViewBag.ListFaculty = list_Faculty;
                 return View(user);
             }
-            return View("Erorr");
+            return View("");
             
         }
 

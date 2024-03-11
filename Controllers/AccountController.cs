@@ -14,11 +14,11 @@ namespace EnterpriceWeb.Controllers
         private readonly AppDbConText _dbContext;
         private readonly RepoAccount _repoAccount;
         private ISession Session;
-        public AccountController(AppDbConText dbContext)
+        public AccountController(AppDbConText dbContext, IHttpContextAccessor httpContextAccessor)
         {
             _dbContext = dbContext;
             _repoAccount = new RepoAccount(dbContext);
-
+            Session = httpContextAccessor.HttpContext.Session;
         }
         //Register Account
         public ActionResult Register()
