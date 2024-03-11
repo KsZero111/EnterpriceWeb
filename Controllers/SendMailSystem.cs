@@ -58,6 +58,34 @@ namespace EnterpriceWeb.Controllers
             // Return the ZIP archive as a file
             return memoryStream;
         }
+        public async Task<MemoryStream> DownloadProcessAsync(List<MemoryStream> memoryStreams)
+        {
+            var finalMemoryStream = new MemoryStream();
+
+            using (var finalArchive = new ZipArchive(finalMemoryStream, ZipArchiveMode.Create, true))
+            {
+                for (int i = 0; i < memoryStreams.Count; i++)
+                {
+                    // Reset the position of the memory stream to the beginning
+                    memoryStreams[i].Position = 0;
+
+                    // Create a zip entry for each memory stream
+                    var entry = finalArchive.CreateEntry($"file_{i}.zip");
+
+                    // Copy the content of the memory stream into the zip entry
+                    using (var entryStream = entry.Open())
+                    {
+                        await memoryStreams[i].CopyToAsync(entryStream);
+                    }
+                }
+            }
+
+            // Reset the final memory stream position
+            finalMemoryStream.Position = 0;
+
+            // Return the final ZIP archive as a file
+            return finalMemoryStream;
+        }
     }
 }
 

@@ -2,8 +2,10 @@
 using EnterpriceWeb.Models;
 using EnterpriceWeb.Repository;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 
 namespace EnterpriceWeb.Controllers
 {
@@ -339,28 +341,26 @@ namespace EnterpriceWeb.Controllers
             return BadRequest();
 
         }
-        public async Task<IActionResult> Download()//List<Article> lst_selected_article)
+        public async Task<IActionResult> Download(List<Article> lst_selected_article)
         {
-            List<Article> lst_selected_article= new List<Article>();
-            lst_selected_article.Add(new Article(1));
-            lst_selected_article.Add(new Article(2));
-            List<MemoryStream> memories=new List<MemoryStream>();
+            List<MemoryStream> memories = new List<MemoryStream>();
             foreach (Article article in lst_selected_article)
             {
-                
-                List<Article_file> list_files = await _repoArticle_File.SearhAllArticleFileById(article.article_id);
-                memories.Add(mailSystem.DownloadSingleFile(list_files));
-                
+                List<Article_file> lis_files = await _repoArticle_File.SearhAllArticleFileById(article.article_id);
+                MemoryStream memory = mailSystem.DownloadSingleFile(lis_files);
+                memories.Add(memory);
             }
-            foreach (MemoryStream memory in memories)
+            if(memories.Count > 1)
             {
-                download_Process(memory);
+                MemoryStream memori = await mailSystem.DownloadProcessAsync(memories);
+                return File(memori.ToArray(), "application/zip", "selected_article.zip");
             }
-            return RedirectToAction("index");
-        }
-        public IActionResult download_Process(MemoryStream memoryStream)
-        {
-            return File(memoryStream.ToArray(), "application/zip", "abc.zip");
+            else if(memories.Count==1)
+            {
+                return File(memories.First().ToArray(), "application/zip","selected_article.zip");
+            }
+            return Ok();
         }
     }
+    
 }
