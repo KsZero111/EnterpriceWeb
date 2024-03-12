@@ -58,7 +58,7 @@ namespace EnterpriceWeb.Controllers
             // Return the ZIP archive as a file
             return memoryStream;
         }
-        public async Task<MemoryStream> DownloadProcessAsync(List<MemoryStream> memoryStreams)
+        public async Task<MemoryStream> DownloadProcessAsync(List<MemoryStream> memoryStreams,List<string> titles)
         {
             var finalMemoryStream = new MemoryStream();
 
@@ -70,7 +70,7 @@ namespace EnterpriceWeb.Controllers
                     memoryStreams[i].Position = 0;
 
                     // Create a zip entry for each memory stream
-                    var entry = finalArchive.CreateEntry($"article_{i}.zip");
+                    var entry = finalArchive.CreateEntry($"+"+titles[i]+".zip");
 
                     // Copy the content of the memory stream into the zip entry
                     using (var entryStream = entry.Open())
