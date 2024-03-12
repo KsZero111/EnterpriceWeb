@@ -136,7 +136,7 @@
                 var dataPost = JSON.stringify(arrArticle)
                 $.ajax({
                     type: "POST",
-                    url: "http://localhost:5154/Article/DownLoadwithCheckbox",
+                    url: "http://localhost:5154/Article/Download",
                     data: { arrArticle: dataPost },
                     success: function () {
                         // location.reload()
@@ -166,8 +166,8 @@
                 var dataPost = JSON.stringify(arrArticle)
                 $.ajax({
                     type: "POST",
-                    url: "http://localhost:5154/Article/DownLoadAll",
-                    data: { arrArticleAll: dataPost },
+                    url: "http://localhost:5154/Article/Download",
+                    data: { arrArticle: dataPost },
                     success: function () {
                         // location.reload()
                         console.log("Accept successful");
