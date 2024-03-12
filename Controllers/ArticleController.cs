@@ -353,43 +353,53 @@ namespace EnterpriceWeb.Controllers
         public async Task<IActionResult> DownLoadwithCheckbox(string arrArticle)
         {
             List<DownLoadArticle> articles = JsonConvert.DeserializeObject<List<DownLoadArticle>>(arrArticle);
-            return RedirectToAction("Dowload","Article",new { articles });
+            TempData["DownloadArticles"] = articles;
+            return RedirectToAction("Download","Article");
         }
 
         public async Task<IActionResult> DownLoadAll(string arrArticleAll)
         {
             List<DownLoadArticle> articlesAll = JsonConvert.DeserializeObject<List<DownLoadArticle>>(arrArticleAll);
-            return RedirectToAction("Dowload", "Article", articlesAll);
+            TempData["DownloadArticles"] = articlesAll;
+            return RedirectToAction("Download", "Article");
         }
 
-        public async Task<IActionResult> Download(List<DownLoadArticle> lst_selected_article)
+        public async Task<IActionResult> Download()
         {
+          List<DownLoadArticle> lst_selected_article = TempData["DownloadArticles"] as List<DownLoadArticle>; ;
            int user_id = (int)session.GetInt32("User_id");
            string role = session.GetString("role");
             if (user_id != null && role!="admin")
             {
-                List<MemoryStream> memories = new List<MemoryStream>();
-                List<string> titles = null;
-                foreach (DownLoadArticle article in lst_selected_article)
+                if (TempData["DownloadArticles"] != null)
                 {
-                    List<Article_file> lis_files = await _repoArticle_File.SearhAllArticleFileById(article.id);
-                    titles.Add(article.title);
-                    MemoryStream memory = mailSystem.DownloadSingleFile(lis_files);
-                    memories.Add(memory);
+                    List<MemoryStream> memories = new List<MemoryStream>();
+                    List<string> titles = null;
+                    foreach (DownLoadArticle article in lst_selected_article)
+                    {
+                        List<Article_file> lis_files = await _repoArticle_File.SearhAllArticleFileById(article.id);
+                        titles.Add(article.title);
+                        MemoryStream memory = mailSystem.DownloadSingleFile(lis_files);
+                        memories.Add(memory);
+                    }
+                    if (memories.Count > 1)
+                    {
+                        MemoryStream memori = await mailSystem.DownloadProcessAsync(memories, titles);
+                        return File(memori.ToArray(), "application/zip", "selected_article.zip");
+                    }
+                    else if (memories.Count == 1)
+                    {
+                        return File(memories.First().ToArray(), "application/zip", "selected_article.zip");
+                    }
+
+                    return RedirectToAction("Index", "Article");
                 }
-                if (memories.Count > 1)
-                {
-                    MemoryStream memori = await mailSystem.DownloadProcessAsync(memories, titles);
-                    return File(memori.ToArray(), "application/zip", "selected_article.zip");
-                }
-                else if (memories.Count == 1)
-                {
-                    return File(memories.First().ToArray(), "application/zip", "selected_article.zip");
-                }
-                return RedirectToAction("Index", "Article");
+                TempData.Clear();
+                return Ok();
             }
             else
             {
+                TempData.Clear();
                 return RedirectToAction("NotFound", "Home");
             }
             
