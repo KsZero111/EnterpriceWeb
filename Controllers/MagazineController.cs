@@ -29,6 +29,12 @@ namespace EnterpriceWeb.Controllers
             {
                return RedirectToAction("NotFound","Home");
             }
+            if (role != null && role.Equals("admin"))
+            {
+                ViewBag.layout = "_LayoutAdmin";
+            }
+            else ViewBag.layout = "_Layout";
+
             List<Magazine> list_magazine = await _repoMagazine.SearchAllMagazine();
             ViewBag.role = role;
             return View(list_magazine);

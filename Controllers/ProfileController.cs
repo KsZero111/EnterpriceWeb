@@ -4,6 +4,7 @@ using EnterpriceWeb;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Logging;
+using System.Data;
 
 namespace EnterpriceWeb.Controllers
 {
@@ -23,13 +24,31 @@ namespace EnterpriceWeb.Controllers
         [HttpGet]
         public async Task<IActionResult> IndexProfile()
         {
-            //if (TempData["UserId"]!=null) id = (int)TempData["UserId"];
-            int user_id = (int)Session.GetInt32("User_id");
-            if (user_id != null)
+            string role;
+            int user_id;
+            try
+            {
+                role = Session.GetString("role");
+                user_id = (int)Session.GetInt32("User_id");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+
+            if (user_id != 0)
             {
                 User user = await _repoAccount.SearhUserById(user_id);
                 Faculty faculty = await _repoFaculty.SearhFacultyById(user.f_id);
                 ViewBag.faculty = faculty;
+
+                if (role != null && role.Equals("admin"))
+                {
+                    ViewBag.layout = "_LayoutAdmin";
+                }
+                else ViewBag.layout = "_Layout";
+
                 return View(user);
             }
             return RedirectToAction("NotFound", "Home");
@@ -39,17 +58,18 @@ namespace EnterpriceWeb.Controllers
         [HttpGet]
         public async Task<IActionResult> UpdateProfile(int id)
         {
+
             int user_id = (int)Session.GetInt32("User_id");
             string role = Session.GetString("role");
-            if (((user_id!=null) && (user_id==id))||role=="admin")
+            if (((user_id != null) && (user_id == id)) || role == "admin")
             {
-                User user = await _repoAccount.SearhUserById(0);
+                User user = await _repoAccount.SearhUserById(id);
                 List<Faculty> list_Faculty = await _repoFaculty.SearhAllFaculty();
                 ViewBag.ListFaculty = list_Faculty;
                 return View(user);
             }
-            return RedirectToAction("NotFound","Home");
-            
+            return RedirectToAction("NotFound", "Home");
+
         }
 
         [HttpPost]
@@ -57,16 +77,15 @@ namespace EnterpriceWeb.Controllers
         {
             User oldUser = await _repoAccount.SearhUserById(id);
             int user_id = (int)Session.GetInt32("User_id");
-            if (oldUser != null&& user_id!=null)
+            if (oldUser != null && user_id != null)
             {
-               await HandleUpdateProfile(oldUser, user, avatar);
+                await HandleUpdateProfile(oldUser, user, avatar);
             }
             else
             {
-                return RedirectToAction("UpdateProfile");
+                return RedirectToAction("NotFound", "Home");
             }
-
-            return RedirectToAction("IndexProfile");
+            return RedirectToAction("AccountManagement", "Account");
         }
         private async Task HandleUpdateProfile(User oldUser, User newUser, IFormFile avatar)
         {

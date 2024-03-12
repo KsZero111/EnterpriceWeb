@@ -8,9 +8,9 @@
 <h1>Account Management</h1>
 
 <p>
-    <a asp-action="Register">Create Account</a>
+    <a class="btn btn-outline-info" asp-action="Register">Create Account</a>
 </p>
-<table class="table">
+<table class="table  table-success table-striped">
     <thead>
         <tr>
             <th>
@@ -84,9 +84,9 @@
                     @Html.DisplayFor(modelItem => item.us_end_year)
                 </td>
 
-                <td>
-                    <a asp-controller="Profile" asp-action="UpdateProfile" asp-route-id="@item.us_id">Update</a> |
-                    <a asp-action="DeleteAccount" asp-route-id="@item.us_id">Delete</a>
+                <td class="">
+                    <a class="btn btn-outline-success m-1" asp-controller="Profile" asp-action="UpdateProfile" asp-route-id="@item.us_id">Update</a>
+                    <a class="btn btn-outline-danger m-1" asp-action="DeleteAccount" asp-route-id="@item.us_id">Delete</a>
                 </td>
             </tr>
         }

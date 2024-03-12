@@ -2,13 +2,12 @@
 
 @{
     ViewData["Title"] = "Index Profile";
-    Layout = "_Layout";
+    Layout = ViewBag.layout;
 }
 
 @section Style {
     <link href="~/css/profile.css" rel="stylesheet" type="text/css" />
 }
-
 <div class="page-content page-container" id="page-content">
     <div class="padding">
         @* <a class=" btn btn-primary" asp-controller="Profile" asp-action="UpdateProfile" rou style="margin: 0px 0px 20px 25px"> Edit profile</a> *@
@@ -23,7 +22,7 @@
                                 </div>
                                 <h5 class="f-w-600">I am @Model.us_name</h5>
                                 <h6 class="f-w-600">Role @Model.us_role</h6>
-                                
+
                                 <i class=" mdi mdi-square-edit-outline feather icon-edit m-t-10 f-16"></i>
                             </div>
                         </div>

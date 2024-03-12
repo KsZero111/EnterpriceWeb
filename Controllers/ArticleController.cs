@@ -2,6 +2,7 @@
 using EnterpriceWeb.Models;
 using EnterpriceWeb.Repository;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -341,26 +342,45 @@ namespace EnterpriceWeb.Controllers
             return BadRequest();
 
         }
-        public async Task<IActionResult> Download(List<Article> lst_selected_article)
+
+        public class DownLoadArticle
         {
-            List<MemoryStream> memories = new List<MemoryStream>();
-            foreach (Article article in lst_selected_article)
-            {
-                List<Article_file> lis_files = await _repoArticle_File.SearhAllArticleFileById(article.article_id);
-                MemoryStream memory = mailSystem.DownloadSingleFile(lis_files);
-                memories.Add(memory);
-            }
-            if(memories.Count > 1)
-            {
-                MemoryStream memori = await mailSystem.DownloadProcessAsync(memories);
-                return File(memori.ToArray(), "application/zip", "selected_article.zip");
-            }
-            else if(memories.Count==1)
-            {
-                return File(memories.First().ToArray(), "application/zip","selected_article.zip");
-            }
+            public int id { get; set; }
+            public string title { get; set; }
+        }
+
+        public async Task<IActionResult> DownLoadwithCheckbox(string arrArticle)
+        {
+            List<DownLoadArticle> articles = JsonConvert.DeserializeObject<List<DownLoadArticle>>(arrArticle);
             return Ok();
         }
+
+        public async Task<IActionResult> DownLoadAll(string arrArticleAll)
+        {
+            List<DownLoadArticle> articlesAll = JsonConvert.DeserializeObject<List<DownLoadArticle>>(arrArticleAll);
+            return Ok();
+        }
+
+        //public async Task<IActionResult> Download(List<Article> lst_selected_article)
+        //{
+        //    List<MemoryStream> memories = new List<MemoryStream>();
+        //    foreach (Article article in lst_selected_article)
+        //    {
+        //        List<Article_file> lis_files = await _repoArticle_File.SearhAllArticleFileById(article.article_id);
+        //        MemoryStream memory = mailSystem.DownloadSingleFile(lis_files);
+        //        memories.Add(memory);
+        //    }
+        //    if(memories.Count > 1)
+        //    {
+        //        MemoryStream memori = await mailSystem.DownloadProcessAsync(memories);
+        //        return File(memori.ToArray(), "application/zip", "selected_article.zip");
+        //    }
+        //    else if(memories.Count==1)
+        //    {
+        //        return File(memories.First().ToArray(), "application/zip","selected_article.zip");
+        //    }
+        //    return Ok();
+        //}
     }
     
 }
