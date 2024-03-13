@@ -30,27 +30,17 @@ namespace EnterpriceWeb.Models
                     {
                         us_id = 1,
                         f_id = 999,
-                        us_name = "nhancho",
+                        us_name = "admin",
                         us_password = "admin",
                         us_role = "admin",
                         us_gmail = "admin",
                         us_phone = "07788880524",
                         us_image = "fad8651c-32cc-4620-ba7d-c74efa72e006pngwing.com (2).jpg"
-                    },
+                    }
+                    ,
                     new User
                     {
                         us_id = 2,
-                        f_id = 1,
-                        us_name = "coordinator",
-                        us_password = "123",
-                        us_role = "coordinator",
-                        us_gmail = "hpthkl@gmail.com",
-                        us_phone = "07788880524",
-                        us_image = "fad8651c-32cc-4620-ba7d-c74efa72e006pngwing.com (2).jpg"
-                    },
-                    new User
-                    {
-                        us_id = 3,
                         f_id = 999,
                         us_name = "marketingmanager",
                         us_password = "123",
@@ -59,17 +49,76 @@ namespace EnterpriceWeb.Models
                         us_phone = "07788880524",
                         us_image = "fad8651c-32cc-4620-ba7d-c74efa72e006pngwing.com (2).jpg"
                     },
+                    //Coordinator
+                    new User
+                    {
+                        us_id = 3,
+                        f_id = 1,
+                        us_name = "coordinator1",
+                        us_password = "123",
+                        us_role = "coordinator",
+                        us_gmail = "hpthkl@gmail.com",
+                        us_phone = "07788880524",
+                        us_image = "fad8651c-32cc-4620-ba7d-c74efa72e006pngwing.com (2).jpg"
+                    },
                     new User
                     {
                         us_id = 4,
-                        f_id = 1,
-                        us_name = "student",
+                        f_id = 2,
+                        us_name = "coordinator2",
                         us_password = "123",
-                        us_role = "student",
-                        us_gmail = "student",
+                        us_role = "coordinator",
+                        us_gmail = "hpthkl1@gmail.com",
                         us_phone = "07788880524",
                         us_image = "fad8651c-32cc-4620-ba7d-c74efa72e006pngwing.com (2).jpg"
-                    }
+                    },
+                     new User
+                     {
+                         us_id = 5,
+                         f_id = 2,
+                         us_name = "coordinator3",
+                         us_password = "123",
+                         us_role = "coordinator",
+                         us_gmail = "hpthkl3@gmail.com",
+                         us_phone = "07788880524",
+                         us_image = "fad8651c-32cc-4620-ba7d-c74efa72e006pngwing.com (2).jpg"
+                     },
+
+                    //Student
+                    new User
+                    {
+                        us_id = 6,
+                        f_id = 1,
+                        us_name = "student1",
+                        us_password = "123",
+                        us_role = "student",
+                        us_gmail = "student1",
+                        us_phone = "07788880524",
+                        us_image = "fad8651c-32cc-4620-ba7d-c74efa72e006pngwing.com (2).jpg"
+                    },
+                     new User
+                     {
+                         us_id = 7,
+                         f_id = 2,
+                         us_name = "student2",
+                         us_password = "123",
+                         us_role = "student",
+                         us_gmail = "student2",
+                         us_phone = "07788880524",
+                         us_image = "fad8651c-32cc-4620-ba7d-c74efa72e006pngwing.com (2).jpg"
+                     },
+                     new User
+                     {
+                         us_id = 8,
+                         f_id = 3,
+                         us_name = "student3",
+                         us_password = "123",
+                         us_role = "student",
+                         us_gmail = "student3",
+                         us_phone = "07788880524",
+                         us_image = "fad8651c-32cc-4620-ba7d-c74efa72e006pngwing.com (2).jpg"
+                     }
+
                 );
             modelBuilder.Entity<Magazine>().HasData
                (

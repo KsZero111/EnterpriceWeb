@@ -4,120 +4,127 @@
 @{
     ViewData["Title"] = "IndexArticle_File";
 }
+<div class="d-flex">
 
-<h1>IndexArticle_File</h1>
-<button class="btn btn-success CreateArticleFile btnCreateArticleFile" data-toggle="modal" data-target="#CreateModal">Create Article</button>
+    <div style="flex:2">
 
-<!-- Modal -->
-<form enctype="multipart/form-data" id="form_Add_ArticleFile">
+        <h1>Article File</h1>
+        <button class="btn btn-outline-info CreateArticleFile btnCreateArticleFile fw-bold" data-toggle="modal" data-target="#CreateModal">Create Article</button>
 
-    <div class="modal fade" id="CreateModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">Click on the box below to add an article file</h5>
-                </div>
-                <div class="modal-body">
-                    <input type="file" class="article_file" name="article_file" />
-                </div>
-                <div class="modal-footer">
-                    <input type="hidden" name="idArticle" value="@ViewBag.ArticleId" />
-                    <button type="button" class="btn btn-secondary cancelCreate" data-dismiss="modal">Cancel</button>
-                    <button class="btn btn-danger conformCreate btnDeleteArticleFile">OK</button>
+        <!-- Modal -->
+        <form enctype="multipart/form-data" id="form_Add_ArticleFile">
+
+            <div class="modal fade" id="CreateModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteModalLabel">Click on the box below to add an article file</h5>
+                        </div>
+                        <div class="modal-body">
+                            <input type="file" class="article_file" name="article_file" />
+                        </div>
+                        <div class="modal-footer">
+                            <input type="hidden" name="idArticle" value="@ViewBag.ArticleId" />
+                            <button type="button" class="btn btn-secondary cancelCreate" data-dismiss="modal">Cancel</button>
+                            <button class="btn btn-danger conformCreate btnDeleteArticleFile">OK</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-</form>
+        </form>
 
-<table class="table  table-success table-striped">
-    <thead>
-        <tr>
-            <th>
-                Article type
-            </th>
-            <th>
-                Article name
-            </th>
+        <table class="table  table-success table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        Article type
+                    </th>
+                    <th>
+                        Article name
+                    </th>
 
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (Article_file item in Model.Article_File)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.article_file_type)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.article_file_name)
-                </td>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Article_file item in Model.Article_File)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.article_file_type)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.article_file_name)
+                        </td>
 
-                <td>
-                    <button class="btn btn-danger DeleteArticleFile btnDeleteArticleFile" value="@item.article_file_id" data-toggle="modal" data-target="#deleteModal">Delete</button>
-                    <form enctype="multipart/form-data" id="form_Delete_ArticleFile">
-                        <input type="hidden" />
-                        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="deleteModalLabel">Click on the box below to delete an article file</h5>
-                                    </div>
-                                    <div class="modal-footer">
+                        <td>
+                            <button class="btn btn-danger DeleteArticleFile btnDeleteArticleFile" value="@item.article_file_id" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                            <form enctype="multipart/form-data" id="form_Delete_ArticleFile">
+                                <input type="hidden" />
+                                <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="deleteModalLabel">Click on the box below to delete an article file</h5>
+                                            </div>
+                                            <div class="modal-footer">
 
-                                        <button type="button" class="btn btn-secondary cancelDelete" data-dismiss="modal">Cancel</button>
-                                        <button class="btn btn-danger confirmDelete">OK</button>
+                                                <button type="button" class="btn btn-secondary cancelDelete" data-dismiss="modal">Cancel</button>
+                                                <button class="btn btn-danger confirmDelete">OK</button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </form>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-<h1>Feedback</h1>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div style="flex:1;margin-left:5px">
 
-<p>
-    <a asp-action="CreateFeedback" asp-route-id="@ViewBag.ArticleId">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Name
-            </th>
-            <th>
-                Content
-            </th>
-            <th>
-                date
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (Feedback item in Model.Feedback)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.User.us_name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.content)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.date)
-                </td>
-                <td>
-                    <a asp-action="Delete" asp-route-id="@item.fb_id">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+        <h1>Feedback</h1>
+
+
+        <a class="btn btn-outline-info fw-bold" asp-action="CreateFeedback" asp-route-id="@ViewBag.ArticleId">Create New</a>
+     
+        <table class="table table-success table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Content
+                    </th>
+                    <th>
+                        date
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Feedback item in Model.Feedback)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.User.us_name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.content)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.date)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
 <style>
     .hiddenbutton {
         display: none;
