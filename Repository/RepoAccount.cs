@@ -14,10 +14,14 @@ namespace EnterpriceWeb.Repository
 
         public async Task<List<User>> SearhAllUser()
         {
-            List<User> users = await appDBContext.users.Where(users=>users.us_role!="0").Include(user=>user.faculty).ToListAsync();
+            List<User> users = await appDBContext.users.Where(users => users.us_role != "0").Include(user => user.faculty).ToListAsync();
             return users;
         }
-
+        public async Task<List<User>> SearAllhUserById(int id)
+        {
+            List<User> users = await appDBContext.users.Where(us => us.f_id.Equals(id)).Include(us => us.faculty).ToListAsync();
+            return users;
+        }
         public async Task<string> SearchRoleUser(int userId)
         {
             User user = await appDBContext.users.Where(u => u.us_id == userId).FirstOrDefaultAsync();
@@ -30,33 +34,33 @@ namespace EnterpriceWeb.Repository
             User user = await appDBContext.users.FirstOrDefaultAsync();
             return user;
         }
-        public async Task<User> SearhUserById(int id)
+        public async Task<User> SearhUserBymail(string gmail)
         {
-            User user = await appDBContext.users.Where(us => us.us_id.Equals(id)).Include(us=>us.faculty).FirstOrDefaultAsync();
+            User user = await appDBContext.users.Where(us => us.us_gmail == gmail).FirstOrDefaultAsync();
             return user;
         }
-        public async Task<List<User>> SearAllhUserById(int id)
+        public async Task<User> SearhUserById(int id)
         {
-            List<User> users = await appDBContext.users.Where(us => us.f_id.Equals(id)).Include(us=>us.faculty).ToListAsync();
-            return users;
+            User user = await appDBContext.users.Where(us => us.us_id.Equals(id)).Include(us => us.faculty).FirstOrDefaultAsync();
+            return user;
         }
 
         public async Task<User> Register(User _user)
         {
-           User user=await appDBContext.users.Where(us=>us.us_gmail.Equals(_user.us_gmail)).FirstOrDefaultAsync();
+            User user = await appDBContext.users.Where(us => us.us_gmail.Equals(_user.us_gmail)).FirstOrDefaultAsync();
             return user;
         }
 
-        public List<User>login(string gmail, string password)
+        public List<User> login(string gmail, string password)
         {
-           List<User> user= appDBContext.users.Where(us=>us.us_gmail.Equals(gmail)&& us.us_password.Equals(password)).ToList();
+            List<User> user = appDBContext.users.Where(us => us.us_gmail.Equals(gmail) && us.us_password.Equals(password)).ToList();
             return user;
         }
         public async Task<User> SearchCoordinatorByUserIdOfStudent(int user_id)
         {
-            User user= await this.SearhUserById(user_id);
-            User Coordinator= await appDBContext.users.Where(us => us.us_role.Equals("coordinator") && us.f_id.Equals(user.f_id)).FirstAsync();
-            return Coordinator;  
+            User user = await this.SearhUserById(user_id);
+            User Coordinator = await appDBContext.users.Where(us => us.us_role.Equals("coordinator") && us.f_id.Equals(user.f_id)).FirstAsync();
+            return Coordinator;
         }
     }
 }

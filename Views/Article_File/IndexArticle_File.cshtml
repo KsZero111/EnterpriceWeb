@@ -1,10 +1,11 @@
-﻿@model IEnumerable<EnterpriceWeb.Models.Article_file>
+﻿@model dynamic;
+
 
 @{
     ViewData["Title"] = "IndexArticle_File";
 }
 
-<h1>Article File</h1>
+<h1>IndexArticle_File</h1>
 <button class="btn btn-success CreateArticleFile btnCreateArticleFile" data-toggle="modal" data-target="#CreateModal">Create Article</button>
 
 <!-- Modal -->
@@ -22,7 +23,7 @@
                 <div class="modal-footer">
                     <input type="hidden" name="idArticle" value="@ViewBag.ArticleId" />
                     <button type="button" class="btn btn-secondary cancelCreate" data-dismiss="modal">Cancel</button>
-                    <button class="btn btn-danger confirmCreate btnDeleteArticleFile">OK</button>
+                    <button class="btn btn-danger conformCreate btnDeleteArticleFile">OK</button>
                 </div>
             </div>
         </div>
@@ -43,7 +44,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (Article_file item in Model.Article_File)
         {
             <tr>
                 <td>
@@ -72,6 +73,46 @@
                             </div>
                         </div>
                     </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<h1>Feedback</h1>
+
+<p>
+    <a asp-action="CreateFeedback" asp-route-id="@ViewBag.ArticleId">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Content
+            </th>
+            <th>
+                date
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Feedback item in Model.Feedback)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.us_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.content)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.date)
+                </td>
+                <td>
+                    <a asp-action="Delete" asp-route-id="@item.fb_id">Delete</a>
                 </td>
             </tr>
         }

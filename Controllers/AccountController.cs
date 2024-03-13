@@ -1,8 +1,10 @@
-﻿
+﻿using EnterpriceWeb.Mailutils;
 using EnterpriceWeb.Models;
 using EnterpriceWeb.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.FlowAnalysis.DataFlow;
+using Microsoft.Extensions.Hosting;
 using MySqlX.XDevAPI;
 using NuGet.Protocol;
 using System;
@@ -14,18 +16,78 @@ namespace EnterpriceWeb.Controllers
         private readonly AppDbConText _dbContext;
         private readonly RepoAccount _repoAccount;
         private ISession Session;
-        public AccountController(AppDbConText dbContext, IHttpContextAccessor httpContextAccessor)
+        private RepoFaculty _repoFaculty;
+        private SendMailSystem mailSystem;
+        public AccountController(AppDbConText dbContext, IHttpContextAccessor httpContextAccessor, IEmailSender emailSender, IWebHostEnvironment hostEnvironment)
         {
             _dbContext = dbContext;
             _repoAccount = new RepoAccount(dbContext);
+            _repoFaculty = new RepoFaculty(dbContext);
             Session = httpContextAccessor.HttpContext.Session;
+            mailSystem = new SendMailSystem(emailSender, hostEnvironment);
         }
         //Register Account
-        public ActionResult Register()
+        public async Task<ActionResult> Register()
+        {
+            List<Faculty> list_Faculty = await _repoFaculty.SearhAllFaculty();
+            ViewBag.ListFaculty = list_Faculty;
+            return View();
+        }
+        public IActionResult ForgetPassword()
         {
             return View();
         }
+        [HttpPost]
+        public async Task<IActionResult> ForgetPassword(string gmail)
+        {
+            if (gmail != null)
+            {
+                User user1 = await _repoAccount.SearhUserBymail(gmail);
+                if (user1 != null)
+                {
+                    string newpassword = await mailSystem.SendgmailForgetPassword(gmail);
+                    changesPassword(newpassword, user1);
+                    return View();
+                }
+                else
+                {
+                    return View();
+                }
+            }
+            return View();
+        }
 
+        private void changesPassword(string newpass, User user)
+        {
+            user.us_password = newpass;
+            _dbContext.users.Add(user);
+            _dbContext.SaveChanges();
+        }
+        public IActionResult ChangesPassword(int id)
+        {
+            ViewBag.Id = id;
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> ChangesPassword(int id, string password, string C_password)
+        {
+            int user_id = (int)Session.GetInt32("User_id");
+            string role = Session.GetString("role");
+            if ((user_id == id || role == "admin") && password == C_password)
+            {
+                User user = await _repoAccount.SearhUserById(id);
+                changesPassword(password, user);
+                if (role == "admin")
+                {
+                    return View("AccountManagement");
+                }
+                else
+                {
+                    return RedirectToAction("IndexProfile", "Profile");
+                }
+            }
+            return RedirectToAction("NotFound", "Home");
+        }
         public async Task<ActionResult> AccountManagement()
         {
             int user_id;
@@ -59,7 +121,7 @@ namespace EnterpriceWeb.Controllers
         {
             {
                 var user = _repoAccount.Register(_user);
-                _user.us_role = "student";
+
 
                 if (user == null)
                 {
@@ -96,6 +158,7 @@ namespace EnterpriceWeb.Controllers
                     if (HttpContext.Session.GetString("role").Equals("admin"))
                     {
                         return RedirectToAction("Index", "Admin");
+
                     }
                     else
                     {
