@@ -12,7 +12,7 @@ namespace EnterpriceWeb.Repository
         }
         public async Task<List<Feedback>> SearhAllFeedBackOfArticle(int article_id)
         {
-            List<Feedback> feedbacks = await _appDBContext.Feedback.Where(fb => fb.article_id.Equals(article_id)).Include(at=>at.User).ToListAsync();
+            List<Feedback> feedbacks = await _appDBContext.Feedback.Where(fb => fb.article_id.Equals(article_id)).ToListAsync();
             return feedbacks;
         }
         public async Task<Feedback> SearhFeedBackById(int id)

@@ -2,7 +2,6 @@
 using EnterpriceWeb.Repository;
 using EnterpriceWeb.Support;
 using Microsoft.AspNetCore.Mvc;
-using System.Dynamic;
 
 namespace EnterpriceWeb.Controllers
 {
@@ -12,7 +11,6 @@ namespace EnterpriceWeb.Controllers
         private RepoArticle_file _repoArticle_File;
         private RepoArticle _repoArticle;
         private ISession session;
-        private RepoFeedBack _repoFeedback;
         List<string> typeImage = new List<string>()
         {
             FileType.JPEG,
@@ -22,7 +20,6 @@ namespace EnterpriceWeb.Controllers
             _dbContext = dbContext;
             _repoArticle_File = new RepoArticle_file(dbContext);
             _repoArticle= new RepoArticle(dbContext);
-            _repoFeedback = new RepoFeedBack(dbContext);
             session = httpContextAccessor.HttpContext.Session;
         }
 
@@ -35,14 +32,10 @@ namespace EnterpriceWeb.Controllers
             Article article = await _repoArticle.SearhArticleById(article_id);
             if (user_id != null && (user_id==article.us_id || role=="coordinator"|| role == "marketingmanager"))
             {
-                dynamic feedback_article_file = new ExpandoObject();
                 List<Article_file> list_Article_file = await _repoArticle_File.SearhAllArticleFileById(article_id);
                 ViewBag.ArticleId = article_id;
                 ViewBag.role = role;
-                List<Feedback> feedbacks=await _repoFeedback.SearhAllFeedBackOfArticle(article_id);
-                feedback_article_file.Article_File = list_Article_file;
-                feedback_article_file.Feedback = feedbacks;
-                return View(feedback_article_file);
+                return View(list_Article_file);
             }
             return RedirectToAction("NotFound", "Home");
         }
@@ -91,70 +84,6 @@ namespace EnterpriceWeb.Controllers
                 return Ok();
             }
             return BadRequest();
-        }
-        public IActionResult CreateFeedBack()
-        {
-            return View();
-        }
-        //CreateFeedback
-        [HttpPost]
-        public IActionResult CreateFeedBack([FromForm] Feedback feedback, int id)
-        {
-            if (!feedback.content.Equals(null))
-            {
-                HandleCreateFeedBack(id, feedback.content);
-               
-            }
-            else
-            {
-                return RedirectToAction("NotFound","Home");
-            }
-            return RedirectToAction("IndexArticle_File", "Article_File", new { article_id = id });
-        }
-
-        private void HandleCreateFeedBack(int article_id, string content)
-        {
-            Feedback feedback = new Feedback();
-            feedback.article_id = article_id;
-            feedback.us_id = (int)session.GetInt32("User_id");
-            feedback.date = DateTime.Now.ToString();
-            feedback.content = content;
-            _dbContext.Add(feedback);
-            _dbContext.SaveChanges();
-        }
-        //UpdateFeedback
-        [HttpPut]
-        public async Task<IActionResult> UpdateFeedBack(int id, string newcontent)
-        {
-            Feedback feedback = await _repoFeedback.SearhFeedBackById(id);
-            if (!feedback.Equals(null))
-            {
-                HandleUpdateFeedBack(feedback, newcontent);
-                return View();
-            }
-            return Ok();
-        }
-
-        private void HandleUpdateFeedBack(Feedback feedback, string newcontent)
-        {
-            feedback.content = newcontent;
-            _dbContext.Update(feedback);
-            _dbContext.SaveChanges();
-        }
-
-        //DeleteFeedback
-        [HttpDelete]
-        public async Task<IActionResult> DeleteFeedback(int id)
-        {
-            Feedback feedback = await _repoFeedback.SearhFeedBackById(id);
-            if (feedback != null)
-            {
-                _dbContext.Remove(feedback);
-                _dbContext.SaveChanges();
-                return Ok();
-            }
-            return BadRequest();
-
         }
     }
 }

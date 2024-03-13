@@ -24,40 +24,6 @@ namespace EnterpriceWeb.Controllers
             var message = "You have 14 days to feedback for the new article";
             await _emailSender.SenderEmailAsync(receiver, subject, message);
         }
-        public string randomPass()
-        {
-            Random rand = new Random();
-
-            // Choosing the size of string 
-            // Using Next() string 
-            int stringlen = rand.Next(4, 10);
-            int randValue;
-            string str = "";
-            char letter;
-            for (int i = 0; i < stringlen; i++)
-            {
-
-                // Generating a random number. 
-                randValue = rand.Next(0, 26);
-
-                // Generating random character by converting 
-                // the random number into character. 
-                letter = Convert.ToChar(randValue + 65);
-
-                // Appending the letter to string. 
-                str = str + letter;
-            }
-            return str;
-        }
-        public async Task<string> SendgmailForgetPassword(string gmail)
-        {
-            var receiver = gmail;
-            string newpassword = randomPass();
-            var subject = "there is your new password please don't tell someone else";
-            var message = "there is your new password "+ newpassword;
-            await _emailSender.SenderEmailAsync(receiver, subject, message);
-            return newpassword;
-        }
         public MemoryStream DownloadSingleFile(List<Article_file> files)
         {
             // Create a memory stream to store the ZIP archive
