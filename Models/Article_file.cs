@@ -12,6 +12,7 @@ namespace EnterpriceWeb.Models
 
         public int article_id { get; set; }
         [ForeignKey("article_id")]
+        public Article? article { get; set; }
 
         [Required(ErrorMessage = "Article file name not empty")]
         public string article_file_name { get; set; }

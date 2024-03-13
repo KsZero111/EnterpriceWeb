@@ -37,7 +37,7 @@ namespace EnterpriceWeb.Repository
         }
         public async Task<List<User>> SearAllhUserById(int id)
         {
-            List<User> users = await appDBContext.users.Where(us => us.us_id.Equals(id)).Include(us => us.faculty).ToListAsync();
+            List<User> users = await appDBContext.users.Where(us => us.f_id.Equals(id)).Include(us=>us.faculty).ToListAsync();
             return users;
         }
 

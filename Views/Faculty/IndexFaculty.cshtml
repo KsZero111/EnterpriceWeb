@@ -2,21 +2,21 @@
 
 @{
     ViewData["Title"] = "IndexFaculty";
-    Layout = "_Layout";
+    Layout = "_LayoutAdmin";
 }
 
-<h1>IndexFaculty</h1>
+<h1>Faculty</h1>
 
 <p>
-    <a asp-action="CreateFaculty">Create New</a>
+    <a class="btn btn-outline-info" asp-action="CreateFaculty">Create New</a>
 </p>
-<table class="table">
+<table class="table table-success table-striped">
     <thead>
         <tr>
             <th>
                 Faculty name
             </th>
-            <th></th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
@@ -27,8 +27,8 @@
                     @Html.DisplayFor(modelItem => item.f_name)
                 </td>
                 <td>
-                    <a asp-action="UpdateFaculty" asp-route-id="@item.f_id">Update</a> |
-                    <button class="btn btn-danger deleteButton" data-toggle="modal" data-target="#deleteModal_@item.f_id">Xóa</button>
+                    <a class="btn btn-outline-success" asp-action="UpdateFaculty" asp-route-id="@item.f_id">Update</a>
+                    <button class="btn btn-outline-danger deleteButton" data-toggle="modal" data-target="#deleteModal_@item.f_id">Delete</button>
 
                     <!-- Modal -->
                     <div class="modal fade" id="deleteModal_@item.f_id" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -36,9 +36,6 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="deleteModalLabel">Confirm deletion</h5>
-                                  @*   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button> *@
                                 </div>
                                 <div class="modal-body">
                                     Are you sure you want to delete?
@@ -63,7 +60,7 @@
                 $(modalId).modal("show");
             });
 
-            $(".confirmDelete").click(function () { 
+            $(".confirmDelete").click(function () {
                 $(this).closest(".modal").modal("hide");
             });
 
@@ -76,14 +73,13 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "http://localhost:5154/Faculty/DeleteFaculty/" + facultyId,
+                    url: "http://localhost:5154/Faculty/DeleteFaculty/",
                     data: { facultyId: facultyId },
                     success: function () {
-                        // Xử lý sau khi thành công (nếu cần)
+                        location.reload()
                         console.log("Delete successful");
                     },
                     error: function () {
-                        // Xử lý lỗi (nếu cần)
                         console.log("Error deleting");
                     }
                 });

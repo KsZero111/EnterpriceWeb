@@ -37,20 +37,37 @@ namespace EnterpriceWeb.Controllers
 
         public async Task<IActionResult> Index()
         {
-            int[] art_count_arr;
-            string[] f_name;
+            List<int> art_count_list = new List<int>();
+            List<string> f_name_list = new List<string>();
+
             //list string name faculty
 
             int[] f_id = await _repoFaculty.GetIdAllFaculty();
             foreach (int i in f_id)
             {
-                List<User> users = await _repoAccount.SearAllhUserById(i);
-                foreach (User user in users)
+                int count = 0;
+                List<User> users_list = await _repoAccount.SearAllhUserById(i);
+                if (users_list != null)
                 {
-                    //int quantity_art=_repoArticle.SearhAllArticleCoordinator
+                    f_name_list.Add(users_list[0].faculty.f_name);
+                    int articles_file;
+                    foreach (User user in users_list)
+                    {
+                        List<Article> articles = await _repoArticle.SearhAllArticleDashboard(user.us_id);
+                        if (articles != null)
+                        {
+                            articles_file = (await _repoArticle_File.SearhAllArticleFileById(i)).Count();
+                            art_count_list.Add(articles_file);
+                            count += articles_file;
+                        }
+                    }
                 }
+                art_count_list.Add(count);
             }
 
+            int[] art_count_arr = art_count_list.ToArray();
+            string[] f_name_arr = f_name_list.ToArray();
+            //get name
             // get user trùng f_id=> get article trùng id=> get count
             //list so lượng article của mỗi faculty
             return View();

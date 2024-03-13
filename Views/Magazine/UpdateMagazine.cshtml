@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "UpdateMagazine";
+    Layout = "_LayoutAdmin";
 }
 
 <h1>UpdateMagazine</h1>
@@ -14,23 +15,23 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="magazine_id" />
             <div class="form-group">
-                <label asp-for="magazine_closure_date" class="control-label"></label>
+                <label asp-for="magazine_closure_date" class="control-label">Magazine clousure date</label>
                 <input asp-for="magazine_closure_date" class="form-control" />
                 <span asp-validation-for="magazine_closure_date" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="magazine_final_closure_date" class="control-label"></label>
+                <label asp-for="magazine_final_closure_date" class="control-label">Magazine final closure date</label>
                 <input asp-for="magazine_final_closure_date" class="form-control" />
                 <span asp-validation-for="magazine_final_closure_date" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="magazine_title" class="control-label"></label>
+                <label asp-for="magazine_title" class="control-label">Magazine title</label>
                 <input asp-for="magazine_title" class="form-control" />
                 <span asp-validation-for="magazine_title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="magazine_academic_year" class="control-label"></label>
-                <input asp-for="magazine_academic_year" class="form-control" />
+                <label asp-for="magazine_academic_year" class="control-label">Magazine academic year</label>
+                <input asp-for="magazine_academic_year" class="form-control" /> 
                 <span asp-validation-for="magazine_academic_year" class="text-danger"></span>
             </div>
             <div class="form-group">

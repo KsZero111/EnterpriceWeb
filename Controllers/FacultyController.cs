@@ -138,7 +138,7 @@ namespace EnterpriceWeb.Controllers
 
         private void HandleDeleteFactulty(Faculty faculty)
         {
-            faculty.f_status = "1";
+            faculty.f_status = "0";
             _dbContext.Update(faculty);
             _dbContext.SaveChanges();
         }

@@ -49,5 +49,11 @@ namespace EnterpriceWeb.Repository
             return article;
         }
 
+        //Dashboard
+        public async Task<List<Article>> SearhAllArticleDashboard(int idUser)
+        {
+            List<Article> article = await _appDBContext.articles.Where(art => art.us_id.Equals(idUser)).Include(m => m.magazine).ToListAsync();
+            return article;
+        }
     }
 }
