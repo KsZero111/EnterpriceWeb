@@ -119,6 +119,12 @@ namespace EnterpriceWeb.Migrations
                             f_id = 3,
                             f_name = "faculty3",
                             f_status = "1"
+                        },
+                        new
+                        {
+                            f_id = 999,
+                            f_name = "All",
+                            f_status = "1"
                         });
                 });
 
@@ -245,7 +251,7 @@ namespace EnterpriceWeb.Migrations
                         new
                         {
                             us_id = 1,
-                            f_id = 1,
+                            f_id = 999,
                             us_gmail = "admin",
                             us_image = "fad8651c-32cc-4620-ba7d-c74efa72e006pngwing.com (2).jpg",
                             us_name = "nhancho",
@@ -267,7 +273,7 @@ namespace EnterpriceWeb.Migrations
                         new
                         {
                             us_id = 3,
-                            f_id = 1,
+                            f_id = 999,
                             us_gmail = "marketingmanager",
                             us_image = "fad8651c-32cc-4620-ba7d-c74efa72e006pngwing.com (2).jpg",
                             us_name = "marketingmanager",

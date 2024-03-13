@@ -10,7 +10,7 @@ namespace EnterpriceWeb.Models
         public DbSet<Faculty> faculties { get; set; }
         public DbSet<Article> articles { get; set; }
         public DbSet<Article_file> article_Files { get; set; }
-        //public DbSet<Feedback> feedbacks { get; set; }
+        public DbSet<Feedback> feedbacks { get; set; }
         public DbSet<Magazine> magazines { get; set; }
 
 
