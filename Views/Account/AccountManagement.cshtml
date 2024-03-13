@@ -10,7 +10,7 @@
 <p>
     <a class="btn btn-outline-info" asp-action="Register">Create Account</a>
 </p>
-<table class="table  table-success table-striped">
+<table class="table table-success table-striped">
     <thead>
         <tr>
             <th>
@@ -53,7 +53,7 @@
         {
             <tr>
                 <td>
-                    <img style="width:200px;height:200px  " src="http://localhost:5154/image/User/@Html.DisplayFor(modelItem => item.us_image)" class="img-radius">
+                    <img style="height:200px  " src="http://localhost:5154/image/User/@Html.DisplayFor(modelItem => item.us_image)" class="img-radius">
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.faculty.f_name)
@@ -86,9 +86,64 @@
 
                 <td class="">
                     <a class="btn btn-outline-success m-1" asp-controller="Profile" asp-action="UpdateProfile" asp-route-id="@item.us_id">Update</a>
-                    <a class="btn btn-outline-danger m-1" asp-action="DeleteAccount" asp-route-id="@item.us_id">Delete</a>
+                    @* <a class="btn btn-outline-danger m-1 btndelete" data-role="@item.us_role" asp-action="DeleteAccount" asp-route-id="@item.us_id">Delete</a> *@
+                    <button class="btn btn-outline-danger  btnDeleteMagazine DeleteAccount" value="@item.us_id" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                    <form class="form_Delete_ArticleFile">
+                        <div class="modal fade " tabindex="-1" id="deleteModal" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header d-block">
+                                        <h4 class="modal-title" id="deleteModalLabel">Click on the box below to delete an account</h4>
+                                    </div>
+                                    <div class="modal-footer">
+
+                                        <button type="button" class="btn btn-secondary cancelDelete" data-dismiss="modal">Cancel</button>
+                                        <button class="btn btn-danger confirmDelete">OK </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+
+@section Scripts {
+
+    <script>
+        $(document).ready(function () {
+            var idUser;
+            // Popup Delete magazine
+            $(".DeleteAccount").click(function () {
+                var modalId = $(this).data("target");
+                $(modalId).modal("show");
+                idUser = $(this).val();
+            });
+            // Cancel
+            $(".cancelDelete").click(function () {
+                $(".confirmDelete").closest(".modal").modal("hide");
+            });
+            // Ok
+            $(".confirmDelete").click(function (e) {
+                $(this).closest(".modal").modal("hide");
+                e.preventDefault()
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:5154/Account/DeleteAccount",
+                    data: "id=" + idUser,
+
+                    success: function () {
+                        location.reload()
+                        console.log("Delete successful");
+                    },
+                    error: function (e) {
+                        console.log(e);
+                    }
+                })
+            });
+        });
+    </script>
+}

@@ -98,6 +98,7 @@ namespace EnterpriceWeb.Controllers
                 oldUser.us_gmail = newUser.us_gmail;
                 oldUser.us_start_year = newUser.us_start_year;
                 oldUser.us_end_year = newUser.us_end_year;
+                oldUser.us_role = newUser.us_role;
                 if (avatar != null)
                 {
                     SupportFile.Instance.DeleteFileAsync(oldUser.us_image, "image/User");

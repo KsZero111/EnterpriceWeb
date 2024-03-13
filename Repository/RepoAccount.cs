@@ -14,7 +14,7 @@ namespace EnterpriceWeb.Repository
 
         public async Task<List<User>> SearhAllUser()
         {
-            List<User> users = await appDBContext.users.Include(user=>user.faculty).ToListAsync();
+            List<User> users = await appDBContext.users.Where(users=>users.us_role!="0").Include(user=>user.faculty).ToListAsync();
             return users;
         }
 
@@ -34,6 +34,11 @@ namespace EnterpriceWeb.Repository
         {
             User user = await appDBContext.users.Where(us => us.us_id.Equals(id)).Include(us=>us.faculty).FirstOrDefaultAsync();
             return user;
+        }
+        public async Task<List<User>> SearAllhUserById(int id)
+        {
+            List<User> users = await appDBContext.users.Where(us => us.us_id.Equals(id)).Include(us => us.faculty).ToListAsync();
+            return users;
         }
 
         public async Task<User> Register(User _user)

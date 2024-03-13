@@ -59,7 +59,7 @@ namespace EnterpriceWeb.Controllers
         {
             {
                 var user = _repoAccount.Register(_user);
-                _user.us_role = "student"; // bỏ////////////////////////////////////////////
+                _user.us_role = "student";
 
                 if (user == null)
                 {
@@ -130,7 +130,7 @@ namespace EnterpriceWeb.Controllers
             if (user != null)
             {
                 HandlderDeleteAccount(user);
-                return RedirectToAction("Index", "Admin");
+                return RedirectToAction("AccountManagement", "Admin");
             }
             else
             {

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 
 namespace EnterpriceWeb.Repository
-{
+{   
     public class RepoFaculty
     {
         private readonly AppDbConText _appDBContext;
@@ -14,6 +14,16 @@ namespace EnterpriceWeb.Repository
         {
             List<Faculty> faculties = await _appDBContext.faculties.Where(f=>f.f_status.Equals("1")).ToListAsync();
             return faculties;
+        }
+        public async Task<string[]> GetNameAllFaculty()
+        {
+            string[] faculties = await _appDBContext.faculties.Where(f => f.f_status.Equals("1")).Select(f=>f.f_name).ToArrayAsync();
+            return faculties;
+        }
+        public async Task<int[]> GetIdAllFaculty()
+        {
+            int[] facultiesId = await _appDBContext.faculties.Where(f => f.f_status.Equals("1")).Select(f => f.f_id).ToArrayAsync();
+            return facultiesId;
         }
         public async Task<Faculty> SearhFacultyByName(string name)
         {
