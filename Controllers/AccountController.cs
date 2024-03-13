@@ -60,7 +60,7 @@ namespace EnterpriceWeb.Controllers
         private void changesPassword(string newpass, User user)
         {
             user.us_password = newpass;
-            _dbContext.users.Add(user);
+            _dbContext.Update(user);
             _dbContext.SaveChanges();
         }
         public IActionResult ChangesPassword(int id)
