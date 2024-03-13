@@ -58,7 +58,7 @@ namespace EnterpriceWeb.Controllers
             // Return the ZIP archive as a file
             return memoryStream;
         }
-        public async Task<MemoryStream> DownloadProcessAsync(List<MemoryStream> memoryStreams,List<string> titles)
+        public async Task<MemoryStream> DownloadProcessAsync(List<MemoryStream> memoryStreams, List<string> titles)
         {
             var finalMemoryStream = new MemoryStream();
 

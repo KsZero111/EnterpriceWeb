@@ -136,11 +136,12 @@
                 var dataPost = JSON.stringify(arrArticle)
                 $.ajax({
                     type: "POST",
-                    url: "http://localhost:5154/Article/Download",
+                            url: "http://localhost:5154/Article/DownLoadwithCheckbox",
                     data: { arrArticle: dataPost },
-                    success: function () {
-                        // location.reload()
-                        console.log("Accept successful");
+                    success: function (dataPost) {
+                             console.log("Success: Redirecting...");
+                                 window.location.href = '/Article/Download?arrArticle=' + dataPost;
+                              
                     },
                     error: function () {
                         console.log("Error Accept article ");
@@ -166,11 +167,12 @@
                 var dataPost = JSON.stringify(arrArticle)
                 $.ajax({
                     type: "POST",
-                    url: "http://localhost:5154/Article/Download",
-                    data: { arrArticle: dataPost },
+                        url: "http://localhost:5154/Article/DownLoadAll",
+                    data: { arrArticleAll: dataPost },
                     success: function () {
-                        // location.reload()
-                        console.log("Accept successful");
+                          window.location.href = '/Article/Download?arrArticle=' + dataPost;
+                        
+   
                     },
                     error: function () {
                         console.log("Error Accept article ");
