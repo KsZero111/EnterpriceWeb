@@ -34,7 +34,7 @@
                         <h3 class="pt-3 font-weight-bold">Register</h3>
                     </div>
                     <div class="panel-body">
-                        <form asp-controller="Account" asp-action="Register" method="POST" enctype="multipart/form-data">
+                        <form id="btn-register" asp-controller="Account" asp-action="Register" method="POST" enctype="multipart/form-data">
                             <div class="form-group">
                                 <div class="input-field"> <span class="far fa-user p-2"></span> <input type="text" placeholder="User Name" name="us_name" required> </div>
                             </div>
@@ -53,24 +53,31 @@
                             <div class="form-group">
 
                                 <label class="control-label">Avatar</label>
-                                <div class="input-field"> <span class="fas fa-picture px-2"></span> <input type="file" placeholder="Image" name="image"> </div>
+                                <div class="input-field"> <span class="fas fa-picture px-2"></span> <input type="file" placeholder="Image" name="image"required > </div>
                             </div>
                             <div class="form-group">
-                                <div class="input-field"> <span class="fas fa-phone px-2"></span> <input type="text" placeholder="Phone" name="us_phone"> </div>
+                                <div class="input-field"> <span class="fas fa-phone px-2"></span> <input type="text" placeholder="Phone" name="us_phone"required> </div>
                             </div>
                             <div class="form-group">
-                                <div class="input-field"> <span class="far fa-envelope p-2 "></span> <input type="email" placeholder="Email" name="us_gmail" class="border-0"> </div>
+                                <div class="input-field"> <span class="far fa-envelope p-2 "></span> <input type="email" placeholder="Email" name="us_gmail" class="border-0"required> </div>
                             </div>
                             <div class="form-group">
-                                <div class="input-field"> <span class="fas fa-venus-mars px-2"></span> <input type="text" placeholder="Gender" name="us_gender"> </div>
+                                <div class="input-field"> <span class="fas fa-venus-mars px-2"></span> <input type="text" placeholder="Gender" name="us_gender"required> </div>
                             </div>
                             <div class="form-group">
-                                <div class="input-field"> <span class="far fa-calendar-alt p-2"></span> <input type="text" placeholder="Start Year" name="us_start_year"> </div>
+                                <div class="input-field"> <span class="far fa-calendar-alt p-2"></span> <input type="text" placeholder="Start Year" name="us_start_year"required> </div>
                             </div>
                             <div class="form-group">
-                                <div class="input-field"> <span class="far fa-calendar-alt p-2"></span> <input type="text" placeholder="End Year" name="us_end_year"> </div>
+                                <div class="input-field"> <span class="far fa-calendar-alt p-2"></span> <input type="text" placeholder="End Year" name="us_end_year"required> </div>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-block mt-3">Register</button>
+                            @if (TempData["erorr"] != null)
+                            {
+                                <div class="form-group checktype">
+                                    <p>@TempData["erorr"]</p>
+
+                                </div>
+                            }
+                            <button type="submit"  class="btn btn-primary btn-block mt-3">Register</button>
                         </form>
                     </div>
                 </div>
@@ -80,3 +87,24 @@
     <script type='text/javascript'></script>
 </body>
 </html>
+ <script>
+  $("#btn-register").submit(function (e) {
+                e.preventDefault()
+                var formData = new FormData(this);
+
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:5154/Account/Register",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function () {
+                        window.location.href="http://localhost:5154/Account/AccountManagement"
+                    },
+                    error: function () {
+                    }
+                });
+            });
+
+        });
+    </script>

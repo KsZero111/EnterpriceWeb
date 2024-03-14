@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using MySqlX.XDevAPI;
 using NuGet.Protocol;
 using System;
+using System.Numerics;
 using System.Text;
 
 namespace EnterpriceWeb.Controllers
@@ -129,24 +130,62 @@ namespace EnterpriceWeb.Controllers
         //POST: Register
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Register([FromForm] User _user,IFormFile image)
+        public async Task<ActionResult> Register([FromForm] User _user,IFormFile image)
         {
             {
-                var user = _repoAccount.Register(_user);
-
-
-                if (user == null)
+                if (image != null)
                 {
-                    //_user.us_password = MD5(_user.us_password);
-                    _dbContext.users.Add(_user);
-                    _dbContext.SaveChanges();
-                    return RedirectToAction("Login");
+                    string type = Path.GetFileName(image.FileName);
+                   type=type.Substring(type.LastIndexOf("."));
+                    if (type == ".png" || type == ".jpg" || type == ".csv")
+                    {
+                        var user = _repoAccount.Register(_user);
+                        if (user == null)
+                        {
+                            //_user.us_password = MD5(_user.us_password);
+                            HandleRegister(_user, image);
+                            return Ok();
+                        }
+                        else
+                        {
+                            TempData.Clear();
+                            TempData["erorr"] = "Email already exists";
+                            List<Faculty> list_Faculty = await _repoFaculty.SearhAllFaculty();
+                            ViewBag.ListFaculty = list_Faculty;
+                            return View();
+                        }
+                    }
+                    else
+                    {
+                        TempData.Clear();
+                        TempData["erorr"] = "please choose avatar is .jpg or .png";
+                        List<Faculty> list_Faculty = await _repoFaculty.SearhAllFaculty();
+                        ViewBag.ListFaculty = list_Faculty;
+                        return View();
+                    }
                 }
                 else
                 {
-                    ViewBag.error = "Email already exists";
-                    return View();
+                    return BadRequest();
                 }
+            }
+        }
+        private async Task HandleRegister(User newUser, IFormFile avatar)
+        {
+            try
+            {
+                
+                if (avatar != null)
+                {
+                    string filename = await SupportFile.Instance.SaveFileAsync(avatar, "image/User");
+                    newUser.us_image = filename;
+                    _dbContext.users.Add(newUser);
+                    _dbContext.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                throw;
             }
         }
 
