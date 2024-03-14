@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using MySqlX.XDevAPI;
 using NuGet.Protocol;
 using System;
+using System.Text;
 
 namespace EnterpriceWeb.Controllers
 {
@@ -59,6 +60,7 @@ namespace EnterpriceWeb.Controllers
 
         private void changesPassword(string newpass, User user)
         {
+            newpass=MD5(newpass);
             user.us_password = newpass;
             _dbContext.Update(user);
             _dbContext.SaveChanges();
@@ -87,6 +89,16 @@ namespace EnterpriceWeb.Controllers
                 }
             }
             return RedirectToAction("NotFound", "Home");
+        }
+        public string MD5(string s)
+        {
+            using var provider = System.Security.Cryptography.MD5.Create();
+            StringBuilder builder = new StringBuilder();
+
+            foreach (byte b in provider.ComputeHash(Encoding.UTF8.GetBytes(s)))
+                builder.Append(b.ToString("x2").ToLower());
+
+            return builder.ToString();
         }
         public async Task<ActionResult> AccountManagement()
         {
@@ -125,6 +137,7 @@ namespace EnterpriceWeb.Controllers
 
                 if (user == null)
                 {
+                    _user.us_password = MD5(_user.us_password);
                     _dbContext.users.Add(_user);
                     _dbContext.SaveChanges();
                     return RedirectToAction("Login");
@@ -149,6 +162,7 @@ namespace EnterpriceWeb.Controllers
         {
             if (ModelState.IsValid)
             {
+                password = MD5(password);
                 var data = _repoAccount.login(gmail, password);
                 if (data.Count() != 0)
                 {
