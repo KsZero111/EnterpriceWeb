@@ -51,22 +51,24 @@ namespace EnterpriceWeb.Controllers
                 {
                     if (users_list.Count > 0) f_name_list.Add(users_list[0].faculty.f_name);
 
-                    int total_Article_File_fromUser = 0;
+                    int total_Article_File_from_User = 0;
                     foreach (User user in users_list)
                     {
                         List<Article> articles = await _repoArticle.SearhAllArticleDashboard(user.us_id);
                         if (articles != null)
                         {
-                            int total_Article_File_fromArticle = 0;
+                            int total_Article_File_from_Article = 0;
                             foreach (Article article in articles)
                             {
                                 int soluong_article_file = (await _repoArticle_File.SearhAllArticleFileById(article.article_id)).Count();
-                                total_Article_File_fromArticle += soluong_article_file;
+                                total_Article_File_from_Article += soluong_article_file;
                             }
+                            total_Article_File_from_User += total_Article_File_from_Article;
                         }
                     }
+                    total_Article_File_fromFaculty += total_Article_File_from_User;
                 }
-                //art_count_list.Add(count);
+                art_count_list.Add(total_Article_File_fromFaculty);
             }
 
             int[] art_count_arr = art_count_list.ToArray();

@@ -129,7 +129,7 @@ namespace EnterpriceWeb.Controllers
         //POST: Register
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Register([FromForm] User _user)
+        public ActionResult Register([FromForm] User _user,IFormFile image)
         {
             {
                 var user = _repoAccount.Register(_user);
