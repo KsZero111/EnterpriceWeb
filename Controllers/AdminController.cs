@@ -45,24 +45,28 @@ namespace EnterpriceWeb.Controllers
             int[] f_id = await _repoFaculty.GetIdAllFaculty();
             foreach (int i in f_id)
             {
-                int count = 0;
+                int total_Article_File_fromFaculty = 0;
                 List<User> users_list = await _repoAccount.SearAllhUserById(i);
                 if (users_list != null)
                 {
-                    f_name_list.Add(users_list[0].faculty.f_name);
-                    int articles_file;
+                    if (users_list.Count > 0) f_name_list.Add(users_list[0].faculty.f_name);
+
+                    int total_Article_File_fromUser = 0;
                     foreach (User user in users_list)
                     {
                         List<Article> articles = await _repoArticle.SearhAllArticleDashboard(user.us_id);
                         if (articles != null)
                         {
-                            articles_file = (await _repoArticle_File.SearhAllArticleFileById(i)).Count();
-                            art_count_list.Add(articles_file);
-                            count += articles_file;
+                            int total_Article_File_fromArticle = 0;
+                            foreach (Article article in articles)
+                            {
+                                int soluong_article_file = (await _repoArticle_File.SearhAllArticleFileById(article.article_id)).Count();
+                                total_Article_File_fromArticle += soluong_article_file;
+                            }
                         }
                     }
                 }
-                art_count_list.Add(count);
+                //art_count_list.Add(count);
             }
 
             int[] art_count_arr = art_count_list.ToArray();

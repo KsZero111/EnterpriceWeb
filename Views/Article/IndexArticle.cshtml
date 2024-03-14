@@ -21,88 +21,90 @@
         Download with checkbox
     </a>
 </p>
+<div class="table-responsive">
 
-<table class="table table-success table-striped">
-    <thead>
-        <tr>
-            <th>
-                Article avatar
-            </th>
-            <th>
-                Magazine title
-            </th>
-            <th>
-                Article title
-            </th>
-            <th>
-                Submit date
-            </th>
-            <th>
-                Accept date
-            </th>
-            <th>
-                Views
-            </th>
-            <th>
-                Status
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody id="container">
-        @foreach (var item in Model)
-        {
+    <table class="table table-success table-striped">
+        <thead>
             <tr>
-                <td>
-                    <img style="width:130px; height:130px" src="http://localhost:5154/image/Article/@Html.DisplayFor(modelItem => item.article_avatar)" />
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.magazine.magazine_title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.article_title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.article_submit_date)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.article_accept_date)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.article_views)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.article_status)
-                </td>
-                <td>
-                    <a type="hidden" asp-controller="Article_File" asp-action="IndexArticle_File" asp-route-article_id="@item.article_id" class="btn btn-outline-primary btnContributeArticle">Contribute</a>
-                    <a asp-action="UpdateArticle" asp-route-id="@item.article_id" class="btn btn-outline-success btnUpdateArticle">Update</a>
-                    <button name="id" class="btn btn-outline-success btnAcceptArticle" value="@item.article_id">Accept</button>
-                    <button name="id" class="btn btn-outline-danger btnRefuseArticle" value="@item.article_id">Refuse</button>
-                    <button class="btn btn-outline-danger DeleteArticle btnDeleteArticle" value="@item.article_id" data-toggle="modal" data-target="#deleteModal">Delete</button>
-                    <input class="inputCheck" data-id="@item.article_id" data-title="@item.article_title" type="checkbox" />
-                    <form enctype="multipart/form-data" id="form_Delete_Article">
-                        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header d-block">
-                                        <h4 class="modal-title" id="deleteModalLabel">Click on the box below to delete an article</h4>
-                                        <h7 class="modal-title text-danger">* This action will delete all file contribution in the article</h7>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary cancelDelete" data-dismiss="modal">Cancel</button>
-                                        <button class="btn btn-danger confirmDelete">OK</button>
+                <th>
+                    Article avatar
+                </th>
+                <th>
+                    Magazine title
+                </th>
+                <th>
+                    Article title
+                </th>
+                <th>
+                    Submit date
+                </th>
+                <th>
+                    Accept date
+                </th>
+                <th>
+                    Views
+                </th>
+                <th>
+                    Status
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="container">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <img style="height:130px" src="http://localhost:5154/image/Article/@Html.DisplayFor(modelItem => item.article_avatar)" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.magazine.magazine_title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.article_title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.article_submit_date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.article_accept_date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.article_views)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.article_status)
+                    </td>
+                    <td>
+                        <a type="hidden" asp-controller="Article_File" asp-action="IndexArticle_File" asp-route-article_id="@item.article_id" class="btn btn-outline-primary btnContributeArticle">Contribute</a>
+                        <a asp-action="UpdateArticle" asp-route-id="@item.article_id" class="btn btn-outline-success btnUpdateArticle">Update</a>
+                        <button name="id" class="btn btn-outline-success btnAcceptArticle" value="@item.article_id">Accept</button>
+                        <button name="id" class="btn btn-outline-danger btnRefuseArticle" value="@item.article_id">Refuse</button>
+                        <button class="btn btn-outline-danger DeleteArticle btnDeleteArticle" value="@item.article_id" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                        <input class="inputCheck" data-id="@item.article_id" data-title="@item.article_title" type="checkbox" />
+                        <form enctype="multipart/form-data" id="form_Delete_Article">
+                            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header d-block">
+                                            <h4 class="modal-title" id="deleteModalLabel">Click on the box below to delete an article</h4>
+                                            <h7 class="modal-title text-danger">* This action will delete all file contribution in the article</h7>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary cancelDelete" data-dismiss="modal">Cancel</button>
+                                            <button class="btn btn-danger confirmDelete">OK</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
 
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 
 <style>
     .hiddenbutton {

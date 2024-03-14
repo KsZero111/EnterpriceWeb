@@ -60,7 +60,7 @@ namespace EnterpriceWeb.Controllers
 
         private void changesPassword(string newpass, User user)
         {
-            newpass=MD5(newpass);
+            //newpass=MD5(newpass);
             user.us_password = newpass;
             _dbContext.Update(user);
             _dbContext.SaveChanges();
@@ -137,7 +137,7 @@ namespace EnterpriceWeb.Controllers
 
                 if (user == null)
                 {
-                    _user.us_password = MD5(_user.us_password);
+                    //_user.us_password = MD5(_user.us_password);
                     _dbContext.users.Add(_user);
                     _dbContext.SaveChanges();
                     return RedirectToAction("Login");
@@ -162,7 +162,7 @@ namespace EnterpriceWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                password = MD5(password);
+                //password = MD5(password);
                 var data = _repoAccount.login(gmail, password);
                 if (data.Count() != 0)
                 {
