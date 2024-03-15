@@ -49,10 +49,12 @@ namespace EnterpriceWeb.Controllers
                 {
                     string newpassword = await mailSystem.SendgmailForgetPassword(gmail);
                     changesPassword(newpassword, user1);
+                    ViewBag.forgot = "success";
                     return View();
                 }
                 else
                 {
+                    ViewBag.forgot = "fail";
                     return View();
                 }
             }
