@@ -220,6 +220,7 @@ namespace EnterpriceWeb.Controllers
                 }
                 else
                 {
+                    TempData.Clear();
                     TempData["erorr"] = "Login failed";
                     return View();
                 }
