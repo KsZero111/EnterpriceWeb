@@ -2,6 +2,8 @@
     ViewData["Title"] = "Admin";
     Layout = "_LayoutAdmin";
 }
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,9 +12,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>Material Design Bootstrap</title>
-
-    <!-- Your custom styles (optional) -->
-  
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
     <style>
 
         .map-container {
@@ -45,7 +46,7 @@
                 <div class="card-body d-sm-flex justify-content-between">
 
                     <h4 class="mb-2 mb-sm-0 pt-1">
-                    
+                        <a href="https://mdbootstrap.com/docs/jquery/" target="_blank"></a>
                         <span>Dashboard</span>
                     </h4>
 
@@ -137,16 +138,13 @@
                 <!--Grid column-->
             </div>
 
-            <!-- SCRIPTS -->
-            <!-- JQuery -->
             <script src="~/lib/jquery/dist/jquery.min.js"></script>
-            <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> 
+            <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
             <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
-          
+
             <!-- MDB core JavaScript -->
             <script type="text/javascript" src="~/js/popper.min.js"></script>
             <script type="text/javascript" src="~/js/mdb.min.js"></script>
-     
             <!-- Initializations -->
             <script type="text/javascript">
                 // Animations initialization
@@ -155,37 +153,117 @@
             </script>
 
             <!-- Charts -->
+
             <script>
-                // Line
+                const myArr = [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 0, 0, 0.2)',
+                    'rgba(0, 255, 0, 0.2)',
+                    'rgba(0, 0, 255, 0.2)',
+                    'rgba(255, 255, 0, 0.2)',
+                    'rgba(128, 0, 128, 0.2)',
+                    'rgba(0, 128, 128, 0.2)'
+                ]
+                function randomItemFromArray(arr) {
+                    if (arr.length === 0) {
+                        return null;
+                    }
+                    var randomIndex = Math.floor(Math.random() * arr.length);
+                    return arr[randomIndex];
+                }
+                function sumArray(mang) {
+                    if (Array.isArray(mang)) {
+                        let sum = 0;
+                        for (let i = 0; i < mang.length; i++) {
+                            sum += mang[i];
+                        }
+                        return sum;
+                    }
+                }
+                function percentage(number, array) {
+                    var totalNumber = sumArray(array)
+                    var percen_number = (number / totalNumber) * 100
+                    return percen_number;
+                }
+                // Bar
+
+                $(document).ready(function () {
+                    $.ajax({
+                        type: "GET",
+                        dataType: "json",
+                        url: "http://localhost:5154/Admin/Data",
+                        success: function (response) {
+
+                            const { art_file_total_arr, f_name_total_arr } = response
+                            const data = [];
+                            const data_piechart = [];
+                            const labels = [];
+                            const backgroundColor = [];
+
+                            const borderColor = [];
+                            const total_art_file = sumArray(art_file_total_arr)
+
+
+                            for (let i = 0; i < art_file_total_arr.length; i++) {
+                                backgroundColor.push(randomItemFromArray(myArr))
+                                borderColor.push('rgba(255, 159, 64, 1)')
+                                labels.push(f_name_total_arr[i])
+                                //push data bar chart
+                                data.push(art_file_total_arr[i])
+                                //push data pie chart
+                                data_piechart.push(percentage(art_file_total_arr[i], art_file_total_arr))
+                            }
+
+
+                            // data bar chart
+                            const data_bar = {
+                                labels: labels,
+                                datasets: [{
+                                    label: 'Quantity of article file',
+                                    data: data,
+                                    backgroundColor: backgroundColor,
+                                    borderColor: borderColor,
+                                    borderWidth: 1
+                                }]
+                            }
+                            myChart.data = data_bar;
+                            myChart.update();
+
+
+                            // data pie chart
+                            const data_pie = {
+                                labels: labels,
+                                datasets: [{
+                                    label: 'Percentage of contribution per faculty:',
+                                    data: data_piechart,
+                                    backgroundColor: backgroundColor,
+                                    hoverBackgroundColor: backgroundColor
+                                }]
+                            }
+                            console.log(data_piechart)
+                            myPieChart.data = data_pie;
+                            myPieChart.update();
+
+                        },
+                        error: function (e) {
+                            console.log(e);
+                            console.log("nhuccluonbanoi");
+                        }
+                    })
+                })
+
+                //bar chart
                 var ctx = document.getElementById("myChart").getContext('2d');
                 var myChart = new Chart(ctx, {
+
                     type: 'bar',
-                    data: {
-                        //số lượng khoa
-                        labels: ["Math", "History", "Biology", "Literature", "Information Technology", "Chemistry"],
-                        datasets: [{
-                            label: 'Number of submissions',
-                            //số lượng nộp
-                            data: [12, 14, 3, 5, 2, 3],
-                            backgroundColor: [
-                                'rgba(255, 99, 132, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(255, 206, 86, 0.2)',
-                                'rgba(75, 192, 192, 0.2)',
-                                'rgba(153, 102, 255, 0.2)',
-                                'rgba(255, 159, 64, 0.2)'
-                            ],
-                            borderColor: [
-                                'rgba(255,99,132,1)',
-                                'rgba(54, 162, 235, 1)',
-                                'rgba(255, 206, 86, 1)',
-                                'rgba(75, 192, 192, 1)',
-                                'rgba(153, 102, 255, 1)',
-                                'rgba(255, 159, 64, 1)'
-                            ],
-                            borderWidth: 1
-                        }]
-                    },
+                    data: null,
+                    label: null,
                     options: {
                         scales: {
                             yAxes: [{
@@ -197,59 +275,16 @@
                     }
                 });
 
-                //pie
+                //pie chart
                 var ctxP = document.getElementById("pieChart").getContext('2d');
                 var myPieChart = new Chart(ctxP, {
                     type: 'pie',
-                    data: {
-                        labels: ["Red", "Green", "Yellow", "Grey", "Dark Grey"],
-                        datasets: [{
-                            data: [300, 50, 100, 40, 120],
-                            backgroundColor: ["#F7464A", "#46BFBD", "#FDB45C", "#949FB1", "#4D5360"],
-                            hoverBackgroundColor: ["#FF5A5E", "#5AD3D1", "#FFC870", "#A8B3C5", "#616774"]
-                        }]
-                    },
+                    data: null,
                     options: {
                         responsive: true,
                         legend: false
                     }
                 });
-
-
-                //line
-                var ctxL = document.getElementById("lineChart").getContext('2d');
-                var myLineChart = new Chart(ctxL, {
-                    type: 'line',
-                    data: {
-                        labels: ["January", "February", "March", "April", "May", "June", "July"],
-                        datasets: [{
-                            label: "My First dataset",
-                            backgroundColor: [
-                                'rgba(105, 0, 132, .2)',
-                            ],
-                            borderColor: [
-                                'rgba(200, 99, 132, .7)',
-                            ],
-                            borderWidth: 2,
-                            data: [65, 59, 80, 81, 56, 55, 40]
-                        },
-                        {
-                            label: "My Second dataset",
-                            backgroundColor: [
-                                'rgba(0, 137, 132, .2)',
-                            ],
-                            borderColor: [
-                                'rgba(0, 10, 130, .7)',
-                            ],
-                            data: [28, 48, 40, 19, 86, 27, 90]
-                        }
-                        ]
-                    },
-                    options: {
-                        responsive: true
-                    }
-                });
-
             </script>
 </body>
 

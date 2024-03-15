@@ -52,8 +52,25 @@ namespace EnterpriceWeb.Repository
         //Dashboard
         public async Task<List<Article>> SearhAllArticleDashboard(int idUser)
         {
-            List<Article> article = await _appDBContext.articles.Where(art => art.us_id.Equals(idUser)).Include(m => m.magazine).ToListAsync();
+            List<Article> article = await _appDBContext.articles.Where(art => art.us_id.Equals(idUser)).ToListAsync();
             return article;
         }
+
+        public async Task<int> SearhAllArticle_Accept_DashboardAsync()
+        {
+            int article = (await _appDBContext.articles.Where(art => art.article_status.Equals("Accept")).ToListAsync()).Count;
+            return article;
+        }
+        public async Task<int> SearhAllArticle_Inprocessing_DashboardAsync()
+        {
+            int article = (await _appDBContext.articles.Where(art => art.article_status.Equals("In processing")).ToListAsync()).Count;
+            return article;
+        }
+        public async Task<int> SearhAllArticle_Refuse_DashboardAsync()
+        {
+            int article = (await _appDBContext.articles.Where(art => art.article_status.Equals("Refuse")).ToListAsync()).Count;
+            return article;
+        }
+
     }
 }

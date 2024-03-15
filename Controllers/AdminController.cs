@@ -2,7 +2,7 @@
 using EnterpriceWeb.Models;
 using EnterpriceWeb.Repository;
 using Microsoft.AspNetCore.Mvc;
-
+using System.Text.Json;
 namespace EnterpriceWeb.Controllers
 {
     public class AdminController : Controller
@@ -35,21 +35,32 @@ namespace EnterpriceWeb.Controllers
             mailSystem = new SendMailSystem(emailSender, hostEnvironment);
         }
 
+
+
+
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
-            List<int> art_count_list = new List<int>();
-            List<string> f_name_list = new List<string>();
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Data()
+        {
+            List<int> art_file_total_list = new List<int>();
+            List<string> f_name_total_list = new List<string>();
 
             //list string name faculty
 
             int[] f_id = await _repoFaculty.GetIdAllFaculty();
             foreach (int i in f_id)
             {
+                f_name_total_list.Add((await _repoFaculty.SearhFacultyById(i)).f_name);
                 int total_Article_File_fromFaculty = 0;
                 List<User> users_list = await _repoAccount.SearAllhUserById(i);
                 if (users_list != null)
                 {
-                    if (users_list.Count > 0) f_name_list.Add(users_list[0].faculty.f_name);
+                    //if (users_list.Count > 0) f_name_total_list.Add(users_list[0].faculty.f_name);
 
                     int total_Article_File_from_User = 0;
                     foreach (User user in users_list)
@@ -68,14 +79,26 @@ namespace EnterpriceWeb.Controllers
                     }
                     total_Article_File_fromFaculty += total_Article_File_from_User;
                 }
-                art_count_list.Add(total_Article_File_fromFaculty);
+                art_file_total_list.Add(total_Article_File_fromFaculty);
             }
-
-            int[] art_count_arr = art_count_list.ToArray();
-            string[] f_name_arr = f_name_list.ToArray();
-            //get name
-            // get user trùng f_id=> get article trùng id=> get count
-            //list so lượng article của mỗi faculty
+            ViewBag.art_file_total_arr = art_file_total_list;
+            ViewBag.f_name_total_arr = f_name_total_list;
+            return Ok(JsonSerializer.Serialize(new
+            {
+                art_file_total_arr = ViewBag.art_file_total_arr
+                ,
+                f_name_total_arr = ViewBag.f_name_total_arr
+            }));
+        }
+        [HttpGet]
+        public async Task<IActionResult> DataArticle()
+        {
+            int art_Acccept = await _repoArticle.SearhAllArticle_Accept_DashboardAsync();
+            int art_Inprocessing = await _repoArticle.SearhAllArticle_Inprocessing_DashboardAsync();
+            int art_Refuse = await _repoArticle.SearhAllArticle_Refuse_DashboardAsync();
+            ViewBag.art_Acccept = art_Acccept;
+            ViewBag.art_Inprocessing = art_Inprocessing;
+            ViewBag.art_Refuse = art_Refuse;
             return View();
         }
     }

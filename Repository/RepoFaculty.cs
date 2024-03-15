@@ -17,7 +17,7 @@ namespace EnterpriceWeb.Repository
         }
         public async Task<int[]> GetIdAllFaculty()
         {
-            int[] facultiesId = await _appDBContext.faculties.Where(f => f.f_status.Equals("1")).Select(f => f.f_id).ToArrayAsync();
+            int[] facultiesId = await _appDBContext.faculties.Where(f => f.f_status.Equals("1")&& f.f_id !=999).Select(f => f.f_id).ToArrayAsync();
             return facultiesId;
         }
         public async Task<Faculty> SearhFacultyByName(string name)

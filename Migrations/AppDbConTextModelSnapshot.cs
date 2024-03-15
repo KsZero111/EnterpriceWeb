@@ -80,6 +80,8 @@ namespace EnterpriceWeb.Migrations
 
                     b.HasKey("article_file_id");
 
+                    b.HasIndex("article_id");
+
                     b.ToTable("article_Files");
                 });
 
@@ -254,7 +256,7 @@ namespace EnterpriceWeb.Migrations
                             f_id = 999,
                             us_gmail = "admin",
                             us_image = "fad8651c-32cc-4620-ba7d-c74efa72e006pngwing.com (2).jpg",
-                            us_name = "nhancho",
+                            us_name = "admin",
                             us_password = "admin",
                             us_phone = "07788880524",
                             us_role = "admin"
@@ -262,17 +264,6 @@ namespace EnterpriceWeb.Migrations
                         new
                         {
                             us_id = 2,
-                            f_id = 1,
-                            us_gmail = "hpthkl@gmail.com",
-                            us_image = "fad8651c-32cc-4620-ba7d-c74efa72e006pngwing.com (2).jpg",
-                            us_name = "coordinator",
-                            us_password = "123",
-                            us_phone = "07788880524",
-                            us_role = "coordinator"
-                        },
-                        new
-                        {
-                            us_id = 3,
                             f_id = 999,
                             us_gmail = "marketingmanager",
                             us_image = "fad8651c-32cc-4620-ba7d-c74efa72e006pngwing.com (2).jpg",
@@ -283,11 +274,66 @@ namespace EnterpriceWeb.Migrations
                         },
                         new
                         {
-                            us_id = 4,
+                            us_id = 3,
                             f_id = 1,
-                            us_gmail = "student",
+                            us_gmail = "hpthkl@gmail.com",
                             us_image = "fad8651c-32cc-4620-ba7d-c74efa72e006pngwing.com (2).jpg",
-                            us_name = "student",
+                            us_name = "coordinator1",
+                            us_password = "123",
+                            us_phone = "07788880524",
+                            us_role = "coordinator"
+                        },
+                        new
+                        {
+                            us_id = 4,
+                            f_id = 2,
+                            us_gmail = "hpthkl1@gmail.com",
+                            us_image = "fad8651c-32cc-4620-ba7d-c74efa72e006pngwing.com (2).jpg",
+                            us_name = "coordinator2",
+                            us_password = "123",
+                            us_phone = "07788880524",
+                            us_role = "coordinator"
+                        },
+                        new
+                        {
+                            us_id = 5,
+                            f_id = 2,
+                            us_gmail = "hpthkl3@gmail.com",
+                            us_image = "fad8651c-32cc-4620-ba7d-c74efa72e006pngwing.com (2).jpg",
+                            us_name = "coordinator3",
+                            us_password = "123",
+                            us_phone = "07788880524",
+                            us_role = "coordinator"
+                        },
+                        new
+                        {
+                            us_id = 6,
+                            f_id = 1,
+                            us_gmail = "student1",
+                            us_image = "fad8651c-32cc-4620-ba7d-c74efa72e006pngwing.com (2).jpg",
+                            us_name = "student1",
+                            us_password = "123",
+                            us_phone = "07788880524",
+                            us_role = "student"
+                        },
+                        new
+                        {
+                            us_id = 7,
+                            f_id = 2,
+                            us_gmail = "student2",
+                            us_image = "fad8651c-32cc-4620-ba7d-c74efa72e006pngwing.com (2).jpg",
+                            us_name = "student2",
+                            us_password = "123",
+                            us_phone = "07788880524",
+                            us_role = "student"
+                        },
+                        new
+                        {
+                            us_id = 8,
+                            f_id = 3,
+                            us_gmail = "student3",
+                            us_image = "fad8651c-32cc-4620-ba7d-c74efa72e006pngwing.com (2).jpg",
+                            us_name = "student3",
                             us_password = "123",
                             us_phone = "07788880524",
                             us_role = "student"
@@ -311,6 +357,17 @@ namespace EnterpriceWeb.Migrations
                     b.Navigation("magazine");
 
                     b.Navigation("user");
+                });
+
+            modelBuilder.Entity("EnterpriceWeb.Models.Article_file", b =>
+                {
+                    b.HasOne("EnterpriceWeb.Models.Article", "article")
+                        .WithMany()
+                        .HasForeignKey("article_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("article");
                 });
 
             modelBuilder.Entity("EnterpriceWeb.Models.Feedback", b =>
