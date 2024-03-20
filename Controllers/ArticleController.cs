@@ -305,7 +305,7 @@ namespace EnterpriceWeb.Controllers
 
         public async Task<IActionResult> Download(string arrArticle)
         {
-            //if (TempData["DownloadArticles"]!=null) {
+           
             List<string> titles = new List<string>();
             List<DownLoadArticle> lst_selected_article = JsonConvert.DeserializeObject<List<DownLoadArticle>>(arrArticle);
 
@@ -314,29 +314,31 @@ namespace EnterpriceWeb.Controllers
             string role = session.GetString("role");
             if (user_id != null && role != "admin")
             {
-                List<MemoryStream> memories = new List<MemoryStream>();
-
-                foreach (DownLoadArticle article in lst_selected_article)
+                if (lst_selected_article.Count > 0)
                 {
-                    List<Article_file> lis_files = await _repoArticle_File.SearhAllArticleFileById(article.id);
+                    List<MemoryStream> memories = new List<MemoryStream>();
 
-                    MemoryStream memory = mailSystem.DownloadSingleFile(lis_files);
-                    memories.Add(memory);
-                    titles.Add(article.title);
-                }
-                if (memories.Count > 1)
-                {
-                    MemoryStream memori = await mailSystem.DownloadProcessAsync(memories, titles);
-                    return File(memori.ToArray(), "application/zip", "selected_article.zip");
+                    foreach (DownLoadArticle article in lst_selected_article)
+                    {
+                        List<Article_file> lis_files = await _repoArticle_File.SearhAllArticleFileById(article.id);
 
-                }
-                else if (memories.Count == 1)
-                {
-                    return File(memories.First().ToArray(), "application/zip", "selected_article.zip");
-                }
+                        MemoryStream memory = mailSystem.DownloadSingleFile(lis_files);
+                        memories.Add(memory);
+                        titles.Add(article.title);
+                    }
+                    if (memories.Count > 1)
+                    {
+                        MemoryStream memori = await mailSystem.DownloadProcessAsync(memories, titles);
+                        return File(memori.ToArray(), "application/zip", "selected_article.zip");
 
-                return RedirectToAction("Index", "Article");
-            }
+                    }
+                    else if (memories.Count == 1)
+                    {
+                        return File(memories.First().ToArray(), "application/zip", "selected_article.zip");
+                    }
+                }
+                    return RedirectToAction("Index", "Article");
+                }
             else
             {
 

@@ -141,7 +141,7 @@ namespace EnterpriceWeb.Controllers
                    type=type.Substring(type.LastIndexOf("."));
                     if (type == ".png" || type == ".jpg" || type == ".csv")
                     {
-                        var user = _repoAccount.Register(_user);
+                        var user = await _repoAccount.Register(_user);
                         if (user == null)
                         {
                             //_user.us_password = MD5(_user.us_password);
