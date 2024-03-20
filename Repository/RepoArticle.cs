@@ -71,6 +71,12 @@ namespace EnterpriceWeb.Repository
             int article = (await _appDBContext.articles.Where(art => art.article_status.Equals("Refuse")).ToListAsync()).Count;
             return article;
         }
+        public async Task<int> SearhAllArticle()
+        {
+            int article = (await _appDBContext.articles.ToListAsync()).Count;
+            return article;
+        }
+
 
     }
 }

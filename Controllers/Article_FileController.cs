@@ -53,7 +53,7 @@ namespace EnterpriceWeb.Controllers
             int user_id = (int)session.GetInt32("User_id");
             string role = session.GetString("role");
             Article article = await _repoArticle.SearhArticleById(idArticle);
-            if (user_id != null && (user_id == article.us_id || role == "coordinator"))
+            if (user_id != null && (user_id == article.us_id || role == "coordinator") && article_file!=null)
             {
                 await HandleCreateArticle_File(article_file, idArticle);
                 _dbContext.SaveChanges();

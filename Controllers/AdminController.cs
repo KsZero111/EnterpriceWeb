@@ -41,7 +41,33 @@ namespace EnterpriceWeb.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+            int art_Acccept = await _repoArticle.SearhAllArticle_Accept_DashboardAsync();
+            int art_Inprocessing = await _repoArticle.SearhAllArticle_Inprocessing_DashboardAsync();
+            int art_Refuse = await _repoArticle.SearhAllArticle_Refuse_DashboardAsync();
+            int art_total = await _repoArticle.SearhAllArticle();
+          
+            ViewBag.art_acccept = art_Acccept;
+            ViewBag.art_percent_acccept = percent(art_Acccept,art_total);
+
+
+            ViewBag.art_inprocessing = art_Inprocessing;
+            ViewBag.art_percent_inprocessing = percent(art_Inprocessing, art_total);
+
+            ViewBag.art_refuse = art_Refuse;
+            ViewBag.art_percent_refuse = percent(art_Refuse, art_total);
+
+            ViewBag.art_total = art_total;
+
+
             return View();
+        }
+        public int percent(int number, int total)
+        {
+            if (total <= 0)
+            {
+                return 0;
+            }
+            return (number * 100) / total;
         }
 
         [HttpGet]
@@ -90,16 +116,6 @@ namespace EnterpriceWeb.Controllers
                 f_name_total_arr = ViewBag.f_name_total_arr
             }));
         }
-        [HttpGet]
-        public async Task<IActionResult> DataArticle()
-        {
-            int art_Acccept = await _repoArticle.SearhAllArticle_Accept_DashboardAsync();
-            int art_Inprocessing = await _repoArticle.SearhAllArticle_Inprocessing_DashboardAsync();
-            int art_Refuse = await _repoArticle.SearhAllArticle_Refuse_DashboardAsync();
-            ViewBag.art_Acccept = art_Acccept;
-            ViewBag.art_Inprocessing = art_Inprocessing;
-            ViewBag.art_Refuse = art_Refuse;
-            return View();
-        }
+
     }
 }

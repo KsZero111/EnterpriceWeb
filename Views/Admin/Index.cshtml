@@ -36,7 +36,7 @@
 <body class="grey lighten-3">
 
     <!--Main layout-->
-    <main class="pt-5 mx-lg-5">
+    <main class=" mx-lg-5">
         <div class="container-fluid mt-5">
 
             <!-- Heading -->
@@ -83,7 +83,7 @@
 
                         <!-- Card header -->
                         <div class="card-header text-center">
-                            Pie chart
+                         Contribution percentage
                         </div>
 
                         <!--Card content-->
@@ -104,30 +104,29 @@
                             <!-- List group links -->
                             <div class="list-group list-group-flush">
                                 <a class="list-group-item list-group-item-action waves-effect">
-                                    Sales
-                                    <span class="badge badge-success badge-pill pull-right">
-                                        22%
-                                        <i class="fas fa-arrow-up ml-1"></i>
+                                    Total article
+                                    <span class="badge badge-primary badge-pill pull-right">@ViewBag.art_total/100%</span>
+                                </a>
+                                <a class="list-group-item list-group-item-action waves-effect">
+                                    In processing
+                                    <span class="badge badge-info  badge-pill pull-right">
+                                        @ViewBag.art_inprocessing /  @ViewBag.art_percent_inprocessing%
+                                        <i class="fas fa-info-circle ml-1"></i>
                                     </span>
                                 </a>
                                 <a class="list-group-item list-group-item-action waves-effect">
-                                    Traffic
+                                    Accept
+                                    <span class="badge badge-success  badge-pill pull-right">
+                                        @ViewBag.art_acccept / @ViewBag.art_percent_acccept%
+                                        <i class="fas fa-check ml-1"></i>
+                                    </span>
+                                </a>
+                                <a class="list-group-item list-group-item-action waves-effect">
+                                    Refuse
                                     <span class="badge badge-danger badge-pill pull-right">
-                                        5%
-                                        <i class="fas fa-arrow-down ml-1"></i>
+                                        @ViewBag.art_refuse / @ViewBag.art_percent_refuse%
+                                        <i class="fa fa-times ml-1"></i>
                                     </span>
-                                </a>
-                                <a class="list-group-item list-group-item-action waves-effect">
-                                    Orders
-                                    <span class="badge badge-primary badge-pill pull-right">14</span>
-                                </a>
-                                <a class="list-group-item list-group-item-action waves-effect">
-                                    Issues
-                                    <span class="badge badge-primary badge-pill pull-right">123</span>
-                                </a>
-                                <a class="list-group-item list-group-item-action waves-effect">
-                                    Messages
-                                    <span class="badge badge-primary badge-pill pull-right">8</span>
                                 </a>
                             </div>
                             <!-- List group links -->
