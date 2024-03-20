@@ -7,7 +7,7 @@ namespace EnterpriceWeb.Mailutils
 {
     public class EmailSender : IEmailSender
     {
-        public Task SenderEmailAsync(string email, string subject, string message)
+        public async Task<string> SenderEmailAsync(string email, string subject, string message)
         {
             string mail = "enterpriceweb04@gmail.com";
             string password = "xsufkvdvimrqxhmv";
@@ -21,12 +21,20 @@ namespace EnterpriceWeb.Mailutils
                 Credentials = new System.Net.NetworkCredential(mail,password)
 
             };
-            MailMessage mailMessage = new MailMessage();
-            mailMessage.From = new MailAddress(mail);
-            mailMessage.To.Add(email);
-            mailMessage.Subject = subject;
-            mailMessage.Body = message;
-            return client.SendMailAsync(mailMessage);
+            try
+            {
+                MailMessage mailMessage = new MailMessage();
+                mailMessage.From = new MailAddress(mail);
+                mailMessage.To.Add(email);
+                mailMessage.Subject = subject;
+                mailMessage.Body = message;
+                await client.SendMailAsync(mailMessage);
+                return "Email sent successfully!";
+            }catch (Exception ex)
+            {
+                return $"Failed to send email: {ex.Message}";
+            }
+            
             
         }
         

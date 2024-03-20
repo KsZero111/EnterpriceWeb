@@ -2,6 +2,6 @@
 {
     public interface IEmailSender
     {
-        Task SenderEmailAsync(string email,string subject,string message);
+        Task<string> SenderEmailAsync(string email,string subject,string message);
     }
 }
