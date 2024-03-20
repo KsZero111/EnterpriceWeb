@@ -50,11 +50,18 @@
                                     }
                                 </select>
                             </div>
-@*                             <div class="form-group">
-
-                                <label class="control-label">Avatar</label>
-                                <div class="input-field"> <span class="fas fa-picture px-2"></span> <input type="file" placeholder="Image" name="image"required > </div>
-                            </div> *@
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <label class="control-label">Role</label>
+                                        <select asp-for="us_role" class="form-control">
+                                            <option value="student" name="us_role">Student</option>
+                                            <option value="coordinator" name="us_role">Coordinator</option>
+                                            <option value="managemaketing" name="us_role">Managemaketing</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="mb-3">
                                 <label for="formFileMultiple" class="form-label">Avatar</label>
                                 <input class="form-control input-field" type="file" id="formFileMultiple" name="image" required>
@@ -66,8 +73,18 @@
                                 <div class="input-field"> <span class="far fa-envelope p-2 "></span> <input class="form-control" type="email" placeholder="Email" name="us_gmail" class="form-control  border-0" required> </div>
                             </div>
                             <div class="form-group">
-                                <div class="input-field"> <span class="fas fa-venus-mars px-2"></span> <input class="form-control" type="text" placeholder="Gender" name="us_gender" required> </div>
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <label class="control-label">Gender</label>
+                                        <select asp-for="us_gender" class="form-control">
+                                            <option value="male" name="us_gender">Male</option>
+                                            <option value="female" name="us_gender">Female</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
+
+
                             <div class="form-group">
                                 <div class="input-field"> <span class="far fa-calendar-alt p-2"></span> <input class="form-control" type="text" placeholder="Start Year" name="us_start_year" required> </div>
                             </div>
@@ -81,7 +98,7 @@
 
                                 </div>
                             }
-                            <button type="submit"  class="btn btn-primary btn-block mt-3">Register</button>
+                            <button type="submit" class="btn btn-primary btn-block mt-3">Register</button>
                         </form>
                     </div>
                 </div>
@@ -91,24 +108,24 @@
     <script type='text/javascript'></script>
 </body>
 </html>
- <script>
-  $("#btn-register").submit(function (e) {
-                e.preventDefault()
-                var formData = new FormData(this);
+<script>
+    $("#btn-register").submit(function (e) {
+        e.preventDefault()
+        var formData = new FormData(this);
 
-                $.ajax({
-                    type: "POST",
-                    url: "http://localhost:5154/Account/Register",
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function () {
-                        window.location.href="http://localhost:5154/Account/AccountManagement"
-                    },
-                    error: function () {
-                    }
-                });
-            });
-
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:5154/Account/Register",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function () {
+                window.location.href = "http://localhost:5154/Account/AccountManagement"
+            },
+            error: function () {
+            }
         });
-    </script>
+    });
+
+
+</script>
