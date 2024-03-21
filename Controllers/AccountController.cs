@@ -53,7 +53,7 @@ namespace EnterpriceWeb.Controllers
                     if (user == null)
                     {
                         //_user.us_password = MD5(_user.us_password);
-                      await  HandleRegister(_user, image);
+                        await HandleRegister(_user, image);
                         ViewBag.LoginSuccess = "Register successfull";
                         return View();
                     }
@@ -77,6 +77,8 @@ namespace EnterpriceWeb.Controllers
             }
 
         }
+
+
         private async Task HandleRegister(User newUser, IFormFile avatar)
         {
             try
@@ -95,6 +97,62 @@ namespace EnterpriceWeb.Controllers
                 throw;
             }
         }
+
+
+        //register gues
+        public async Task<ActionResult> RegisterGuest()
+        {
+            return View();
+        }
+
+
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> RegisterGuest([FromForm] User _user, IFormFile image)
+        {
+            if (image != null)
+            {
+                string type = Path.GetFileName(image.FileName);
+                type = type.Substring(type.LastIndexOf("."));
+                if (type == ".png" || type == ".jpg" || type == ".csv")
+                {
+                    var user = await _repoAccount.Register(_user);
+                    if (user == null)
+                    {
+                        //_user.us_password = MD5(_user.us_password);
+                        await HandleRegister(_user, image);
+                        ViewBag.LoginSuccess = "Register successfull";
+                        return View();
+                    }
+                    else
+                    {
+                        TempData.Clear();
+                        TempData["erorr"] = "Email already exists";
+                        return View();
+                    }
+                }
+                else
+                {
+                    TempData.Clear();
+                    TempData["erorr"] = "Please choose avatar is .jpg or .png";
+                    return View();
+                }
+            }
+            else
+            {
+                return View();
+            }
+
+        }
+
+
+
+
+
+
+
         public IActionResult ForgetPassword()
         {
             return View();
