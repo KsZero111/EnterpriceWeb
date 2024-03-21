@@ -141,14 +141,15 @@ namespace EnterpriceWeb.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> ChangesPassword(int id, string password, string C_password)
+        public async Task<IActionResult> ChangesPassword(int id, string old_password,string new_password, string confirm_password)
         {
             int user_id = (int)Session.GetInt32("User_id");
             string role = Session.GetString("role");
-            if ((user_id == id || role == "admin") && password == C_password)
+            User user = await _repoAccount.SearhUserById(id);
+            if ((user_id == id || role == "admin") && new_password == confirm_password && user.us_password == old_password)
             {
-                User user = await _repoAccount.SearhUserById(id);
-                changesPassword(password, user);
+               
+                changesPassword(new_password, user);
                 if (role == "admin")
                 {
                     return View("AccountManagement");
