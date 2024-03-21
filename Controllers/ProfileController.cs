@@ -2,8 +2,6 @@
 using EnterpriceWeb.Repository;
 using EnterpriceWeb;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.Extensions.Logging;
 using System.Data;
 
 namespace EnterpriceWeb.Controllers

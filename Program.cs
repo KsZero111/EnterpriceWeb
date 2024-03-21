@@ -11,7 +11,7 @@ builder.Services.AddDbContext<AppDbConText>(options => options.UseMySql(connecti
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(builder =>
+    options.AddDefaultPolicy(builder => 
     {
         builder.AllowAnyOrigin()
                .AllowAnyMethod()

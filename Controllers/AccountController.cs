@@ -53,7 +53,7 @@ namespace EnterpriceWeb.Controllers
                     if (user == null)
                     {
                         //_user.us_password = MD5(_user.us_password);
-                        HandleRegister(_user, image);
+                      await  HandleRegister(_user, image);
                         ViewBag.LoginSuccess = "Register successfull";
                         return View();
                     }
