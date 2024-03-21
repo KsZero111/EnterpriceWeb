@@ -108,8 +108,15 @@ namespace EnterpriceWeb.Controllers
                 if (user1 != null)
                 {
                     string newpassword = await mailSystem.SendgmailForgetPassword(gmail);
-                    changesPassword(newpassword, user1);
-                    ViewBag.forgot = "success";
+                    if (newpassword != "Something wrong with your account")
+                    {
+                        changesPassword(newpassword, user1);
+                        ViewBag.forgot = "success";
+                    }
+                    else
+                    {
+                        ViewBag.forget = "something wronG!!!";
+                    }
                     return View();
                 }
                 else

@@ -55,8 +55,16 @@ namespace EnterpriceWeb.Controllers
             string newpassword = randomPass();
             var subject = "there is your new password please don't tell someone else";
             var message = "there is your new password "+ newpassword;
-            await _emailSender.SenderEmailAsync(receiver, subject, message);
-            return newpassword;
+            try
+            {
+                await _emailSender.SenderEmailAsync(receiver, subject, message);
+                return newpassword;
+            }
+            catch (Exception ex)
+            {
+                return "Something wrong with your account";
+            }
+
         }
         public MemoryStream DownloadSingleFile(List<Article_file> files)
         {

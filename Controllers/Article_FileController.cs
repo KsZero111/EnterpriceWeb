@@ -56,9 +56,9 @@ namespace EnterpriceWeb.Controllers
             string type = Path.GetFileName(article_file.FileName);
             type = type.Substring(type.LastIndexOf("."));
             if (user_id != null && user_id == article.us_id
-                && (article_file!=null && (type=="doc"||type=="docx")))
+                && (article_file!=null && (type==".doc"||type==".docx")))
             {
-                await HandleCreateArticle_File(article_file, idArticle);
+                await HandleCreateArticle_File(article_file, idArticle,type);
                 _dbContext.SaveChanges();
                 return Ok(new { idArticle });
             }
@@ -68,14 +68,14 @@ namespace EnterpriceWeb.Controllers
             }
         }
 
-        private async Task HandleCreateArticle_File(IFormFile ip_article_File, int id)
+        private async Task HandleCreateArticle_File(IFormFile ip_article_File, int id,string type)
         {
             Article_file art_file = new Article_file();
             //check file type
             string filename = await SupportFile.Instance.SaveFileAsync(ip_article_File, "image/Article_File");
             art_file.article_file_name = filename;
             art_file.article_id = id;
-            art_file.article_file_type = ip_article_File.ContentType;
+            art_file.article_file_type = type;
             _dbContext.Add(art_file);
         }
 
@@ -84,10 +84,9 @@ namespace EnterpriceWeb.Controllers
         {
             int user_id = (int)session.GetInt32("User_id");
             string role = session.GetString("role");
-            Article article = await _repoArticle.SearhArticleById(id);
-            if (user_id != null && (user_id == article.us_id || role == "coordinator"))
+            Article_file article_file = await _repoArticle_File.SearhArticle_FileById(id);
+            if (user_id != null && (user_id == article_file.article.us_id || role == "coordinator"))
             {
-                Article_file article_file = await _repoArticle_File.SearhArticle_FileById(id);
                 SupportFile.Instance.DeleteFileAsync(article_file.article_file_name, "image/Article_File");
                 _dbContext.Remove(article_file);
                 _dbContext.SaveChanges();

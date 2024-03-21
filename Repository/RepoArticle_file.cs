@@ -13,12 +13,12 @@ namespace EnterpriceWeb.Repository
         }
         public async Task<List<Article_file>> SearhAllArticleFileById(int idArticle)
         {
-            List<Article_file> article_file = await _appDBContext.article_Files.Where(art_file => art_file.article_id.Equals(idArticle)).ToListAsync();
+            List<Article_file> article_file = await _appDBContext.article_Files.Where(art_file => art_file.article_id.Equals(idArticle)).Include(a=>a.article).ToListAsync();
             return article_file;
         }
         public async Task<Article_file> SearhArticle_FileById(int id)
         {
-            Article_file article_file = await _appDBContext.article_Files.Where(art_file => art_file.article_file_id.Equals(id)).FirstOrDefaultAsync();
+            Article_file article_file = await _appDBContext.article_Files.Where(art_file => art_file.article_file_id.Equals(id)).Include(a=>a.article).FirstOrDefaultAsync();
             return article_file;
         }
     }
