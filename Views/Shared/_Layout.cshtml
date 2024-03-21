@@ -48,9 +48,32 @@
             &copy; 2024 - EnterpriceWeb - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+    <button type="button" class="btn alert-info" id="liveAlertBtn">Show live alert</button>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        const alertPlaceholder = document.getElementById('liveAlertPlaceholder');
+
+        const appendAlert = (message, type) => {
+            const wrapper = document.createElement('div');
+            wrapper.innerHTML = `
+                                    <div class="alert alert-${type} alert-dismissible" role="alert" style="right: 0; width: 500px;">
+                                        ${message}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                `;
+            alertPlaceholder.appendChild(wrapper);
+            setTimeout(() => {
+                wrapper.style.display = 'none';
+            }, 5000);
+        };
+        if (@ViewBag.LoginSuccess!="") {
+            appendAlert('Nice, you triggered this alert message!', 'info');
+        }
+
+    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

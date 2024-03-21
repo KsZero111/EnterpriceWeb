@@ -1,0 +1,36 @@
+﻿    <button class="btn btn-outline-danger  btnDeleteMagazine DeleteArticleFile" data-toggle="modal" data-target="#deleteModal">Delete</button>
+    <form class="form_Delete_ArticleFile">
+        <div class="modal fade " tabindex="-1" id="deleteModal" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header d-block">
+                        <h4 class="modal-title" id="deleteModalLabel">Click on the box below to delete an article</h4>
+                        <h7 class="modal-title text-danger">* This action will delete all file contribution in the article</h7>
+                    </div>
+                    <div class="modal-footer">
+
+                        <button type="button" class="btn btn-secondary cancelDelete" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-danger confirmDelete">OK </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <script>
+
+        // Popup Delete magazine
+        // $(".DeleteArticleFile").click(function () {
+        //     var modalId = $(this).data("target");
+        //     $(modalId).modal("show");
+        // });
+
+        if (1 == 1) {
+            var modalId = $(this).data("target");
+            $(modalId).modal("show");
+        }
+        // Cancel
+        $(".cancelDelete").click(function () {
+            $(".confirmDelete").closest(".modal").modal("hide");
+        });
+
+    </script>

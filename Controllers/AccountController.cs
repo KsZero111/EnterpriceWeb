@@ -111,17 +111,17 @@ namespace EnterpriceWeb.Controllers
                     if (newpassword != "Something wrong with your account")
                     {
                         changesPassword(newpassword, user1);
-                        ViewBag.forgot = "success";
+                        ViewBag.forgot = "The new password has been sent to the gmail you registered with";
                     }
                     else
                     {
-                        ViewBag.forget = "something wronG!!!";
+                        ViewBag.forgot = "Something wronG!!!";
                     }
                     return View();
                 }
                 else
                 {
-                    ViewBag.forgot = "fail";
+                    ViewBag.forgot = "Gmail not found";
                     return View();
                 }
             }
