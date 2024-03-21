@@ -105,6 +105,24 @@ namespace EnterpriceWeb.Controllers
             return View();
         }
 
+        private async Task HandleRegisterGuest(User newUser, IFormFile avatar)
+        {
+            try
+            {
+
+                if (avatar != null)
+                {
+                    string filename = await SupportFile.Instance.SaveFileAsync(avatar, "image/User");
+                    newUser.us_image = filename;
+                    _dbContext.users.Add(newUser);
+                    _dbContext.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
 
 
 
@@ -118,11 +136,15 @@ namespace EnterpriceWeb.Controllers
                 type = type.Substring(type.LastIndexOf("."));
                 if (type == ".png" || type == ".jpg" || type == ".csv")
                 {
-                    var user = await _repoAccount.Register(_user);
+                    
+                     var user = await _repoAccount.Register(_user);
                     if (user == null)
                     {
+                        
+                        _user.us_role = "guest";
+                        _user.f_id = 999;
                         //_user.us_password = MD5(_user.us_password);
-                        await HandleRegister(_user, image);
+                        await HandleRegisterGuest(_user, image);
                         ViewBag.LoginSuccess = "Register successfull";
                         return View();
                     }
@@ -275,7 +297,7 @@ namespace EnterpriceWeb.Controllers
                     HttpContext.Session.SetString("gmail", data.First().us_gmail);
                     HttpContext.Session.SetInt32("User_id", data.First().us_id);
                     HttpContext.Session.SetString("role", data.First().us_role);
-                    if (HttpContext.Session.GetString("role").Equals("admin"))
+                    if (HttpContext.Session.GetString("role").Equals("admin")|| (HttpContext.Session.GetString("role").Equals("guest")))
                     {
                         return RedirectToAction("Index", "Admin");
 

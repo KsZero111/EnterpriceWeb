@@ -96,12 +96,12 @@
 
         $.ajax({
             type: "POST",
-            url: "http://localhost:5154/Account/Register",
+            url: "http://localhost:5154/Account/RegisterGuest",
             data: formData,
             contentType: false,
             processData: false,
             success: function () {
-                window.location.href = "http://localhost:5154/Account/AccountManagement"
+                window.location.href = "http://localhost:5154/Account/Login"
             },
             error: function () {
             }
