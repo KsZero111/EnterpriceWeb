@@ -19,14 +19,15 @@
     <thead>
         <tr>
             <th>
+                Title
+            </th>
+            <th>
                 Closure Date
             </th>
             <th>
                 Final Closure Date
             </th>
-            <th>
-                Title
-            </th>
+
             <th>
                 Academic_year
             </th>
@@ -39,14 +40,15 @@
 
             <tr>
                 <td>
+                    @Html.DisplayFor(modelItem => item.magazine_title)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.magazine_closure_date)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.magazine_final_closure_date)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.magazine_title)
-                </td>
+
                 <td>
                     @Html.DisplayFor(modelItem => item.magazine_academic_year)
                 </td>

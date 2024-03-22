@@ -136,11 +136,10 @@ namespace EnterpriceWeb.Controllers
                 type = type.Substring(type.LastIndexOf("."));
                 if (type == ".png" || type == ".jpg" || type == ".csv")
                 {
-                    
-                     var user = await _repoAccount.Register(_user);
+
+                    var user = await _repoAccount.Register(_user);
                     if (user == null)
                     {
-                        
                         _user.us_role = "guest";
                         _user.f_id = 999;
                         //_user.us_password = MD5(_user.us_password);
@@ -165,15 +164,9 @@ namespace EnterpriceWeb.Controllers
             else
             {
                 return View();
-            }
+            }   
 
         }
-
-
-
-
-
-
 
         public IActionResult ForgetPassword()
         {
@@ -221,25 +214,20 @@ namespace EnterpriceWeb.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> ChangesPassword(int id, string old_password,string new_password, string confirm_password)
+        public async Task<IActionResult> ChangesPassword(int id, string old_password, string new_password, string confirm_password)
         {
             int user_id = (int)Session.GetInt32("User_id");
             string role = Session.GetString("role");
             User user = await _repoAccount.SearhUserById(id);
             if ((user_id == id || role == "admin") && new_password == confirm_password && user.us_password == old_password)
             {
-               
+
                 changesPassword(new_password, user);
-                if (role == "admin")
-                {
-                    return View("AccountManagement");
-                }
-                else
-                {
-                    return RedirectToAction("IndexProfile", "Profile");
-                }
+                TempData["response"] = "Change password successfull";
+                return RedirectToAction("IndexProfile", "Profile");
             }
-            return RedirectToAction("NotFound", "Home");
+            TempData["response"] = "Old password wrong or new password not match";
+            return View();  
         }
         public string MD5(string s)
         {
@@ -297,7 +285,7 @@ namespace EnterpriceWeb.Controllers
                     HttpContext.Session.SetString("gmail", data.First().us_gmail);
                     HttpContext.Session.SetInt32("User_id", data.First().us_id);
                     HttpContext.Session.SetString("role", data.First().us_role);
-                    if (HttpContext.Session.GetString("role").Equals("admin")|| (HttpContext.Session.GetString("role").Equals("guest")))
+                    if (HttpContext.Session.GetString("role").Equals("admin") || (HttpContext.Session.GetString("role").Equals("guest")))
                     {
                         return RedirectToAction("Index", "Admin");
 

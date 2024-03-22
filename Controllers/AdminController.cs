@@ -41,6 +41,22 @@ namespace EnterpriceWeb.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+            int user_id;
+            string role;
+
+            List<Article> list_Article = new List<Article>();
+            //check null
+            try
+            {
+                user_id = (int)session.GetInt32("User_id");
+                role = session.GetString("role");
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("NotFound", "Home");
+            }
+            ViewBag.role = role;
+
             int art_Acccept = await _repoArticle.SearhAllArticle_Accept_DashboardAsync();
             int art_Inprocessing = await _repoArticle.SearhAllArticle_Inprocessing_DashboardAsync();
             int art_Refuse = await _repoArticle.SearhAllArticle_Refuse_DashboardAsync();

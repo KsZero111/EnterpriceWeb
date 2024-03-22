@@ -41,12 +41,12 @@ namespace EnterpriceWeb.Controllers
                 Faculty faculty = await _repoFaculty.SearhFacultyById(user.f_id);
                 ViewBag.faculty = faculty;
 
-                if (role != null && role.Equals("admin"))
+                if (role != null && role.Equals("admin") || role.Equals("guest"))
                 {
                     ViewBag.layout = "_LayoutAdmin";
                 }
                 else ViewBag.layout = "_Layout";
-
+                ViewBag.role=role;
                 return View(user);
             }
             return RedirectToAction("NotFound", "Home");

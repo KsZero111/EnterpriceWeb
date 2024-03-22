@@ -8,9 +8,8 @@
 @section Style {
     <link href="~/css/profile.css" rel="stylesheet" type="text/css" />
 }
-<p class=" btn btn-outline-info">
-    <a asp-action="ChangesPassword" asp-controller="Account" asp-route-id=@Model.us_id>ChangesPassword</a>
-</p>
+
+<a class=" btn btn-outline-info" asp-action="ChangesPassword" asp-controller="Account" asp-route-id=@Model.us_id>ChangesPassword</a>
 <div class="page-content page-container" id="page-content">
     <div class="padding">
         @* <a class=" btn btn-primary" asp-controller="Profile" asp-action="UpdateProfile" rou style="margin: 0px 0px 20px 25px"> Edit profile</a> *@

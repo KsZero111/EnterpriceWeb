@@ -30,13 +30,13 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="IndexProfile">Profile</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Faculty" asp-action="IndexFaculty">Faculty</a>
+                            <a class="nav-link text-dark btn_faculty" asp-area="" asp-controller="Faculty" asp-action="IndexFaculty">Faculty</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Magazine" asp-action="IndexMagazine">Magazine</a>
+                            <a class="nav-link text-dark btn_magazine" asp-area="" asp-controller="Magazine" asp-action="IndexMagazine">Magazine</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="AccountManagement">Account</a>
+                            <a class="nav-link text-dark btn_account" asp-area="" asp-controller="Account" asp-action="AccountManagement">Account</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
@@ -52,10 +52,37 @@
         </main>
     </div>
 
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <style>
+        .hiddenbutton {
+            display: none !important;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            var btn_faculty = $(".btn_faculty");
+            var btn_magazine = $(".btn_magazine");
+            var btn_account = $(".btn_account");
+
+            var role = "@ViewBag.role";
+            console.log(role)
+            function addClassHidden(button) {   
+                button.addClass("hiddenbutton");
+            }
+            if (role == "guest" || role == "0") {
+                console.log("ok")
+                $(".btn_faculty").css('display','none')
+                addClassHidden(btn_faculty);
+                addClassHidden(btn_magazine);
+                addClassHidden(btn_account);
+                console.log("ko")
+            }
+        });
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -83,7 +83,8 @@ namespace EnterpriceWeb.Controllers
                 return RedirectToAction("NotFound", "Home");
             }
 
-            if (list_Article.Count() < 0) return RedirectToAction("NotFound", "Home");
+            TempData["magazine_closure_date"] = (await _repoMagazine.SearchMagazineById(id)).magazine_closure_date;
+
             return View(list_Article);
 
 
@@ -305,7 +306,7 @@ namespace EnterpriceWeb.Controllers
 
         public async Task<IActionResult> Download(string arrArticle)
         {
-           
+
             List<string> titles = new List<string>();
             List<DownLoadArticle> lst_selected_article = JsonConvert.DeserializeObject<List<DownLoadArticle>>(arrArticle);
 
@@ -337,8 +338,8 @@ namespace EnterpriceWeb.Controllers
                         return File(memories.First().ToArray(), "application/zip", "selected_article.zip");
                     }
                 }
-                    return RedirectToAction("Index", "Article");
-                }
+                return RedirectToAction("Index", "Article");
+            }
             else
             {
 

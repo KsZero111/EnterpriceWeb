@@ -9,9 +9,17 @@
 </div>
 <br />
 <div class="d-flex justify-content-between m-2">
-    <p>
-        <a asp-action="CreateArticle" class="btn btn-outline-info btnCreateArticle fw-bold" asp-route-id="@ViewBag.m_id">Add new Article</a>
-    </p>
+    @{
+        DateTime magazineClosureDate = (DateTime)TempData["magazine_closure_date"];
+        if (magazineClosureDate < DateTime.Now)
+        {
+            <p>
+                <a asp-action="CreateArticle" class="btn btn-outline-info btnCreateArticle fw-bold" asp-route-id="@ViewBag.m_id">Add new Article</a>
+            </p>
+        }
+    }
+    <h5></h5>
+
     <p class="btnDowloadAll btn btn-outline-primary fw-bold">
         Download all
     </p>
@@ -77,10 +85,15 @@
                     </td>
                     <td>
                         <a type="hidden" asp-controller="Article_File" asp-action="IndexArticle_File" asp-route-article_id="@item.article_id" class="btn btn-outline-primary btnContributeArticle">Contribute</a>
-                        <a asp-action="UpdateArticle" asp-route-id="@item.article_id" class="btn btn-outline-success btnUpdateArticle">Update</a>
+                        @if (@item.magazine.magazine_final_closure_date > DateTime.Now)
+                        {
+                            <a asp-action="UpdateArticle" asp-route-id="@item.article_id" class="btn btn-outline-success btnUpdateArticle">Update</a>
+                            <button class="btn btn-outline-danger DeleteArticle btnDeleteArticle" value="@item.article_id" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                        }
+
                         <button name="id" class="btn btn-outline-success btnAcceptArticle" value="@item.article_id">Accept</button>
                         <button name="id" class="btn btn-outline-danger btnRefuseArticle" value="@item.article_id">Refuse</button>
-                        <button class="btn btn-outline-danger DeleteArticle btnDeleteArticle" value="@item.article_id" data-toggle="modal" data-target="#deleteModal">Delete</button>
+
                         <input class="inputCheck" data-id="@item.article_id" data-title="@item.article_title" type="checkbox" />
                         <form enctype="multipart/form-data" id="form_Delete_Article">
                             <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -138,12 +151,12 @@
                 var dataPost = JSON.stringify(arrArticle)
                 $.ajax({
                     type: "POST",
-                            url: "http://localhost:5154/Article/DownLoadwithCheckbox",
+                    url: "http://localhost:5154/Article/DownLoadwithCheckbox",
                     data: { arrArticle: dataPost },
                     success: function (dataPost) {
-                             console.log("Success: Redirecting...");
-                                 window.location.href = '/Article/Download?arrArticle=' + dataPost;
-                              
+                        console.log("Success: Redirecting...");
+                        window.location.href = '/Article/Download?arrArticle=' + dataPost;
+
                     },
                     error: function () {
                         console.log("Error Accept article ");
@@ -169,12 +182,12 @@
                 var dataPost = JSON.stringify(arrArticle)
                 $.ajax({
                     type: "POST",
-                        url: "http://localhost:5154/Article/DownLoadAll",
+                    url: "http://localhost:5154/Article/DownLoadAll",
                     data: { arrArticleAll: dataPost },
                     success: function () {
-                          window.location.href = '/Article/Download?arrArticle=' + dataPost;
-                        
-   
+                        window.location.href = '/Article/Download?arrArticle=' + dataPost;
+
+
                     },
                     error: function () {
                         console.log("Error Accept article ");
@@ -298,7 +311,6 @@
                 });
             });
         });
-
 
 
 
