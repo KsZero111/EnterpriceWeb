@@ -11,8 +11,8 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
     <link rel="stylesheet" href="~/css/mdb.min.css" asp-append-version="true" />
     @await RenderSectionAsync("Style", required: false)
-</head>
-<body>
+</head> 
+<body >
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3 " data-bs-theme="dark">
             <div class="container-fluid">
@@ -38,27 +38,22 @@
         </nav>
     </header>
     <div class="container">
-        <main role="main" class="pb-3">
+        <main role="main" class="pb-3" style="margin-bottom:10px">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - EnterpriceWeb - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
-    <button type="button" class="btn alert-info" id="liveAlertBtn">Show live alert</button>
+    @* <div id="liveAlertPlaceholder"></div> *@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script>
+@*     <script>
         const alertPlaceholder = document.getElementById('liveAlertPlaceholder');
 
         const appendAlert = (message, type) => {
             const wrapper = document.createElement('div');
             wrapper.innerHTML = `
-                                    <div class="alert alert-${type} alert-dismissible" role="alert" style="right: 0; width: 500px;">
+                                            <div class="alert alert-${type} alert-dismissible" role="alert" style="right: 0; width:  fit-content;">
                                         ${message}
                                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                     </div>
@@ -68,11 +63,11 @@
                 wrapper.style.display = 'none';
             }, 5000);
         };
-        if (@ViewBag.LoginSuccess!="") {
+        if (1==1) {
             appendAlert('Nice, you triggered this alert message!', 'info');
         }
 
-    </script>
+    </script> *@
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

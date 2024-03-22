@@ -309,7 +309,7 @@ namespace EnterpriceWeb.Controllers
                 }
                 else
                 {
-                    TempData["erorr"] = "Login failed";
+                    TempData["erorr"] = "Account password is incorrect";
                     return View();
                 }
             }

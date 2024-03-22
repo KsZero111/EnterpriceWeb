@@ -67,13 +67,13 @@ namespace EnterpriceWeb.Controllers
             {
                 return 0;
             }
-            return (number * 100) / total;
+            return (int)(((double)number * 100) / total);
         }
 
         [HttpGet]
         public async Task<IActionResult> Data()
         {
-            List<int> art_file_total_list = new List<int>();
+            List<int> art_total_list = new List<int>();
             List<string> f_name_total_list = new List<string>();
 
             //list string name faculty
@@ -82,32 +82,22 @@ namespace EnterpriceWeb.Controllers
             foreach (int i in f_id)
             {
                 f_name_total_list.Add((await _repoFaculty.SearhFacultyById(i)).f_name);
-                int total_Article_File_fromFaculty = 0;
+                int total_Article_fromFaculty = 0;
                 List<User> users_list = await _repoAccount.SearAllhUserById(i);
                 if (users_list != null)
                 {
-                    //if (users_list.Count > 0) f_name_total_list.Add(users_list[0].faculty.f_name);
-
                     int total_Article_File_from_User = 0;
                     foreach (User user in users_list)
                     {
-                        List<Article> articles = await _repoArticle.SearhAllArticleDashboard(user.us_id);
-                        if (articles != null)
-                        {
-                            int total_Article_File_from_Article = 0;
-                            foreach (Article article in articles)
-                            {
-                                int soluong_article_file = (await _repoArticle_File.SearhAllArticleFileById(article.article_id)).Count();
-                                total_Article_File_from_Article += soluong_article_file;
-                            }
-                            total_Article_File_from_User += total_Article_File_from_Article;
-                        }
+                        List<Article> csjkdnajck = await _repoArticle.SearhAllArticleDashboard(user.us_id);
+                       int getall_article_byuser = (await _repoArticle.SearhAllArticleDashboard(user.us_id)).Count();
+                        total_Article_File_from_User += getall_article_byuser;
                     }
-                    total_Article_File_fromFaculty += total_Article_File_from_User;
+                    total_Article_fromFaculty += total_Article_File_from_User;
                 }
-                art_file_total_list.Add(total_Article_File_fromFaculty);
+                art_total_list.Add(total_Article_fromFaculty);
             }
-            ViewBag.art_file_total_arr = art_file_total_list;
+            ViewBag.art_file_total_arr = art_total_list;
             ViewBag.f_name_total_arr = f_name_total_list;
             return Ok(JsonSerializer.Serialize(new
             {
