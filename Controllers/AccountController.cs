@@ -52,7 +52,7 @@ namespace EnterpriceWeb.Controllers
                     var user = await _repoAccount.Register(_user);
                     if (user == null)
                     {
-                        //_user.us_password = MD5(_user.us_password);
+                        _user.us_password = MD5(_user.us_password);
                         await HandleRegister(_user, image);
                         ViewBag.LoginSuccess = "Register successfull";
                         return View();
@@ -142,7 +142,7 @@ namespace EnterpriceWeb.Controllers
                     {
                         _user.us_role = "guest";
                         _user.f_id = 999;
-                        //_user.us_password = MD5(_user.us_password);
+                        _user.us_password = MD5(_user.us_password);
                         await HandleRegisterGuest(_user, image);
                         ViewBag.LoginSuccess = "Register successfull";
                         return View();
@@ -203,7 +203,7 @@ namespace EnterpriceWeb.Controllers
 
         private void changesPassword(string newpass, User user)
         {
-            //newpass=MD5(newpass);
+            newpass=MD5(newpass);
             user.us_password = newpass;
             _dbContext.Update(user);
             _dbContext.SaveChanges();
@@ -278,7 +278,7 @@ namespace EnterpriceWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                //password = MD5(password);
+                password = MD5(password);
                 var data = _repoAccount.login(gmail, password);
                 if (data.Count() != 0)
                 {
