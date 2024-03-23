@@ -7,8 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Feedback\" />
-    <Folder Include="wwwroot\image\Temp\" />
+    <Compile Remove="Views\Feedback\**" />
+    <Compile Remove="wwwroot\image\Temp\**" />
+    <Content Remove="Views\Feedback\**" />
+    <Content Remove="wwwroot\image\Temp\**" />
+    <EmbeddedResource Remove="Views\Feedback\**" />
+    <EmbeddedResource Remove="wwwroot\image\Temp\**" />
+    <None Remove="Views\Feedback\**" />
+    <None Remove="wwwroot\image\Temp\**" />
   </ItemGroup>
 
   <ItemGroup>

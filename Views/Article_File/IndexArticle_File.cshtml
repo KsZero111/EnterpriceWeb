@@ -88,7 +88,7 @@
         <h1>Feedback</h1>
 
 
-        <a class="btn btn-outline-info fw-bold" asp-action="CreateFeedback" asp-route-id="@ViewBag.ArticleId">Create New</a>
+        <a class="btn btn-outline-info fw-bold btn_feedback" asp-action="CreateFeedback" asp-route-id="@ViewBag.ArticleId">Create New</a>
 
         <table class="table table-success table-striped">
             <thead>
@@ -136,6 +136,7 @@
 
     <script>
         $(document).ready(function () {
+            var btn_feedback = $(".btn_feedback");
             var btn_Create = $(".btnCreateArticleFile");
 
             var btn_Delete = $(".btnDeleteArticleFile");
@@ -149,7 +150,13 @@
             if (role == "admin" || role == "coordinator" || role == "marketingmanager") {
                 addClassHidden(btn_Create);
                 addClassHidden(btn_Delete);
+
             }
+
+            if (role == "admin" || role == "marketingmanager") {
+                addClassHidden(btn_feedback);
+            }
+
 
             var id;
             //Delete article file

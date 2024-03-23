@@ -11,7 +11,7 @@
 <div class="d-flex justify-content-between m-2">
     @{
         DateTime magazineClosureDate = (DateTime)TempData["magazine_closure_date"];
-        if (magazineClosureDate < DateTime.Now)
+        if (magazineClosureDate > DateTime.Now)
         {
             <p>
                 <a asp-action="CreateArticle" class="btn btn-outline-info btnCreateArticle fw-bold" asp-route-id="@ViewBag.m_id">Add new Article</a>

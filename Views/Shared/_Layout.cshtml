@@ -11,8 +11,8 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
     <link rel="stylesheet" href="~/css/mdb.min.css" asp-append-version="true" />
     @await RenderSectionAsync("Style", required: false)
-</head> 
-<body >
+</head>
+<body style="">
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3 " data-bs-theme="dark">
             <div class="container-fluid">
@@ -42,32 +42,10 @@
             @RenderBody()
         </main>
     </div>
-
-    @* <div id="liveAlertPlaceholder"></div> *@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-@*     <script>
-        const alertPlaceholder = document.getElementById('liveAlertPlaceholder');
 
-        const appendAlert = (message, type) => {
-            const wrapper = document.createElement('div');
-            wrapper.innerHTML = `
-                                            <div class="alert alert-${type} alert-dismissible" role="alert" style="right: 0; width:  fit-content;">
-                                        ${message}
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                    </div>
-                                `;
-            alertPlaceholder.appendChild(wrapper);
-            setTimeout(() => {
-                wrapper.style.display = 'none';
-            }, 5000);
-        };
-        if (1==1) {
-            appendAlert('Nice, you triggered this alert message!', 'info');
-        }
-
-    </script> *@
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
