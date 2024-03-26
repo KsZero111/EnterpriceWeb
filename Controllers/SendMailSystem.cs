@@ -17,11 +17,11 @@ namespace EnterpriceWeb.Controllers
             _emailSender = emailSender;
             _hostEnvironment = hostEnvironment;
         }
-        public async void Sendgmail(User user)
+        public async void Sendgmail(User user,string title,string student_name)
         {
             var receiver = user.us_gmail;
             var subject = "please comment at the new article";
-            var message = "You have 14 days to feedback for the new article";
+            var message = "You have 14 days to feedback for the new article"+" Name: " + student_name + " Title: " + title;
             await _emailSender.SenderEmailAsync(receiver, subject, message);
         }
         public string randomPass()

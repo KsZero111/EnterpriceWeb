@@ -117,13 +117,15 @@ namespace EnterpriceWeb.Controllers
         {
             int user_id = (int)session.GetInt32("User_id");
             string role = session.GetString("role");
+            
             if (user_id != null && role == "student")
             {
+                User user1 = await _repoAccount.SearhUserById(user_id);
                 await HandleCreateArticle(inputArticle.magazine_id, inputArticle.article_title, avatarArticle);
                 User user = await _repoAccount.SearchCoordinatorByUserIdOfStudent(user_id);
                 if (user != null)
                 {
-                    mailSystem.Sendgmail(user);
+                    mailSystem.Sendgmail(user,inputArticle.article_title,user1.us_name);
                 }
                 return RedirectToAction("IndexArticle", "Article", new { id = inputArticle.magazine_id });
             }
