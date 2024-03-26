@@ -121,7 +121,10 @@ namespace EnterpriceWeb.Controllers
             {
                 await HandleCreateArticle(inputArticle.magazine_id, inputArticle.article_title, avatarArticle);
                 User user = await _repoAccount.SearchCoordinatorByUserIdOfStudent(user_id);
-                mailSystem.Sendgmail(user);
+                if (user != null)
+                {
+                    mailSystem.Sendgmail(user);
+                }
                 return RedirectToAction("IndexArticle", "Article", new { id = inputArticle.magazine_id });
             }
             else

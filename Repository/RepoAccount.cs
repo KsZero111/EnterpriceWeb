@@ -59,7 +59,7 @@ namespace EnterpriceWeb.Repository
         public async Task<User> SearchCoordinatorByUserIdOfStudent(int user_id)
         {
             User user = await this.SearhUserById(user_id);
-            User Coordinator = await appDBContext.users.Where(us => us.us_role.Equals("coordinator") && us.f_id.Equals(user.f_id)).FirstAsync();
+            User Coordinator = await appDBContext.users.Where(us => us.us_role.Equals("coordinator") && us.f_id.Equals(user.f_id)).FirstOrDefaultAsync();
             return Coordinator;
         }
     }
