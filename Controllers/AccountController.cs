@@ -219,7 +219,8 @@ namespace EnterpriceWeb.Controllers
             int user_id = (int)Session.GetInt32("User_id");
             string role = Session.GetString("role");
             User user = await _repoAccount.SearhUserById(id);
-            if ((user_id == id || role == "admin") && new_password == confirm_password && user.us_password == old_password)
+            string password = MD5(old_password);
+            if ((user_id == id || role == "admin") && new_password == confirm_password && user.us_password == password)
             {
 
                 changesPassword(new_password, user);
