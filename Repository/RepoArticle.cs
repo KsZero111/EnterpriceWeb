@@ -17,9 +17,9 @@ namespace EnterpriceWeb.Repository
             return article;
         }
         //Maketingmanager
-        public async Task<List<Article>> SearhAllArticleMaketingManager()
+        public async Task<List<Article>> SearhAllArticleMaketingManager(int id)
         {
-            List<Article> article = await _appDBContext.articles.Where(art => art.article_status.Equals("Accept")).Include(m => m.magazine).ToListAsync();
+            List<Article> article = await _appDBContext.articles.Where(art => art.magazine_id==id && art.article_status.Equals("Accept")).Include(m => m.magazine).ToListAsync();
             return article;
         }
 
