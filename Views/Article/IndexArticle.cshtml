@@ -299,8 +299,8 @@
                 e.preventDefault()
                 $.ajax({
                     type: "POST",
-                    url: "http://localhost:5154/Article/DeleteArticle" + id,
-                    data: "?id=" + id,
+                    url: "http://localhost:5154/Article/DeleteArticle",
+                    data: "id=" + id,
                     success: function () {
                         location.reload()
                         console.log("Delete successful");

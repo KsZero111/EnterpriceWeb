@@ -76,7 +76,7 @@ namespace EnterpriceWeb.Controllers
             // Same magazine, accept
             else if (role.Equals("marketingmanager"))
             {
-                list_Article = await _repoArticle.SearhAllArticleMaketingManager();
+                list_Article = await _repoArticle.SearhAllArticleMaketingManager(id);
             }
             else
             {
