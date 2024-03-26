@@ -77,13 +77,10 @@ namespace EnterpriceWeb.Controllers
             }
 
         }
-
-
         private async Task HandleRegister(User newUser, IFormFile avatar)
         {
             try
             {
-
                 if (avatar != null)
                 {
                     string filename = await SupportFile.Instance.SaveFileAsync(avatar, "image/User");
@@ -109,7 +106,6 @@ namespace EnterpriceWeb.Controllers
         {
             try
             {
-
                 if (avatar != null)
                 {
                     string filename = await SupportFile.Instance.SaveFileAsync(avatar, "image/User");
@@ -188,7 +184,7 @@ namespace EnterpriceWeb.Controllers
                     }
                     else
                     {
-                        ViewBag.forgot = "Something wronG!!!";
+                        ViewBag.forgot = "Something wrong!!!";
                     }
                     return View();
                 }
@@ -220,7 +216,7 @@ namespace EnterpriceWeb.Controllers
             string role = Session.GetString("role");
             User user = await _repoAccount.SearhUserById(id);
             string password = MD5(old_password);
-            if ((user_id == id || role == "admin") && new_password == confirm_password && user.us_password == password)
+            if ((user_id ==id || role == "admin") && new_password == confirm_password && user.us_password == password)
             {
 
                 changesPassword(new_password, user);
@@ -228,6 +224,7 @@ namespace EnterpriceWeb.Controllers
                 return RedirectToAction("IndexProfile", "Profile");
             }
             TempData["response"] = "Old password wrong or new password not match";
+            ViewBag.Id=id;
             return View();  
         }
         public string MD5(string s)
@@ -298,7 +295,7 @@ namespace EnterpriceWeb.Controllers
                 }
                 else
                 {
-                    TempData["erorr"] = "Account password is incorrect";
+                    TempData["erorr"] = "Email or password is incorrect";
                     return View();
                 }
             }
